@@ -20,6 +20,106 @@
 				<!-- Header -->
 					<header id="header">
 						<div class="image main">
+							<!-- 跑马灯 -->
+							<html lang="zh"><head><style>
+    #nr{
+    	font-size:20px;
+    	margin: 0;
+        background: -webkit-linear-gradient(left,
+            #ffffff,
+            #ff0000 6.25%,
+            #ff7d00 12.5%,
+            #ffff00 18.75%,
+            #00ff00 25%,
+            #00ffff 31.25%,
+            #0000ff 37.5%,
+            #ff00ff 43.75%,
+            #ffff00 50%,
+            #ff0000 56.25%,
+            #ff7d00 62.5%,
+            #ffff00 68.75%,
+            #00ff00 75%,
+            #00ffff 81.25%,
+            #0000ff 87.5%,
+            #ff00ff 93.75%,
+            #ffff00 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-size: 200% 100%;
+        animation: masked-animation 2s infinite linear;
+    }
+    @keyframes masked-animation {
+        0% {
+            background-position: 0 0;
+        }
+        100% {
+            background-position: -100%, 0;
+        }
+    }
+</style>
+
+<marquee><b id="nr">欢迎访问我的个人主页</b></marquee>
+
+<style>
+.tp_advertising{
+width: 100%;
+display: flex;
+justify-content: space-between;
+background: #fff;
+position: relative;
+box-shadow: 0 0 3px rgba(0,0,0,.2);
+	}
+	.tp_advertising p{
+color: #fff;
+font-size: 14px;
+line-height: 22px;
+background: #6F8EC5;
+position: absolute;
+bottom: 0;
+right: 0;
+margin: 0;
+padding: 0 8px;
+	    border-top-left-radius: 10px;
+	    opacity: .3;
+	}
+	.tp_advertising div{
+width: 16.66%;
+position: relative;
+z-index: 1;
+	}
+	.tp_advertising a{
+font-size: 12px;
+line-height: 22px;
+text-align: center;
+display: block;
+text-decoration: none;
+white-space:nowrap;
+	}
+	.tp_advertising a:hover{
+font-weight: bold;
+font-size: 14px;
+text-shadow: 0px 0px 1px rgba(0,0,0,.5);
+	}
+	.tp_1 a{
+color: #FF0033;
+	}
+	.tp_2 a{
+color: #9400D3;
+	}
+	.tp_3 a{
+color: #00BFFF;
+	}
+	.tp_4 a{
+color: #FF1493;
+	}
+	.tp_5 a{
+color: #FF4500;
+	}
+	.tp_6 a{
+color: #5fb878;
+	}
+</style>
+
 							<h3><a href="https://zgq-inc.github.io/homepage/mywords.html">关于未来计划</a></h3>
 							<h3><a href="https://zgq-inc.github.io/homepage/mywords.html">这是→我想说的话←</a>
 							<h3><a href="https://zgq-inc.github.io/homepage/mywords.html">（点击打开）</a></h3>
@@ -110,6 +210,88 @@
 							</article>
 
 					</div>
+					
+						<!-- 音乐 -->
+<p>🎶Please Don't Cry - LeBrock🎶</p>
+<p><audio src="https://zgqpersonal5.files.wordpress.com/2022/03/wp-1646835191310..jpg" type="audio/mpeg" controls="controls" autoplay="autoplay" autobuffer="autobuffer">Please Don't Cry - LeBrock.mp3</audio></p>
+
+						<!-- 天气 -->
+				<meta charset="utf-8">  
+<center><iframe width="100%" scrolling="no" height="40" frameborder="0" allowtransparency="true" margin="0" src="http://i.tianqi.com/index.php?c=code&amp;id=34&amp;icon=1&amp;num=3" allowfullscreen="false"></iframe></center>
+
+						<!-- 时间 -->
+				<meta charset="utf-8">  
+<style>  
+body {  
+    padding-top: 40px;  
+}  
+#main {  
+    margin: auto;  
+    text-align: center;  
+    width: 300px;  
+    height: 0px;   
+    background-color: none;  
+}  
+#show_time0,#show_time {  
+	width: 300px;
+	height: 25px;
+    color: #FFFFFF;  
+}  
+</style>  
+</head> 
+<body>  
+<div id="main">  
+<div id="show_time0" style="">
+<script>
+//显示时间
+//setInterval("show_time0.innerHTML=new Date().toLocaleString()+' 星期'+'日一二三四五六'.charAt(new Date().getDay());",1000);
+</script>
+</div>
+<div id="show_time">  
+<script>  
+//定义
+setInterval("fun(show_time)",1);
+function fun(timeID){ 
+var date = new Date();  //创建对象  
+var y = date.getFullYear();     //获取年份  
+var m =date.getMonth()+1;   //获取月份  返回0-11  
+var d = date.getDate(); // 获取日  
+var w = date.getDay();   //获取星期几  返回0-6   (0=星期天) 
+var ww = ' 星期'+'日一二三四五六'.charAt(new Date().getDay()) ;//星期几
+var h = date.getHours();  //时
+var minute = date.getMinutes()  //分
+var s = date.getSeconds(); //秒
+var sss = date.getMilliseconds() ; //毫秒
+if(m<10){
+m = "0"+m;
+}
+if(d<10){
+d = "0"+d;
+}
+if(h<10){
+h = "0"+h;
+}
+
+if(minute<10){
+minute = "0"+minute;
+}
+
+if(s<10){
+s = "0"+s;
+}
+
+if(sss<10){
+sss = "00"+sss;
+}else if(sss<100){
+sss = "0"+sss;
+}
+
+document.getElementById(timeID.id).innerHTML =  y+"-"+m+"-"+d+"   "+h+":"+minute+":"+s+"."+sss+"  "+ww;
+//document.write(y+"-"+m+"-"+d+"   "+h+":"+minute+":"+s);  
+  }
+</script>  
+</div>  
+</div>  
 
 				<!-- Footer -->
 					<footer id="footer">
