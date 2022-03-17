@@ -5,9 +5,9 @@ docute.init({
     plugins: [
         docsearch({
             apiKey: '',
-            indexName: 'zgqinc',
+            indexName: 'aplayer',
             tags: ['english', 'zh-Hans'],
-            url: 'https://zgq-inc.github.io/homepage'
+            url: 'https://aplayer.js.org'
         }),
         evanyou(),
         player()
@@ -48,21 +48,21 @@ function aplayer1 () {
         theme: '#F57F17',
         lrcType: 3,
         audio: [{
-            name: 'Please Don't Cry',
-            artist: 'LeBrock',
-            url: 'https://zgqpersonal5.files.wordpress.com/2022/03/wp-1646835191310..jpg',
-            cover: 'https://cdn.jsdelivr.net/gh/ZGQ-inc/my-picture@master/20220316/Please-Don't-Cry---LeBrock.3x1sz692ph20.jpg',
+            name: '歌名1',
+            artist: '歌手1',
+            url: '歌曲1',
+            cover: '封面1',
             lrc: '歌词1',
             theme: '#ebd0c2'
         }, {
-            name: '名字2',
+            name: '歌名2',
             artist: '歌手2',
             url: '歌曲2',
             cover: '封面2',
             lrc: '歌词2',
             theme: '#46718b'
         }, {
-            name: '名字3',
+            name: '歌名3',
             artist: '歌手3',
             url: '歌曲3',
             cover: '封面3',
@@ -78,25 +78,25 @@ function aplayer0 () {
         fixed: true,
         lrcType: 3,
         audio: [{
-            name: '名字1',
-            artist: '歌手1',
-            url: '歌曲1',
-            cover: '封面1',
-            lrc: '歌词1',
+            name: '歌名3',
+            artist: '歌手3',
+            url: '歌曲3',
+            cover: '封面3',
+            lrc: '歌词3',
             theme: '#505d6b'
         }, {
-            name: '名字2',
+            name: '歌名2',
             artist: '歌手2',
             url: '歌曲2',
             cover: '封面2',
             lrc: '歌词2',
             theme: '#46718b'
         }, {
-            name: '名字3',
-            artist: '歌手3',
-            url: '歌曲3',
-            cover: '封面3',
-            lrc: '歌词3',
+            name: '歌名1',
+            artist: '歌手1',
+            url: '歌曲1',
+            cover: '封面1',
+            lrc: '歌词1',
             theme: '#ebd0c2'
         }]
     });
@@ -106,7 +106,7 @@ function aplayer2 () {
     window.ap2 = new APlayer({
         container: document.getElementById('aplayer2'),
         audio: [{
-            name: '名字1',
+            name: '歌名1',
             artist: '歌手1',
             url: '歌曲1',
             cover: '封面1',
@@ -129,21 +129,21 @@ function aplayer3 () {
         listMaxHeight: 90,
         lrcType: 3,
         audio: [{
-            name: '名字1',
+            name: '歌名1',
             artist: '歌手1',
             url: '歌曲1',
             cover: '封面1',
             lrc: '歌词1',
             theme: '#ebd0c2'
         }, {
-            name: '名字2',
+            name: '歌名2',
             artist: '歌手2',
             url: '歌曲2',
             cover: '封面2',
             lrc: '歌词2',
             theme: '#46718b'
         }, {
-            name: '名字3',
+            name: '歌名3',
             artist: '歌手3',
             url: '歌曲3',
             cover: '封面3',
@@ -158,7 +158,7 @@ function aplayer4 () {
         container: document.getElementById('aplayer4'),
         lrcType: 3,
         audio: [{
-            name: '名字1',
+            name: '歌名1',
             artist: '歌手1',
             url: '歌曲1',
             cover: '封面1',
@@ -173,21 +173,21 @@ function aplayer5 () {
         container: document.getElementById('aplayer5'),
         lrcType: 3,
         audio: [{
-            name: '名字1',
+            name: '歌名1',
             artist: '歌手1',
             url: '歌曲1',
             cover: '封面1',
             lrc: '歌词1',
             theme: '#ebd0c2'
         }, {
-            name: '名字2',
+            name: '歌名2',
             artist: '歌手2',
             url: '歌曲2',
             cover: '封面2',
             lrc: '歌词2',
             theme: '#46718b'
         }, {
-            name: '名字3',
+            name: '歌名3',
             artist: '歌手3',
             url: '歌曲3',
             cover: '封面3',
@@ -202,7 +202,7 @@ function aplayer6 () {
         container: document.getElementById('aplayer6'),
         mini: true,
         audio: [{
-            name: '名字1',
+            name: '歌名1',
             artist: '歌手1',
             url: '歌曲1',
             cover: '封面1',
@@ -215,26 +215,26 @@ function aplayer7 () {
     window.ap7 = new APlayer({
         container: document.getElementById('aplayer7'),
         audio: [{
-            name: '名字1(HLS)',
+            name: '歌名1(HLS)',
             artist: '歌手1',
-            url: 'https://cn-south-17-aplayer-46154810.oss.dogecdn.com/hls/hikarunara.m3u8',
+            url: '歌曲1串流',
             cover: '封面1',
             theme: '#ebd0c2',
             type: 'hls'
         }, {
-            name: '名字1',
+            name: '歌名1',
             artist: '歌手1',
             url: '歌曲1',
             cover: '封面1',
             theme: '#ebd0c2'
         }, {
-            name: '名字2',
+            name: '歌名2',
             artist: '歌手2',
             url: '歌曲2',
             cover: '封面2',
             theme: '#46718b'
         }, {
-            name: '名字3',
+            name: '歌名3',
             artist: '歌手3',
             url: '歌曲3',
             cover: '封面3',
@@ -248,17 +248,17 @@ function aplayer8 () {
         container: document.getElementById('aplayer8'),
         theme: '#e9e9e9',
         audio: [{
-            name: '名字1',
+            name: '歌名1',
             artist: '歌手1',
             url: '歌曲1',
             cover: '封面1',
         }, {
-            name: '名字2',
+            name: '歌名2',
             artist: '歌手2',
             url: '歌曲2',
             cover: '封面2',
         }, {
-            name: '名字3',
+            name: '歌名3',
             artist: '歌手3',
             url: '歌曲3',
             cover: '封面3',
@@ -281,21 +281,21 @@ function aplayer9 () {
         fixed: true,
         lrcType: 3,
         audio: [{
-            name: '名字1',
+            name: '歌名1',
             artist: '歌手1',
             url: '歌曲1',
             cover: '封面1',
             lrc: '歌词1',
             theme: '#ebd0c2'
         }, {
-            name: '名字2',
+            name: '歌名2',
             artist: '歌手2',
             url: '歌曲2',
             cover: '封面2',
             lrc: '歌词2',
             theme: '#46718b'
         }, {
-            name: '名字3',
+            name: '歌名3',
             artist: '歌手3',
             url: '歌曲3',
             cover: '封面3',
