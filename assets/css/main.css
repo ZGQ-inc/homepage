@@ -1139,7 +1139,7 @@ input, select, textarea {
 			-webkit-transition-delay: 0.75s;
 			-ms-transition-delay: 0.75s;
 			transition-delay: 0.75s;
-			background-image: linear-gradient(to top, rgba(19, 21, 25, 0.5), rgba(19, 21, 25, 0.5)), url("https://cdn.jsdelivr.net/gh/ZGQ-inc/my-picture@master/20220201/overlay.eaaklv19wrc.png");
+			background-image: linear-gradient(to top, rgba(19, 21, 25, 0.5), rgba(19, 21, 25, 0.5)), url("https://cdn.jsdelivr.net/gh/ZGQ-inc/homepage@master/images/overlay.png");
 			background-size: auto,
  256px 256px;
 			background-position: center,
@@ -1158,7 +1158,7 @@ input, select, textarea {
 			-webkit-transition: -webkit-transform 1s ease-in-out, -webkit-filter 1s ease-in-out;
 			-ms-transition: -ms-transform 1s ease-in-out, -ms-filter 1s ease-in-out;
 			transition: transform 1s ease-in-out, filter 1s ease-in-out;
-			background-image: url("https://cdn.jsdelivr.net/gh/ZGQ-inc/my-picture@master/bg.5ur27sakiug0.jpg");
+			background-image: url("https://cdn.jsdelivr.net/gh/ZGQ-inc/homepage@master/images/bg.jpg");
 			background-position: center;
 			background-size: cover;
 			background-repeat: no-repeat;
