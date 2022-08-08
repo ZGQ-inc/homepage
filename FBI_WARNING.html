@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
 <title>FBI WARNING</title>
 
@@ -25,11 +24,14 @@
             }
 
             p.overlay-title {
+            	background-color: rgb(255, 0, 0);
+                margin: 0 auto;
                 font-size: 24px;
-                font-weight: 900;
-                color: red;
-                line-height: 1;
-
+                font-weight: 600;
+                color: white;
+                line-height: 1.5;
+                width: 175;
+                
                 margin-bottom: 16px;
             }
 
@@ -146,6 +148,15 @@
             video#video::-webkit-media-controls-enclosure {
                 display:none !important;
             }
+            
+            .footer {
+				position: absolute;
+				left: 0;
+				bottom: 0;
+				color: white;
+				height: 100px;
+				width: 100%;
+            }
         </style>
 </head>
 <body>
@@ -161,7 +172,7 @@
 <div id="accept-button" class="overlay-button">Accept</div>
 <div id="decline-button" class="overlay-button">Decline</div>
 <p>
-<a class="landing-button" target="_blank" href="https://zgq-inc.github.io">
+<a class="footer" target="_blank" href="https://zgq-inc.github.io">
         个人主页
     </a>
 </div>
