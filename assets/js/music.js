@@ -25,15 +25,15 @@
             source: [
                                         {
                                             name:'Running in the Night',
-                                            singer:'FM-84、Ollie Wride',
+                                            singer:'FM-84&Ollie Wride',
                                             url:'./music/Running_in_the_Night-FM-84&Ollie_Wride.mp3',
                                             img_url:'./music/Running_in_the_Night-FM-84&Ollie_Wride.png',
                                         },
                                         {
                                             name:'River of Darkness(feat. Timecop1983)',
-                                            singer:'The Midnight、Timecop1983',
-                                            url:'./music/The_Midnight、Timecop1983-River_of_Darkness_(feat._Timecop1983).mp3',
-                                            img_url:'./music/The_Midnight、Timecop1983-River_of_Darkness_(feat._Timecop1983).png',
+                                            singer:'The Midnight&Timecop1983',
+                                            url:'./music/The_Midnight&Timecop1983-River_of_Darkness_(feat._Timecop1983).mp3',
+                                            img_url:'./music/The_Midnight&Timecop1983-River_of_Darkness_(feat._Timecop1983).png',
                                         },
                                         {
                                             name:'When You Grow up, Your Heart Dies',
