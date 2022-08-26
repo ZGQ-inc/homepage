@@ -89,12 +89,11 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
   -moz-transform: translate3d(0, 0, 0);
   -webkit-transform: translate3d(0, 0, 0);
   transform: translate3d(0, 0, 0);
-  overflow: hidden;
+  overflow: show;
   z-index: 999;
-  cursor: pointer;
+  cursor: none;
   border: 0;
   outline: 0;
-  cursor: none;
 }
 /* line 32, ../sass/music.scss */
 .music-div .filterBg {
@@ -139,7 +138,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
   -o-transition: all 0.3s ease;
   -webkit-transition: all 0.3s ease;
   transition: all 0.3s ease;
-  cursor: pointer;
+  cursor: none;
   color: #fff;
   display: -webkit-flex;
   display: flex;
@@ -149,7 +148,6 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
   justify-content: center;
   -webkit-flex: 0 0 42px;
   flex: 0 0 42px;
-  cursor: none;
 }
 /* line 70, ../sass/music.scss */
 .music-div .music-play-div .pauseplay:active {
@@ -157,7 +155,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
 }
 /* line 74, ../sass/music.scss */
 .music-div .music-play-div .pauseplay i {
-  font-size: 22px;
+  font-size: 28px;
   display: block;
   color: rgba(244, 244, 244, 0.56);
 }
@@ -173,7 +171,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
   -webkit-border-radius: 50%;
   border-radius: 50%;
   background: rgba(7, 17, 27, 0.3);
-  cursor: pointer;
+  cursor: none;
   margin-left: 10px;
   display: -webkit-flex;
   display: flex;
@@ -187,7 +185,6 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
   -o-transition: all 0.3s ease;
   -webkit-transition: all 0.3s ease;
   transition: all 0.3s ease;
-  cursor: none;
 }
 /* line 100, ../sass/music.scss */
 .music-div .music-play-div .next:active {
@@ -211,9 +208,9 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
   flex-direction: column;
   -webkit-flex: 1 1 auto;
   flex: 1 1 auto;
-  margin-left: 10px;
+  margin-left: 1px;
   overflow: hidden;
-  height: 35px;
+  height: 45px;
 }
 /* line 122, ../sass/music.scss */
 .music-div .music-play-div .music-info p {
@@ -405,7 +402,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
 }
 /* line 284, ../sass/music.scss */
 .cpt-loading-mask.column .div-loading {
-  position: absolute;
+/*  position: absolute;
   top: 50%;
   left: 50%;
   width: 260px;
@@ -420,7 +417,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
   -moz-border-radius: 12px;
   -webkit-border-radius: 12px;
   border-radius: 12px;
-  padding: 16px;
+  padding: 16px;*/
 }
 /* line 295, ../sass/music.scss */
 .cpt-loading-mask.column .div-loading .loading {
@@ -514,7 +511,7 @@ article, aside, details, figcaption, figure, footer, header, hgroup, main, menu,
   text-align: center;
   color: #fff;
   font-size: 12px;
-  margin-top: 20px;
+  margin-top: 60px;
 }
 /* line 375, ../sass/music.scss */
 .cpt-loading-mask.row {
