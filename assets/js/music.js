@@ -8,7 +8,7 @@
     DW.music = function(options) {
         var musicValue = {
             width: 320,//宽度
-            height: 56,//高度
+            height: 60,//高度
             hasBlur:  true,//是否显示模糊效果
             blur:  10,//模糊的数值
             left:  'auto',//音乐的位置 :left
@@ -279,7 +279,7 @@
             $('.music-div').loading({
                 name:name,
                 title:'',
-                discription:'',
+                discription:'点击播放器可最小化',
                 originDivWidth:30,
                 originDivHeight:30,
                 flexCenter:true,
@@ -485,9 +485,9 @@
 
 //给dom装填数据
         musicValue._insertData = function(data,index){
-            var music_imgUrl = data[index].img_url || 'http://www.daiwei.org/index/images/img/indeximg.jpg';
-            var music_name = data[index].name || '爱乐之城 纯音乐';
-            var music_url = data[index].url || 'http://oiq8j9er1.bkt.clouddn.com/Justin%20Hurwitz%20-%20Planetarium%20-%20From%20La%20La%20Land%20Soundtrack.mp3';
+            var music_imgUrl = data[index].img_url || '';
+            var music_name = data[index].name || '';
+            var music_url = data[index].url || '';
             var music_singer = data[index].singer || '默认音乐';
             var music_sortIndex = data[index].sort_index || 0;
             _this.music_name.text(music_name).attr('title',music_name);
@@ -676,7 +676,7 @@
             var loadingPosition ='';
             var defaultProp = {
                 direction:  'column',//方向，column纵向   row 横向
-                animateStyle: 'fadeInNoTransform',//进入类型
+                animateStyle: 'fadeInDown',//进入类型
                 title: '请稍等...',//显示什么内容
                 name:  'loadingName',//loading的data-name的属性值  用于删除loading需要的参数
                 type:  'origin',//pic   origin  
@@ -695,11 +695,11 @@
 
                 originWidth:  8,//小圆点width
                 originHeight: 8,//小圆点Height
-                originBg: '#fefefe',//小圆点背景色
+                originBg: '#FFFFFF',//小圆点背景色
                 smallLoading: false,//显示小的loading
 
 // 这是图片的样式   (pic)
-                imgSrc: 'http://www.daiwei.org/index/images/logo/dw.png',//默认的图片地址
+                imgSrc: '',//默认的图片地址
                 imgDivWidth:  80,//imgDiv的width
                 imgDivHeight: 80,//imgDiv的Height
 
