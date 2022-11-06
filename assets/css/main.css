@@ -1308,6 +1308,11 @@ input, select, textarea {
 			border-top-width: 1px;
 			border-bottom-width: 1px;
 			max-width: 100%;
+			font-size: 1.2rem;
+		}
+		
+		#header .name {
+			font-size: 2rem;
 		}
 
 			#header .content .inner {
@@ -1332,7 +1337,7 @@ input, select, textarea {
 				text-transform: uppercase;
 				letter-spacing: 0.2rem;
 				font-size: 0.8rem;
-				line-height: 2;
+				line-height: 2rem;
 			}
 
 		#header nav ul {
@@ -1364,7 +1369,7 @@ input, select, textarea {
 					padding: 0 1.25rem 0 1.45rem;
 					text-transform: uppercase;
 					letter-spacing: 0.2rem;
-					font-size: 0.8rem;
+					font-size: 1rem;
 					border-bottom: 0;
 				}
 
@@ -1635,10 +1640,18 @@ input, select, textarea {
 		margin-top: 2rem;
 		text-align: center;
 	}
+	
+		#footer .time {
+			letter-spacing: 0.1rem;
+			font-size: 1rem;
+			opacity: 0.75;
+			margin-bottom: 0;
+			text-transform: uppercase;
+		}
 
 		#footer .copyright {
-			letter-spacing: 0.2rem;
-			font-size: 0.6rem;
+			letter-spacing: 0.1rem;
+			font-size: 0.7rem;
 			opacity: 0.75;
 			margin-bottom: 0;
 			text-transform: uppercase;
@@ -1659,3 +1672,38 @@ input, select, textarea {
 		body.is-preload #footer {
 			opacity: 0;
 		}
+		
+        #welcome{
+   	 	font-size: 20px;
+			line-height: 100px;
+  	      background: -webkit-linear-gradient(left,
+ 	           #ffffff,
+   	         #ff0000 6.25%,
+   	         #ff7d00 12.5%,
+   	         #ffff00 18.75%,
+  	          #00ff00 25%,
+    	        #00ffff 31.25%,
+   	         #0000ff 37.5%,
+   	         #ff00ff 43.75%,
+   	         #ffff00 50%,
+    	        #ff0000 56.25%,
+ 	           #ff7d00 62.5%,
+   	         #ffff00 68.75%,
+    	        #00ff00 75%,
+ 	           #00ffff 81.25%,
+    	        #0000ff 87.5%,
+   	         #ff00ff 93.75%,
+  	          #ffff00 100%);
+ 	       -webkit-background-clip: text;
+  	      -webkit-text-fill-color: transparent;
+  	      background-size: 200% 100%;
+ 	       animation: masked-animation 2s infinite linear;
+	    }
+ 	   @keyframes masked-animation {
+  	      0% {
+  	          background-position: 0 0;
+	        }
+	        100% {
+   	         background-position: -100%, 0;
+    	    }
+ 	   }
