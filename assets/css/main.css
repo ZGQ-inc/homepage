@@ -695,29 +695,23 @@ input, select, textarea {
 			}
 
 		.image.main {
-			display: block;
+			display: flex;
+			justify-content: center;
+			align-items: center;
 			margin: 2.5rem 0;
 			width: 75%;
-		}
-
+			}
+			  
 			.image.main img {
-				width: 100%;
+			max-width: 100%;
+			height: auto;
 			}
-
-		@media screen and (max-width: 736px) {
-
+			  
+			@media screen and (max-width: 736px), 
+					screen and (max-width: 480px) {
 			.image.main {
 				margin: 3rem 2.5rem;
 			}
-
-		}
-
-		@media screen and (max-width: 480px) {
-
-			.image.main {
-				margin: 3rem 2.5rem;
-			}
-
 		}
 
 /* List */
