@@ -647,7 +647,7 @@ input, select, textarea {
 		.image:before {
 			pointer-events: none;
 			background-image: url("../../images/overlay.png");
-			background-color: rgba(19, 21, 25, 0.5);
+			background-color: rgba(19, 21, 25, 0);
 			border-radius: 4px;
 			content: '';
 			display: block;
@@ -698,7 +698,7 @@ input, select, textarea {
 			display: flex;
 			justify-content: center;
 			align-items: center;
-			margin: 2.5rem 0;
+			margin: 2rem 0;
 			width: 75%;
 			}
 			  
@@ -706,13 +706,27 @@ input, select, textarea {
 			max-width: 100%;
 			height: auto;
 			}
+
+			@media screen and (min-resolution: 2dppx) {
+				.image.main {
+				  width: 25%;
+				  margin: 2rem auto;
+				}
+			  }
 			  
-			@media screen and (max-width: 736px), 
+			@media screen and (min-resolution: 3dppx) {
+				.image.main {
+				  width: 70%;
+				  margin: 2rem auto;
+				}
+			  }
+			  
+			/* @media screen and (max-width: 736px), 
 					screen and (max-width: 480px) {
 			.image.main {
 				margin: 3rem 2.5rem;
 			}
-		}
+		} */
 
 /* List */
 
