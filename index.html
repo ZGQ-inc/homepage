@@ -17,240 +17,250 @@
 -->
 
 <html>
-	<head>
-		<title>ZGQ Inc.的主页</title>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-		<link rel="stylesheet" href="./assets/css/main.css">
-		<noscript><link rel="stylesheet" href="./assets/css/noscript.css"></noscript>
-		<link rel="stylesheet" href="./assets/fonts/fontCss.css">
-		<link rel="stylesheet" type="text/css" href="./assets/css/music.css">
-		<link rel="stylesheet" href="./assets/css/animate.min.css">
-        <link rel="icon" href="data:image/png;base64,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">
-	
-	<style>
-	body,html{
-		margin:0;
-		padding: 0;
-		background: #000;
-		height: 100%;
-	}
-	</style>
 
-	</head>
-	
-	<body class="is-preload">
+<head>
+  <title>ZGQ Inc.的主页</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+  <link rel="stylesheet" href="./assets/css/main.css">
+  <noscript>
+    <link rel="stylesheet" href="./assets/css/noscript.css">
+  </noscript>
+  <link rel="stylesheet" href="./assets/fonts/fontCss.css">
+  <link rel="stylesheet" type="text/css" href="./assets/css/music.css">
+  <link rel="stylesheet" href="./assets/css/animate.min.css">
+  <link rel="icon" href="data:image/png;base64,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">
 
-		
-  
-		<!-- Wrapper -->
-			<div id="wrapper">
-			
-				<!-- Header -->
-					<header id="header">
-						<div class="image main">
+  <style>
+    body,
+    html {
+      margin: 0;
+      padding: 0;
+      background: #000;
+      height: 100%;
+    }
+  </style>
 
-								<!-- 炫彩文字 -->
-<!-- <b id="welcome">欢迎访问我的个人主页</b> -->
+</head>
 
-									<!-- logo -->
-							<span class="image main"><img src="./images/avatar.jpg" alt="" /></span>
-						</div>
-						
-						<!-- 主要内容 -->
-						<div class="content">
-						<div class="inner">
-						<div class="name">
-								<h1>ZGQ Inc.</h1>
-						</div>
-								<br/>
-								<h3>欢迎访问我的<a href="https://github.com/ZGQ-inc">👉GitHub个人主页👈</h3><br/></a>
-								
-<!-- <p><a href="./board.html"><img src="https://chat.getloli.com/room/@ZGQ-inc/svg?width=350&height=100&limit=20&theme=light&title=留言板（点击进入）%20&fontSize=9" alt=""></a></p> -->
-							</div>
-						</div>
-						<nav>
-							<ul>
-								<li><a href="#overthefirewall">节点订阅 Beta | VPN翻墙分享</a></li>
-								<li><a href="#source">各种源 | source</a></li>
-								<li><a href="#Android_patch">安卓破解软件分享</a></li>
-								<li><a href="#resources">资源列表 | 精选资源</a></li>
-								<li><a href="#about">关于</a></li>
-							</ul>
-						</nav>
-					</header>
+<body class="is-preload">
 
-				<!-- Main -->
-					<div id="main">
 
-						<!-- 节点订阅β -->
-							<article id="overthefirewall">
-								<h2 class="major">overthefirewall</h2>
-								<p><a href="https://overthefirewall.zgqinc.gq"><img src="https://github-readme-stats.vercel.app/api/pin/?username=ZGQ-inc&repo=overthefirewall&theme=github_dark" alt="" width="100%"></a></p><br/>
-							</article>
 
-						<!-- source -->
-							<article id="source">
-								<h2 class="major">source</h2>
-								<p><a href="https://source.zgqinc.gq"><img src="https://github-readme-stats.vercel.app/api/pin/?username=ZGQ-inc&repo=source&theme=github_dark" alt="" width="100%"></a></p><br/>
-							</article>
-							
-						
-						<!-- 关于 -->
-							<article id="about">
-								<h2 class="major">About</h2>
+  <!-- Wrapper -->
+  <div id="wrapper">
 
-								<p>
-      <h1 id="TG频道">TG频道</h1><br/>
-      <p><span style="color: #ffffff">个人频道：<a href="https://t.me/CopyRightZGQInc">@CopyRightZGQInc</a></p>
-	  <hr>
-	  <h1 id="联系方式">联系方式</h1><br/>
-	  <p><span style="color: #ffffff">Telegram：<a href="https://t.me/ZGQInc">@ZGQinc</a></p>
-	  <br/>
-	  <p><span style="color: #ffffff">Gmail：<a href="mailto:zgqinc@gmail.com">zgqinc@gmail.com</a></p>
-	<br/>
-	<!-- <p><span style="color: #ffffff">ProtonMail：<br/><a href="mailto:zgqinc@protonmail.com">zgqinc@protonmail.com</a></p> -->
-	<!-- <br/> -->
-	<!-- <p><span style="color: #ffffff">Office365：<br/><a href="mailto:ZGQ@zgqinc.onmicrosoft.com">ZGQ@zgqinc.onmicrosoft.com</a></p> -->
-	<!-- <br/> -->
+    <!-- Header -->
+    <header id="header">
+      <div class="image main">
 
-							</article>
+        <!-- 炫彩文字 -->
+        <!-- <b id="welcome">欢迎访问我的个人主页</b> -->
 
-						<!-- 破解软件 -->
-							<article id="Android_patch">
-								<h2 class="major">安卓破解软件分享</h2>
-								<p><span style="color: #ffffff">本人在软天空平台分享的安卓破解软件</p>
-								<br/>
-	                            <h1><span style="color: #ffffff"><a href="./rtk_up.html">点击打开</a></h1><br/>
-	
-							</article>
-							
-						<!-- 资源列表 -->
-							<article id="resources">
-								<h2 class="major">资源列表</h2>
-								<p><span style="color: #ffffff">精选资源</p>
-								<br/>
-	                            <h1><span style="color: #ffffff"><a href="./resources.html">点击打开</a></h1><br/>
-	
-							</article>
+        <!-- logo -->
+        <span class="image main"><img src="./images/avatar.jpg" alt="" /></span>
+      </div>
 
-					</div>
+      <!-- 主要内容 -->
+      <div class="content">
+        <div class="inner">
+          <div class="name">
+            <h1>ZGQ Inc.</h1>
+          </div>
+          <br />
+          <h3>欢迎访问我的<a href="https://github.com/ZGQ-inc">👉GitHub个人主页👈</h3><br /></a>
 
-				<!-- Footer -->
-					<footer id="footer">
-						<!-- 音乐 -->
-<!--<p>🎶Running in the Night - FM-84、Ollie Wride🎶</p>
+          <!-- <p><a href="./board.html"><img src="https://chat.getloli.com/room/@ZGQ-inc/svg?width=350&height=100&limit=20&theme=light&title=留言板（点击进入）%20&fontSize=9" alt=""></a></p> -->
+        </div>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="#overthefirewall">节点订阅 Beta | VPN翻墙分享</a></li>
+          <li><a href="#source">各种源 | source</a></li>
+          <li><a href="#Android_patch">安卓破解软件分享</a></li>
+          <li><a href="#resources">资源列表 | 精选资源</a></li>
+          <li><a href="#about">关于</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <!-- Main -->
+    <div id="main">
+
+      <!-- 节点订阅β -->
+      <article id="overthefirewall">
+        <h2 class="major">overthefirewall</h2>
+        <p><a href="https://overthefirewall.zgqinc.gq"><img src="https://github-readme-stats.vercel.app/api/pin/?username=ZGQ-inc&repo=overthefirewall&theme=github_dark" alt="" width="100%"></a></p><br />
+      </article>
+
+      <!-- source -->
+      <article id="source">
+        <h2 class="major">source</h2>
+        <p><a href="https://source.zgqinc.gq"><img src="https://github-readme-stats.vercel.app/api/pin/?username=ZGQ-inc&repo=source&theme=github_dark" alt="" width="100%"></a></p><br />
+      </article>
+
+
+      <!-- 关于 -->
+      <article id="about">
+        <h2 class="major">About</h2>
+
+        <p>
+        <h1 id="TG频道">TG频道</h1><br />
+        <p><span style="color: #ffffff">个人频道：<a href="https://t.me/CopyRightZGQInc">@CopyRightZGQInc</a></p>
+        <hr>
+        <h1 id="联系方式">联系方式</h1><br />
+        <p><span style="color: #ffffff">Telegram：<a href="https://t.me/ZGQInc">@ZGQinc</a></p>
+        <br />
+        <p><span style="color: #ffffff">Gmail：<a href="mailto:zgqinc@gmail.com">zgqinc@gmail.com</a></p>
+        <br />
+        <!-- <p><span style="color: #ffffff">ProtonMail：<br/><a href="mailto:zgqinc@protonmail.com">zgqinc@protonmail.com</a></p> -->
+        <!-- <br/> -->
+        <!-- <p><span style="color: #ffffff">Office365：<br/><a href="mailto:ZGQ@zgqinc.onmicrosoft.com">ZGQ@zgqinc.onmicrosoft.com</a></p> -->
+        <!-- <br/> -->
+
+      </article>
+
+      <!-- 破解软件 -->
+      <article id="Android_patch">
+        <h2 class="major">安卓破解软件分享</h2>
+        <p><span style="color: #ffffff">本人在软天空平台分享的安卓破解软件</p>
+        <br />
+        <h1><span style="color: #ffffff"><a href="./rtk_up.html">点击打开</a></h1><br />
+
+      </article>
+
+      <!-- 资源列表 -->
+      <article id="resources">
+        <h2 class="major">资源列表</h2>
+        <p><span style="color: #ffffff">精选资源</p>
+        <br />
+        <h1><span style="color: #ffffff"><a href="./resources.html">点击打开</a></h1><br />
+
+      </article>
+
+    </div>
+
+    <!-- Footer -->
+    <footer id="footer">
+      <!-- 音乐 -->
+      <!--<p>🎶Running in the Night - FM-84、Ollie Wride🎶</p>
 <p><audio src="https://zgqincblog.files.wordpress.com/2022/03/wp-1647507247755.mp4" type="audio/mpeg" controls="controls" autoplay="false" autobuffer="autobuffer">Please Don't Cry - LeBrock.mp3</audio></p>-->
 
-						<!-- 天气 -->
-				<!--<meta charset="utf-8">  
+      <!-- 天气 -->
+      <!--<meta charset="utf-8">  
 <center><iframe width="100%" scrolling="no" height="40" frameborder="0" allowtransparency="true" margin="0" src="http://i.tianqi.com/index.php?c=code&amp;id=34&amp;icon=1&amp;num=3" allowfullscreen="false"></iframe></center>-->
 
-						<!-- 计数器 -->
-<!-- <p><a href="https://info.flagcounter.com/frXZ"><img src="https://s01.flagcounter.com/countxl/frXZ/bg_000000/txt_FFFFFF/border_000000/columns_4/maxflags_16/viewers_3/labels_1/pageviews_1/flags_0/percent_0/" alt="Flag Counter" border="0"></a></p> -->
+      <!-- 计数器 -->
+      <!-- <p><a href="https://info.flagcounter.com/frXZ"><img src="https://s01.flagcounter.com/countxl/frXZ/bg_000000/txt_FFFFFF/border_000000/columns_4/maxflags_16/viewers_3/labels_1/pageviews_1/flags_0/percent_0/" alt="Flag Counter" border="0"></a></p> -->
 
-						<!-- 时间 -->
-<div id="main">  
-<div id="show_time0">
-<script>
-//显示时间
-//setInterval("show_time0.innerHTML=new Date().toLocaleString()+' 星期'+'日一二三四五六'.charAt(new Date().getDay());",1000);
-</script>
-</div>
-<div id="show_time" class="time">  
-<script>  
-//定义
-setInterval("fun(show_time)",1);
-function fun(timeID){ 
-var date = new Date();  //创建对象  
-var y = date.getFullYear();     //获取年份  
-var m =date.getMonth()+1;   //获取月份  返回0-11  
-var d = date.getDate(); // 获取日  
-var w = date.getDay();   //获取星期几  返回0-6   (0=星期天) 
-var ww = ' 星期'+'日一二三四五六'.charAt(new Date().getDay()) ;//星期几
-var h = date.getHours();  //时
-var minute = date.getMinutes()  //分
-var s = date.getSeconds(); //秒
-var sss = date.getMilliseconds() ; //毫秒
-if(m<10){
-m = "0"+m;
-}
-if(d<10){
-d = "0"+d;
-}
-if(h<10){
-h = "0"+h;
-}
+      <!-- 时间 -->
+      <div id="main">
+        <div id="show_time0">
+          <script>
+            //显示时间
+            //setInterval("show_time0.innerHTML=new Date().toLocaleString()+' 星期'+'日一二三四五六'.charAt(new Date().getDay());",1000);
+          </script>
+        </div>
+        <div id="show_time" class="time">
+          <script>
+            //定义
+            setInterval("fun(show_time)", 1);
 
-if(minute<10){
-minute = "0"+minute;
-}
+            function fun(timeID) {
+              var date = new Date(); //创建对象  
+              var y = date.getFullYear(); //获取年份  
+              var m = date.getMonth() + 1; //获取月份  返回0-11  
+              var d = date.getDate(); // 获取日  
+              var w = date.getDay(); //获取星期几  返回0-6   (0=星期天) 
+              var ww = ' 星期' + '日一二三四五六'.charAt(new Date().getDay()); //星期几
+              var h = date.getHours(); //时
+              var minute = date.getMinutes() //分
+              var s = date.getSeconds(); //秒
+              var sss = date.getMilliseconds(); //毫秒
+              if (m < 10) {
+                m = "0" + m;
+              }
+              if (d < 10) {
+                d = "0" + d;
+              }
+              if (h < 10) {
+                h = "0" + h;
+              }
 
-if(s<10){
-s = "0"+s;
-}
+              if (minute < 10) {
+                minute = "0" + minute;
+              }
 
-if(sss<10){
-sss = "00"+sss;
-}else if(sss<100){
-sss = "0"+sss;
-}
+              if (s < 10) {
+                s = "0" + s;
+              }
 
-document.getElementById(timeID.id).innerHTML =  y+"-"+m+"-"+d+"   "+h+":"+minute+":"+s+"."+sss+"  "+ww;
-//document.write(y+"-"+m+"-"+d+"   "+h+":"+minute+":"+s);  
-  }
-</script>
-</div>  
-</div>
-</br>
-  
-						<!-- copyright -->
-						<p class="copyright"><span style="color: #ffffff"><a href="https://github.com/ZGQ-inc">&copy; 2024 ZGQ Inc.</a></p>
-						
-                        <p class="copyright"><span style="color: #ffffff">Theme designed by <a href="https://html5up.net">HTML5 UP</a>.</p>
-					</footer>
+              if (sss < 10) {
+                sss = "00" + sss;
+              } else if (sss < 100) {
+                sss = "0" + sss;
+              }
 
-			</div>
+              document.getElementById(timeID.id).innerHTML = y + "-" + m + "-" + d + "   " + h + ":" + minute + ":" + s + "." + sss + "  " + ww;
+              //document.write(y+"-"+m+"-"+d+"   "+h+":"+minute+":"+s);  
+            }
+          </script>
+        </div>
+      </div>
+      </br>
 
-		<!-- 背景图 -->
-			<div id="bg"></div>
+      <!-- copyright -->
+      <p class="copyright"><span style="color: #ffffff"><a href="https://github.com/ZGQ-inc">&copy; 2024 ZGQ Inc.</a></p>
 
-		<!-- Scripts -->
-			<script src="./assets/js/jquery.min.js"></script>
-			<script src="./assets/js/browser.min.js"></script>
-			<script src="./assets/js/breakpoints.min.js"></script>
-			<script src="./assets/js/util.js"></script>
-			<script src="./assets/js/main.js"></script>
-			<script type="text/javascript" src="./assets/js/music.js"></script>
-			<script type="text/javascript">
-window.onload = function(){
-	MC.music({
-		hasAjax:false,
-		left:'50%',
-		top:'5%',
-		musicChanged:function(ret){
-			// alert(ret.url);
-			// getMusic_buffer(ret.url);
-			// return;
-			var data = ret.data;
-			var index = ret.index;
-			var imageUrl = data[index].img_url;
-			
-			/*var music_bg = document.getElementById('music-bg');
-			music_bg.style.background = 'url('+imageUrl+')no-repeat';
-			music_bg.style.backgroundSize = 'cover';
-			music_bg.style.backgroundPosition = 'center 30%';*/
-		},
+      <p class="copyright"><span style="color: #ffffff">Theme designed by <a href="https://html5up.net">HTML5 UP</a>.</p>
+    </footer>
 
-		getMusicInfo:function(data){
-			
-		},
+  </div>
 
-		musicPlayByWebAudio:function(ret){
-			
-		},
-	});
-}
-</script>
-	</body>
+  <!-- 背景图 -->
+  <div id="bg">
+    <video autoplay loop muted playsinline>
+      <source src="../../images/aye.webm" type="video/webm">
+    </video>
+  </div>
+
+  <!-- Scripts -->
+  <script src="./assets/js/jquery.min.js"></script>
+  <script src="./assets/js/browser.min.js"></script>
+  <script src="./assets/js/breakpoints.min.js"></script>
+  <script src="./assets/js/util.js"></script>
+  <script src="./assets/js/main.js"></script>
+  <script type="text/javascript" src="./assets/js/music.js"></script>
+  <script type="text/javascript">
+    window.onload = function() {
+      MC.music({
+        hasAjax: false,
+        left: '50%',
+        top: '5%',
+        musicChanged: function(ret) {
+          // alert(ret.url);
+          // getMusic_buffer(ret.url);
+          // return;
+          var data = ret.data;
+          var index = ret.index;
+          var imageUrl = data[index].img_url;
+
+          /*var music_bg = document.getElementById('music-bg');
+          music_bg.style.background = 'url('+imageUrl+')no-repeat';
+          music_bg.style.backgroundSize = 'cover';
+          music_bg.style.backgroundPosition = 'center 30%';*/
+        },
+
+        getMusicInfo: function(data) {
+
+        },
+
+        musicPlayByWebAudio: function(ret) {
+
+        },
+      });
+    }
+  </script>
+</body>
+
 </html>
