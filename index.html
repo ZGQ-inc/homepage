@@ -1,266 +1,772 @@
-<!DOCTYPE HTML>
-<!--
-	Dimension by HTML5 UP
-	html5up.net | @ajlkn
-	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
--->
-
-<!-- 调试终端
-<script src="https://cdn.jsdelivr.net/npm/eruda">
-</script>
-<script>
-    eruda.init({
-        tool: ['console', 'elements', 'network', 'resources', 'info','snippets','sources']
-    });
-    eruda.get().config.set('displaySize', 60);
-</script>
--->
-
-<html>
+<!DOCTYPE html>
+<html lang="zh-CN">
 
 <head>
-  <title>ZGQ Inc.的主页</title>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
-  <link rel="stylesheet" href="./assets/css/main.css">
-  <noscript>
-    <link rel="stylesheet" href="./assets/css/noscript.css">
-  </noscript>
-  <link rel="stylesheet" href="./assets/fonts/fontCss.css">
-  <link rel="stylesheet" type="text/css" href="./assets/css/music.css">
-  <link rel="stylesheet" href="./assets/css/animate.min.css">
-  <link rel="icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAGsAAABrCAYAAABwv3wMAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAALiMAAC4jAXilP3YAAA8GSURBVHhe7Z15cFXVHce/2feE8JKQ/WUlC0sSdhQQZBFEkdp/lBEsFnEcq8U/qrbWTnWmFmxrK+MytNOKyghTa12mMqgMVpYiCgpMYgjZXvb9ZSUJSUh6v+fdmw2Ql/fufUu4n5k393Hu4xHeJ79zfud3zz3PIz4+vmNoaMgPOq7OoEdcXNxlDw8PX7lBx3UZ9AoNDX1OkuXFP23fvh0zZ85EQUEBfHx84O/vjxkzZsBsNiMgIADS6+Dn5yeOnp6eom39+vWQIhMJCQlobW0V5/hYsWIF1q5di+joaGRkZMBgMGDlypXiNe3t7eJf15kQQ2Mia+vWreKDnzZtGrq7u8WRojo6OhAVFYW2tjYhKygoCJ2dneK1ly5dwpkzZ7B06VKEhIRgYGAAu3fvxpIlS1BbWysEsY1yDxw4gNtvvx3vvfee+Nd1JsTYyEpOThYfcGFhIcrKykQEVFZWoqurC5mZmTh06BBMJhOqq6uRn58voq+oqAh1dXUicg4fPoy0tDQcP34cc+fOFZFZXl4Ob29vnDhxAnfeeSdKSkrE39eZMGMj63pIrxFRRJE/BIX19PSIqNRRnasTjGXLlolx6/PPPxddGeF4dOTIETEOffDBB6LL27NnDx566CERPYyc06dPi+hjF7l//36sXr0aJ0+exJQpU9DU1CSikNGqYzODnvKTYThOlZaWig89MjJSJATsCqUUX0RWb28vvLxEryki6YsvvhDP16xZg+DgYFRUVCAsLEy8hnJzc3OxYcMG0ZXyPXVs56rI4gfObo9jU05OjhDFP3Nc4rGlpQVXrlwR4vLy8oRMdpFMIPh84cKFIsqk95Tf0YI0NqKhoUEkKTo2MdINsrvq7+/H1KlTxZmqqipxZBfI5+zumO2xS6MICrIF5f10JsyIrM2bN+Py5ctCCjl48KCIEkYRuy+eU+ZgFMrU/aOPPsKqVauEZEYWYeQlJiaKbo/jVHNzMwIDA0X6zm6Tsl5//XXxWp0JYUndpbmTF9NqRhclEH7IHHfmz58vZHFyyy4xPDxcnF+0aBGOHTuGBQsWiK4zJSVFzMWys7PF+EaOHj2KRx55RMjiOGY0GoU0ztv4/joTYmzqfq3ujZnexo0bxdyLUUWUBINRpzC6jc+Vc3zP0Ue+P58PDg6KP+tYjV4bdCOuTt11XBddlhuhSjcYFByAZWvnITYxCi1N7bhwvgxlhVXo6+uXX6GjAvaPWVOmhuAXO38KQ9QUucVCf/8ASgoqUHiuTDxqTPVSUmHb3ExHYL+szY9twK2r50jZYhFOnTqDyMgIKY1PQlJSIgICLHM20tXZjQuyOB5bGvVKxgSxX9bzr/0MUbEG7Nz5FzFxVpDeE3FxMUIcH/HxcdI0wJLek6Y6M74/WyrkXcw3oburRz6jcx3sl/X0S9uQPD0eu3fvgdncKrdeDasZjDaKS01NEhFIoYTdY0VJDQrPWiKv/GI1BqRuVGcM9sv60eZVuOPHS/DJJ5/hm2++lVtvTHBw0HDU8REaGiKfAfou94tos3SZpaitbLK5FjlRvLx9EBmXKh290VRThr5el7k2Z7+szNkp2PHCFly4cBEHDvxbbp04EREGKeKSRdQZjQli+YBCR1uXHHWlKDpfjtaWDvmMmnhg0boHsPr+JxEUailm9/f14tSn7+LTd14Sz52M/bJ8fL3x8r5ncGVwALt2vaJKBLAoHB8fK8SlpCQjNjZ6uJxF6qub5fGuFMX5FejtGRkrbULqjtf/5FksvWeb9P8YRJHJhL7+fmQmJcFf+qUpPncc/3h+C4acWyIbuwbDFgavDCJ9hhEx8VEoKSlDR4elEGwPFN7e3gGTqRLffXdeyjJPo7q6ViwZYMRFTjMgJSMeC5bNwsoNi/lZo1iaJtgERW21iOrs7sauvXvxyfHj+Co/H0fPnsXM1FQkp2ajtb4SdaZC+S85hSG7ZZGw8BBk5aaKD7iiQv1rVSwKt7SYUVxchq+//lYIbGxsFpdmDBHhyM5Ng7m5HVVl9fLfsBJF1AaLqJfeegsV9SPvcbmvD/XNzViSmwsfP3989+WH8hmnMKRKuYndEWGi4AgYvRT2/vsfY9++f4q2pWvmiqPVXENUVUODfHKEi1VV6JGmJElZ80Xy4UxUkVVjakBXR7cYZ5iiO5L6+kZxDAoJFEersFIUYVQXlpfD1z9QEjZPbnUOqsjiPIlpNpMAzqUchdR9Y926VeJ52QUru98JiFIokFdlpeVYVns5C9Wq7pwPEWZwjoCi7rprLfLyZqPN3ImP3z0in/kBKIpZ3wREke9lWemTRpY0/yGOGLcUUXPn5qBdEvXn5/bC3HSD9fOKKDnrs1YUYZJh7uhAbMpMBASHya2ORzVZLMw21plFGYnVCa0YLYoR9bIkqqGmRT57PWwXRThzLCgthafUzafNvtXS6ARUk0UKpYkqP0xWIrRgvChGlHWifmWzKAVXGLdUl0W06ArtErXxYbtEEWaEnKyn5UySyLpYYBKZYXKyUW5RB2eLIu1dXahubIQh2ojwKMtSO0ejqqzurl5UFNeICjrHLjW4StSvHS9KIV8at0h67jJxdDSqyiJKNUONFJ6i7r57nKjaCYp6+21VRJHhFD7XOeOWBrIs/yF7xy1F1Jw5dooaVeuzl4uVlRi4cgUpM1k8Vv2juyGq/4u8ytvX2w+jMXF4/ftEsVdUlwaiCAu7xZKwoNBwac41Q251HKrLGui/gqJ8E/z8fJGQECe3Wo8aonZpIEpBSeHTc5eKoyPRJJaV0tNEu0JXF0U4OSbOKD1pIsuWcYuimPW5sijC612XenuRmDkH3r6O3etFE1l1VU3oaO1CbGyM6A5vhCLK1qzPUaII735hVujj64/k7IVyq2PQRBZn+kzhvbw8bzhBtlcUsz5HiVJwVgqviSxiTVeohigtsr4b4aw6oWayxCWToevLukoUS0huIIo0ms1obmtDjDFzeNmaI9BMVltLB+qqm2AwTB2zgJNcU9RES0hOEqXA0pOHNI90ZHRpJotc65LJZBBFnJHCayqLCzFJbu4ssT7D03Ok1qdc4XVHUaTQZHL4JRNV1g1ej5bGduQtzkKCMVbMnxYunCeyQ4qy/gqvRZRWJSRb4YrdvIwMREfH4eyXH6K7S/NbmNRZN3g9uIxr9/P7kH+mWGzPwLGLNxz88dk3JyzK0em5NeQrKXyeYy6Z2L3W3Vp8/XykAdkDl3v65JYfwvVFkezkZDz14IMoOPUZ3vn9drlVMxx3tz5v45lMokhxVRX6BwaQMnOhNB5rMpKMwWGyrMN9RBGKKqqoQEBQGOLTZ8ut2uFCskZEMetzdVEKIym89pdMXETWWFGulPXdCEeWnlxAlvuKItUNDeLnTpieK25e0BInyxoniquQ3EgUGZQmxowubx9fKdFYJLdqgxNlSaK2jhOl0iokR6OMW1p3hU6SJYu6x/1FEUfdZeIEWZNLFGlpb0dDSwuiEtIQEh4pt6qPg2VNPlEK4pKJh6emKbwDZU1eUWQ4hdfwUr+DZE1uUeSCiTdlDIr7t3jNTgu0lyX94JNdFOnu7UV5bS1Cp05DZHya3Kou2sqiKM6jJrkoBeUuk+kardbVTtZNJopoXXrSTNbyex+9qUSRsupqcfNC8owF8PLyllvVQxNZwVMisOq+HeIH/wNrfTeBKMLbgZho+AUEIzFjjtyqHprIYkbEWtnxc+dQ6Wa1PnvRMoXXRJayV4T5JvxuR0WWFqUnTWQ111o2MMlK1maLBVemtqkJbV1diEubDf/AsYtb7UUTWWX5X8HcUCX26tu4fDl8vNUfbF0VriVkFZ4JRuqsxXKrOmiybpA7XlaXnEfOkrsxIy0daxYtQmp8PEICA8V2cJd6JvdO09z9c25WFro7W1F0xvLNfSqgzuaQ16K9uQ4FXx2SMsNIREYnIj46BrPT07FqwQLcNmcO4qdNg7+Pj0jtmTVOJrjY547Fi+EfFIqTB9+SW+3Gum9TtRduqmjMmicGXU4Y41Jmin2QCLsNbgbCroODM++InwzyXnzsMcRERGDnw7eIX1wVsH9DY1sIkH7jUqX03iLvVhhieMOdpfjJuQrX41EeL+qZ6upEgdTd2LR2rej+//XqUzh92LLbqJ04R9Z4uL0O735n1HFQHn3PEwuklMao44P3RrkDOdOn48lNm3Du2MfY/6cn5Fa7cA1Zo+EFvNiUbHERjxNLY+Zccf+uAm9iY8GUArn5Fcc8V4RJxmtPP42eDjN+t3W+6O7txPVkjcfbx0/U2hh17DZjkrLETWyEHwDvnlfGuxKp++TdHa7CL7duRYbRiFd2rFNjm3HXlzUe7u5CceIhjXujdyhTljNTHCOPy9q4VMxZbLjtNty7YgUO7n0RRz/8q9xqM+4nazyGmCRx/YjyuG5v9Lao7CKV8Y5HdqGOhHPL57ZtQ/HZo/j7b7fIrTbj/rJGI74WIy1HjHXsMhOm54mCskKDlJxwvGO3ya+w4OYjWuIl/TyvSuOWFwbxwgM5GOi3a0oyuWSNx9cvQESb6DIlgdMS0kUCQzgd4GV4Zbwrra4W0wa1eeK++zAnMxN/+80mlJ7/n9xqE5Nb1nhCpkQORx3neWGGaPkMcFlKTHgtSpHHgqwKGRxWzp+PzevX47/vv4FD7+ySW23i5pI1Bg8PRMWlIj1vqZDHrX38AoPlk5ZtVhVx30tThNYO274GKtpgwM7HH0fFhW/xxjP3yq02cRPLGoenlzcSM/Is8ztJHm+OUy7NM77qpEgT450k76KUcbIgbQ2+3t7Y8+yzMNdX4A+PLpdbbUKXdT14aT519i0i6igvIjZZCkZLSYzfsVXKkpgkjo/ymhrRdi2yU1Lw1JYtamSEuixrCTPEiJJYujTmpc66RawzUWCUsZqiyOO6d453cVFR2HH//YgMDxclJ5ae7ECXZQuMsGhj5nA9Myl7npR5jtxI19bZKWqarLrztaI++PLPWXKRX2ETuiw18JLmckmZ80TUUV5scjY8PL3Q1lSDE/95UzxU+ApCXZYWcCLOhEXlb2J13D4YNxOsVGjxlbm6LDdCl+VG6LLcCF2WG6HLciN0WW6ELsuN0GW5EbosN0KX5UbostwIXZYboctyI3iJpEe/ROL6DA0NDf0f2EQ3QmQBRTsAAAAASUVORK5CYII=">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>ZGQ Inc. - 个人主页与复古工作站</title>
+  <meta name="description" content="ZGQ Inc. 个人主页 - Windows 98 复古操作系统、NewRetroWave Radio 在线电台、Milkdrop 视觉器与个人导航站">
+  <link rel="icon" href="./images/avatar.png">
 
-  <style>
-    body,
-    html {
-      margin: 0;
-      padding: 0;
-      background: #000;
-      height: 100%;
-    }
-  </style>
-
+  <!-- 98.css 经典 Windows 98 样式库 -->
+  <link rel="stylesheet" href="./assets/css/98.css">
+  <!-- 自定义桌面环境与响应式样式 -->
+  <link rel="stylesheet" href="./assets/css/desktop-theme.css">
 </head>
 
-<body class="is-preload">
+<body>
 
+  <!-- 动态 Canvas 现场渲染背景 (Neon Sunset / Starfield / Matrix) -->
+  <canvas id="bg-canvas"></canvas>
 
+  <!-- CRT 屏幕扫描线特效滤镜 -->
+  <div class="crt-overlay"></div>
 
-  <!-- Wrapper -->
-  <div id="wrapper">
+  <!-- 桌面工作区 -->
+  <main id="desktop">
 
-    <!-- Header -->
-    <header id="header">
-      <div class="image main">
-
-        <!-- 炫彩文字 -->
-        <!-- <b id="welcome">欢迎访问我的个人主页</b> -->
-
-        <!-- logo -->
-        <span class="image main"><img src="./images/avatar.png" alt="" /></span>
+    <!-- 桌面图标矩阵 -->
+    <div class="desktop-icons-container">
+      <div class="desktop-icon" data-target="win-navigation" title="双击打开 网址导航">
+        <img class="icon-img" src="./assets/icons/network.svg" alt="导航页">
+        <span class="icon-label">网址导航</span>
       </div>
 
-      <!-- 主要内容 -->
-      <div class="content">
-        <div class="inner">
-          <div class="name">
-            <h1>ZGQ Inc.</h1>
-          </div>
-          <br />
-          <h3>欢迎访问我的<a href="https://github.com/ZGQ-inc">👉GitHub个人主页👈</h3><br /></a>
-
-          <!-- <p><a href="./board.html"><img src="https://chat.getloli.com/room/@ZGQ-inc/svg?width=350&height=100&limit=20&theme=light&title=留言板（点击进入）%20&fontSize=9" alt=""></a></p> -->
-        </div>
+      <div class="desktop-icon" data-target="win-github" title="双击打开 GitHub 主页">
+        <img class="icon-img" src="./assets/icons/github.svg" alt="GitHub">
+        <span class="icon-label">GitHub主页</span>
       </div>
-      <nav>
-        <ul>
-          <li><a href="#overthefirewall">节点订阅 Beta | VPN翻墙分享</a></li>
-          <li><a href="#source">各种源 | source</a></li>
-          <li><a href="#Android_patch">安卓破解软件分享</a></li>
-          <li><a href="#resources">资源列表 | 精选资源</a></li>
-          <li><a href="#about">关于</a></li>
-        </ul>
-      </nav>
-    </header>
 
-    <!-- Main -->
-    <div id="main">
+      <div class="desktop-icon" data-target="win-channel" title="双击打开 个人频道">
+        <img class="icon-img" src="./assets/icons/telegram.svg" alt="个人频道">
+        <span class="icon-label">个人频道</span>
+      </div>
 
-      <!-- 节点订阅β -->
-      <article id="overthefirewall">
-        <h2 class="major">overthefirewall</h2>
-        <p><a href="https://overthefirewall.zgqinc.gq"><img src="https://github-readme-stats.vercel.app/api/pin/?username=ZGQ-inc&repo=overthefirewall&theme=github_dark" alt="" width="100%"></a></p><br />
-      </article>
+      <div class="desktop-icon" data-target="win-contact" title="双击打开 联系方式">
+        <img class="icon-img" src="./assets/icons/mail.svg" alt="联系方式">
+        <span class="icon-label">联系方式</span>
+      </div>
 
-      <!-- source -->
-      <article id="source">
-        <h2 class="major">source</h2>
-        <p><a href="https://source.zgqinc.gq"><img src="https://github-readme-stats.vercel.app/api/pin/?username=ZGQ-inc&repo=source&theme=github_dark" alt="" width="100%"></a></p><br />
-      </article>
+      <div class="desktop-icon" data-target="win-player" title="双击打开 NRW 音乐播放器">
+        <img class="icon-img" src="./assets/icons/player.svg" alt="音乐播放器">
+        <span class="icon-label">NRW电台</span>
+      </div>
 
+      <div class="desktop-icon" data-target="win-visualizer" title="双击打开 Milkdrop 视觉器">
+        <img class="icon-img" src="./assets/icons/visualizer.svg" alt="视觉器">
+        <span class="icon-label">Milkdrop</span>
+      </div>
 
-      <!-- 关于 -->
-      <article id="about">
-        <h2 class="major">About</h2>
+      <div class="desktop-icon" data-target="win-computer" title="双击打开 我的电脑">
+        <img class="icon-img" src="./assets/icons/computer.svg" alt="我的电脑">
+        <span class="icon-label">我的电脑</span>
+      </div>
 
-        <p>
-        <h1 id="TG频道">TG频道</h1><br />
-        <p><span style="color: #ffffff">个人频道：<a href="https://t.me/CopyRightZGQInc">@CopyRightZGQInc</a></p>
-        <hr>
-        <h1 id="联系方式">联系方式</h1><br />
-        <p><span style="color: #ffffff">Telegram：<a href="https://t.me/ZGQInc">@ZGQinc</a></p>
-        <br />
-        <p><span style="color: #ffffff">Gmail：<a href="mailto:zgqinc@gmail.com">zgqinc@gmail.com</a></p>
-        <br />
-        <!-- <p><span style="color: #ffffff">ProtonMail：<br/><a href="mailto:zgqinc@protonmail.com">zgqinc@protonmail.com</a></p> -->
-        <!-- <br/> -->
-        <!-- <p><span style="color: #ffffff">Office365：<br/><a href="mailto:ZGQ@zgqinc.onmicrosoft.com">ZGQ@zgqinc.onmicrosoft.com</a></p> -->
-        <!-- <br/> -->
+      <div class="desktop-icon" data-target="win-notepad" title="双击打开 记事本">
+        <img class="icon-img" src="./assets/icons/notepad.svg" alt="记事本">
+        <span class="icon-label">记事本</span>
+      </div>
 
-      </article>
-
-      <!-- 破解软件 -->
-      <article id="Android_patch">
-        <h2 class="major">安卓破解软件分享</h2>
-        <p><span style="color: #ffffff">本人在软天空平台分享的安卓破解软件</p>
-        <br />
-        <h1><span style="color: #ffffff"><a href="./rtk_up.html">点击打开</a></h1><br />
-
-      </article>
-
-      <!-- 资源列表 -->
-      <article id="resources">
-        <h2 class="major">资源列表</h2>
-        <p><span style="color: #ffffff">精选资源</p>
-        <br />
-        <h1><span style="color: #ffffff"><a href="./resources.html">点击打开</a></h1><br />
-
-      </article>
-
+      <div class="desktop-icon" data-target="win-recycle" title="双击打开 回收站">
+        <img class="icon-img" src="./assets/icons/recycle.svg" alt="回收站">
+        <span class="icon-label">回收站</span>
+      </div>
     </div>
 
-    <!-- Footer -->
-    <footer id="footer">
-      <!-- 音乐 -->
-      <!--<p>🎶Running in the Night - FM-84、Ollie Wride🎶</p>
-<p><audio src="https://zgqincblog.files.wordpress.com/2022/03/wp-1647507247755.mp4" type="audio/mpeg" controls="controls" autoplay="false" autobuffer="autobuffer">Please Don't Cry - LeBrock.mp3</audio></p>-->
-
-      <!-- 天气 -->
-      <!--<meta charset="utf-8">  
-<center><iframe width="100%" scrolling="no" height="40" frameborder="0" allowtransparency="true" margin="0" src="http://i.tianqi.com/index.php?c=code&amp;id=34&amp;icon=1&amp;num=3" allowfullscreen="false"></iframe></center>-->
-
-      <!-- 计数器 -->
-      <!-- <p><a href="https://info.flagcounter.com/frXZ"><img src="https://s01.flagcounter.com/countxl/frXZ/bg_000000/txt_FFFFFF/border_000000/columns_4/maxflags_16/viewers_3/labels_1/pageviews_1/flags_0/percent_0/" alt="Flag Counter" border="0"></a></p> -->
-
-      <!-- 时间 -->
-      <div id="main">
-        <div id="show_time0">
-          <script>
-            //显示时间
-            //setInterval("show_time0.innerHTML=new Date().toLocaleString()+' 星期'+'日一二三四五六'.charAt(new Date().getDay());",1000);
-          </script>
+    <!-- ==================== 窗口 1: 网址导航 (Navigation Hub) ==================== -->
+    <div class="window" id="win-navigation" data-window-id="win-navigation" style="left: 100px; top: 30px; width: 560px;">
+      <div class="title-bar">
+        <div class="title-bar-text">
+          <img src="./assets/icons/network.svg" alt="">
+          <span>网址导航 - Navigation Hub</span>
         </div>
-        <div id="show_time" class="time">
-          <script>
-            //定义
-            setInterval("fun(show_time)", 1);
-
-            function fun(timeID) {
-              var date = new Date(); //创建对象  
-              var y = date.getFullYear(); //获取年份  
-              var m = date.getMonth() + 1; //获取月份  返回0-11  
-              var d = date.getDate(); // 获取日  
-              var w = date.getDay(); //获取星期几  返回0-6   (0=星期天) 
-              var ww = ' 星期' + '日一二三四五六'.charAt(new Date().getDay()); //星期几
-              var h = date.getHours(); //时
-              var minute = date.getMinutes() //分
-              var s = date.getSeconds(); //秒
-              var sss = date.getMilliseconds(); //毫秒
-              if (m < 10) {
-                m = "0" + m;
-              }
-              if (d < 10) {
-                d = "0" + d;
-              }
-              if (h < 10) {
-                h = "0" + h;
-              }
-
-              if (minute < 10) {
-                minute = "0" + minute;
-              }
-
-              if (s < 10) {
-                s = "0" + s;
-              }
-
-              if (sss < 10) {
-                sss = "00" + sss;
-              } else if (sss < 100) {
-                sss = "0" + sss;
-              }
-
-              document.getElementById(timeID.id).innerHTML = y + "-" + m + "-" + d + "   " + h + ":" + minute + ":" + s + "." + sss + "  " + ww;
-              //document.write(y+"-"+m+"-"+d+"   "+h+":"+minute+":"+s);  
-            }
-          </script>
+        <div class="title-bar-controls">
+          <button aria-label="Minimize"></button>
+          <button aria-label="Maximize"></button>
+          <button aria-label="Close"></button>
         </div>
       </div>
-      </br>
+      <div class="window-body">
+        <div class="nav-search-bar">
+          <input type="text" id="nav-search-input" placeholder="🔍 搜索书签名称或标签..." style="flex: 1;">
+          <button id="nav-reset-btn">重置</button>
+          <button id="nav-add-custom-btn">➕ 添加书签</button>
+        </div>
 
-      <!-- copyright -->
-      <p class="copyright"><span style="color: #ffffff"><a href="https://github.com/ZGQ-inc">&copy; 2026 ZGQ Inc.</a></p>
+        <div class="nav-categories" id="nav-bookmarks-container">
+          <!-- 动态渲染书签 -->
+        </div>
+      </div>
+      <div class="status-bar">
+        <p class="status-bar-field">按类别分类聚合</p>
+        <p class="status-bar-field" id="nav-status-count">共收录 28 个站点</p>
+        <p class="status-bar-field">可自由检索</p>
+      </div>
+    </div>
 
-      <p class="copyright"><span style="color: #ffffff">Theme designed by <a href="https://html5up.net">HTML5 UP</a>.</p>
-    </footer>
+    <!-- ==================== 窗口 2: GitHub 主页 (GitHub Profile) ==================== -->
+    <div class="window hidden" id="win-github" data-window-id="win-github" style="left: 140px; top: 60px; width: 520px;">
+      <div class="title-bar">
+        <div class="title-bar-text">
+          <img src="./assets/icons/github.svg" alt="">
+          <span>ZGQ-inc 的 GitHub 个人主页</span>
+        </div>
+        <div class="title-bar-controls">
+          <button aria-label="Minimize"></button>
+          <button aria-label="Maximize"></button>
+          <button aria-label="Close"></button>
+        </div>
+      </div>
+      <div class="window-body">
+        <div class="gh-profile-header">
+          <img src="./images/avatar.png" alt="Avatar" class="gh-avatar">
+          <div style="flex: 1;">
+            <h3 style="margin: 0 0 4px 0; font-size: 15px;">ZGQ Inc.</h3>
+            <p style="margin: 0 0 6px 0; color: #555;">开源开发者 & 极客爱好者 | 探索 AI、逆向与全栈技术</p>
+            <a href="https://github.com/ZGQ-inc" target="_blank" rel="noopener noreferrer">
+              <button style="font-weight: bold;">👉 直达 GitHub 官方主页 (@ZGQ-inc)</button>
+            </a>
+          </div>
+        </div>
 
+        <fieldset style="margin-bottom: 8px;">
+          <legend>开源技术栈 & 涉及领域</legend>
+          <div class="tag-cloud">
+            <span class="tech-tag">JavaScript / TypeScript</span>
+            <span class="tech-tag">Python & AI Pipeline</span>
+            <span class="tech-tag">PyQt / Qt Desktop</span>
+            <span class="tech-tag">Android Reverse & Tools</span>
+            <span class="tech-tag">C# / .NET</span>
+            <span class="tech-tag">WebGL & Canvas Shaders</span>
+            <span class="tech-tag">Cyberpunk / Synthwave</span>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>GitHub 动态展台</legend>
+          <div style="text-align: center;">
+            <a href="https://github.com/ZGQ-inc" target="_blank">
+              <img class="gh-stats-badge" src="https://github-readme-stats.vercel.app/api?username=ZGQ-inc&show_icons=true&theme=radical&hide_border=true" alt="GitHub Stats" loading="lazy" style="max-height: 180px;">
+            </a>
+          </div>
+        </fieldset>
+      </div>
+    </div>
+
+    <!-- ==================== 窗口 3: 个人频道 (Personal Channel) ==================== -->
+    <div class="window hidden" id="win-channel" data-window-id="win-channel" style="left: 180px; top: 90px; width: 480px;">
+      <div class="title-bar">
+        <div class="title-bar-text">
+          <img src="./assets/icons/telegram.svg" alt="">
+          <span>个人频道 - @CopyRightZGQInc</span>
+        </div>
+        <div class="title-bar-controls">
+          <button aria-label="Minimize"></button>
+          <button aria-label="Maximize"></button>
+          <button aria-label="Close"></button>
+        </div>
+      </div>
+      <div class="window-body">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; padding: 6px; background: #fff; border: 1px inset #808080;">
+          <div>
+            <strong>Telegram 官方频道:</strong> <a href="https://t.me/CopyRightZGQInc" target="_blank">@CopyRightZGQInc</a>
+          </div>
+          <a href="https://t.me/CopyRightZGQInc" target="_blank">
+            <button style="font-weight: bold;">⚡ 立即订阅</button>
+          </a>
+        </div>
+
+        <fieldset>
+          <legend>频道动态与精选随笔</legend>
+          <ul class="tree-view" style="height: 180px; overflow-y: auto;">
+            <li>
+              <strong>📢 [置顶] 欢迎关注 ZGQ Inc. 官方频道</strong>
+              <ul>
+                <li>第一时间获取最新技术开源项目、自制脚本、极客工具以及折腾经验分享。</li>
+              </ul>
+            </li>
+            <li>
+              <strong>🚀 个人主页全新重构发布</strong>
+              <ul>
+                <li>基于 Windows 98 复古操作系统架构设计。</li>
+                <li>集成 NewRetroWave Radio 600+ 在线曲库与实时随机广播。</li>
+                <li>深度植入 Butterchurn WebGL Milkdrop 视觉器与 Wallpaper Engine 经典现场渲染画布。</li>
+              </ul>
+            </li>
+            <li>
+              <strong>💡 极客探讨 & 交流社区</strong>
+              <ul>
+                <li>欢迎各位同好加入频道评论区交流互动！</li>
+              </ul>
+            </li>
+          </ul>
+        </fieldset>
+      </div>
+    </div>
+
+    <!-- ==================== 窗口 4: 联系方式 (Contact Info) ==================== -->
+    <div class="window hidden" id="win-contact" data-window-id="win-contact" style="left: 220px; top: 120px; width: 440px;">
+      <div class="title-bar">
+        <div class="title-bar-text">
+          <img src="./assets/icons/mail.svg" alt="">
+          <span>通讯录 - 联系 ZGQ Inc.</span>
+        </div>
+        <div class="title-bar-controls">
+          <button aria-label="Minimize"></button>
+          <button aria-label="Maximize"></button>
+          <button aria-label="Close"></button>
+        </div>
+      </div>
+      <div class="window-body">
+        <fieldset style="margin-bottom: 10px;">
+          <legend>快速联络途径</legend>
+          <table style="width: 100%;">
+            <tbody>
+              <tr>
+                <td style="width: 90px;"><strong>Telegram:</strong></td>
+                <td><a href="https://t.me/ZGQInc" target="_blank">@ZGQinc</a></td>
+                <td><a href="https://t.me/ZGQInc" target="_blank"><button>发送消息</button></a></td>
+              </tr>
+              <tr>
+                <td><strong>Gmail 邮箱:</strong></td>
+                <td><a href="mailto:zgqinc@gmail.com">zgqinc@gmail.com</a></td>
+                <td><button id="copy-email-btn">复制邮箱</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </fieldset>
+
+        <fieldset>
+          <legend>离线便签留言板</legend>
+          <textarea id="guestbook-input" placeholder="在本地留下您的足迹或随笔想法..." style="width: 100%; height: 70px; resize: none; margin-bottom: 6px;"></textarea>
+          <div style="display: flex; justify-content: flex-end; gap: 6px;">
+            <button id="guestbook-clear-btn">清空</button>
+            <button id="guestbook-save-btn">保存留言</button>
+          </div>
+          <div id="guestbook-msg" style="margin-top: 4px; color: #008000; font-size: 11px;"></div>
+        </fieldset>
+      </div>
+    </div>
+
+    <!-- ==================== 窗口 5: NRW 音乐播放器 (Music Player) ==================== -->
+    <div class="window" id="win-player" data-window-id="win-player" style="left: 320px; top: 50px; width: 450px;">
+      <div class="title-bar">
+        <div class="title-bar-text">
+          <img src="./assets/icons/player.svg" alt="">
+          <span>NewRetroWave Radio Player</span>
+        </div>
+        <div class="title-bar-controls">
+          <button aria-label="Minimize"></button>
+          <button aria-label="Maximize"></button>
+          <button aria-label="Close"></button>
+        </div>
+      </div>
+      <div class="window-body">
+        <div class="player-container">
+          <div style="display: flex; gap: 10px;">
+            <img id="player-cover" class="player-cover-art" src="./images/avatar.png" alt="Album Cover">
+            <div style="flex: 1;">
+              <div class="player-display">
+                <div class="player-marquee" id="player-title">Connecting to NRW Radio API...</div>
+                <div class="player-subinfo">
+                  <span id="player-artist">Loading...</span>
+                  <span id="player-time">00:00 / 00:00</span>
+                </div>
+              </div>
+              <div style="margin-top: 8px;">
+                <input type="range" id="player-scrubber" min="0" max="100" value="0" style="width: 100%;">
+              </div>
+            </div>
+          </div>
+
+          <div class="player-controls">
+            <div style="display: flex; gap: 4px;">
+              <button id="btn-player-prev" title="上一首">⏮ 上一首</button>
+              <button id="btn-player-play" style="font-weight: bold; min-width: 60px;" title="播放/暂停">▶ 播放</button>
+              <button id="btn-player-next" title="随机下一首">⏭ 随机下一首</button>
+            </div>
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <span>音量:</span>
+              <input type="range" id="player-volume" min="0" max="100" value="85" style="width: 60px;">
+            </div>
+          </div>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 4px;">
+            <span id="player-stats" style="color: #444; font-size: 11px;">在线曲库: 正在接入...</span>
+            <button id="btn-open-visualizer" style="font-weight: bold;">🌌 开启 Milkdrop 视觉器</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== 窗口 6: Butterchurn Milkdrop 视觉器 ==================== -->
+    <div class="window hidden" id="win-visualizer" data-window-id="win-visualizer" style="left: 260px; top: 110px; width: 540px;">
+      <div class="title-bar">
+        <div class="title-bar-text">
+          <img src="./assets/icons/visualizer.svg" alt="">
+          <span>Butterchurn Milkdrop Visualizer 3D</span>
+        </div>
+        <div class="title-bar-controls">
+          <button aria-label="Minimize"></button>
+          <button aria-label="Maximize"></button>
+          <button aria-label="Close"></button>
+        </div>
+      </div>
+      <div class="window-body" style="padding: 4px;">
+        <div class="visualizer-wrapper">
+          <canvas id="visualizer-canvas"></canvas>
+          <div id="visualizer-osd">Loading Presets...</div>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 6px; gap: 6px;">
+          <div style="display: flex; gap: 4px;">
+            <button id="vis-prev-btn">⏮ 预设</button>
+            <button id="vis-rand-btn">🔀 随机预设</button>
+            <button id="vis-next-btn">⏭ 下一预设</button>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <label style="display: flex; align-items: center; gap: 4px; font-size: 11px;">
+              <input type="checkbox" id="vis-autocycle-chk" checked> 自动轮播 (25s)
+            </label>
+            <button id="vis-fullscreen-btn">⛶ 全屏</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== 窗口 7: 我的电脑 (My Computer / System) ==================== -->
+    <div class="window hidden" id="win-computer" data-window-id="win-computer" style="left: 80px; top: 70px; width: 450px;">
+      <div class="title-bar">
+        <div class="title-bar-text">
+          <img src="./assets/icons/computer.svg" alt="">
+          <span>系统属性 - ZGQ Inc. Workstation</span>
+        </div>
+        <div class="title-bar-controls">
+          <button aria-label="Minimize"></button>
+          <button aria-label="Maximize"></button>
+          <button aria-label="Close"></button>
+        </div>
+      </div>
+      <div class="window-body">
+        <div style="display: flex; gap: 12px; align-items: center; margin-bottom: 12px;">
+          <img src="./assets/icons/computer.svg" alt="" style="width: 48px; height: 48px;">
+          <div>
+            <h4 style="margin: 0 0 4px 0;">Microsoft Windows 98</h4>
+            <p style="margin: 0; color: #555;">Second Edition (Synthwave Cyber Release 2026)</p>
+          </div>
+        </div>
+
+        <fieldset style="margin-bottom: 8px;">
+          <legend>系统配置与软硬件环境</legend>
+          <p><strong>注册组织:</strong> ZGQ Inc. (zgqinc@gmail.com)</p>
+          <p><strong>核心架构:</strong> WebGL 2.0 / Web Audio API / CSS Viewport Segments</p>
+          <p><strong>视效引擎:</strong> Butterchurn Milkdrop & Neon Sunset Canvas</p>
+          <p><strong>音乐源:</strong> NewRetroWave (NRW) Official 600+ Stream Library</p>
+        </fieldset>
+
+        <div style="display: flex; justify-content: flex-end;">
+          <button onclick="document.getElementById('win-computer').classList.add('hidden')">确定</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ==================== 窗口 8: 记事本 (Notepad) ==================== -->
+    <div class="window hidden" id="win-notepad" data-window-id="win-notepad" style="left: 120px; top: 130px; width: 440px;">
+      <div class="title-bar">
+        <div class="title-bar-text">
+          <img src="./assets/icons/notepad.svg" alt="">
+          <span>记事本 - Untitled.txt</span>
+        </div>
+        <div class="title-bar-controls">
+          <button aria-label="Minimize"></button>
+          <button aria-label="Maximize"></button>
+          <button aria-label="Close"></button>
+        </div>
+      </div>
+      <div class="window-body" style="padding: 2px;">
+        <textarea id="notepad-textarea" style="width: 100%; height: 200px; resize: none; border: 1px inset #808080; font-family: monospace; font-size: 12px; padding: 4px;" placeholder="在此输入文字，内容将自动存入本地缓存..."></textarea>
+      </div>
+      <div class="status-bar">
+        <p class="status-bar-field" id="notepad-char-count">字符数: 0</p>
+        <p class="status-bar-field">自动保存: 已就绪</p>
+      </div>
+    </div>
+
+    <!-- ==================== 窗口 9: 回收站 (Recycle Bin) ==================== -->
+    <div class="window hidden" id="win-recycle" data-window-id="win-recycle" style="left: 150px; top: 160px; width: 400px;">
+      <div class="title-bar">
+        <div class="title-bar-text">
+          <img src="./assets/icons/recycle.svg" alt="">
+          <span>回收站 - 历史旧项目纪念馆</span>
+        </div>
+        <div class="title-bar-controls">
+          <button aria-label="Minimize"></button>
+          <button aria-label="Maximize"></button>
+          <button aria-label="Close"></button>
+        </div>
+      </div>
+      <div class="window-body">
+        <p>这里安放着昔日的历史项目与旧版模板，已被全新 Windows 98 复古操作系统完美替代：</p>
+        <ul class="tree-view" style="height: 120px;">
+          <li>📦 旧版 FBI_WARNING.html (已永久封存)</li>
+          <li>📦 软天空 (rtk_up) 历史破解分享记录 (已归档)</li>
+          <li>📦 Dimension by HTML5 UP 静态旧主页 (已升级)</li>
+        </ul>
+        <div style="display: flex; justify-content: flex-end; margin-top: 8px;">
+          <button onclick="alert('回收站已被清空！新系统轻装上阵 🚀')">清空回收站</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- 桌面右键上下文菜单 -->
+  <div id="desktop-context-menu">
+    <div class="ctx-item" id="ctx-refresh"><span>🔄</span> 刷新桌面</div>
+    <div class="ctx-divider"></div>
+    <div class="ctx-item" id="ctx-wallpaper"><span>🖼️</span> 切换动态背景</div>
+    <div class="ctx-item" id="ctx-next-song"><span>🎶</span> 随机切歌 (NRW)</div>
+    <div class="ctx-item" id="ctx-toggle-clippy"><span>📎</span> 召唤/隐藏 Clippy</div>
+    <div class="ctx-item" id="ctx-toggle-crt"><span>📺</span> CRT 扫描线开关</div>
+    <div class="ctx-divider"></div>
+    <div class="ctx-item" id="ctx-about"><span>ℹ️</span> 关于系统属性</div>
   </div>
 
-  <!-- 背景图 -->
-  <div id="bg">
-    <video autoplay loop muted playsinline>
-      <source src="../../images/aye.webm" type="video/webm">
-    </video>
+  <!-- Windows 98 开始菜单 -->
+  <div id="start-menu">
+    <div class="start-sidebar">
+      <strong>Windows<span>98</span></strong>
+    </div>
+    <div class="start-items">
+      <div class="start-item" data-open-window="win-navigation">
+        <img src="./assets/icons/network.svg" alt=""> 网址导航
+      </div>
+      <div class="start-item" data-open-window="win-github">
+        <img src="./assets/icons/github.svg" alt=""> GitHub 个人主页
+      </div>
+      <div class="start-item" data-open-window="win-channel">
+        <img src="./assets/icons/telegram.svg" alt=""> 个人 Telegram 频道
+      </div>
+      <div class="start-item" data-open-window="win-contact">
+        <img src="./assets/icons/mail.svg" alt=""> 联系方式 / 留言
+      </div>
+      <div class="start-divider"></div>
+      <div class="start-item" data-open-window="win-player">
+        <img src="./assets/icons/player.svg" alt=""> NRW 音乐电台
+      </div>
+      <div class="start-item" data-open-window="win-visualizer">
+        <img src="./assets/icons/visualizer.svg" alt=""> Milkdrop 3D 视觉器
+      </div>
+      <div class="start-item" data-open-window="win-notepad">
+        <img src="./assets/icons/notepad.svg" alt=""> 记事本
+      </div>
+      <div class="start-divider"></div>
+      <div class="start-item" data-open-window="win-computer">
+        <img src="./assets/icons/computer.svg" alt=""> 系统属性 (关于)
+      </div>
+    </div>
   </div>
 
-  <!-- Scripts -->
-  <script src="./assets/js/jquery.min.js"></script>
-  <script src="./assets/js/browser.min.js"></script>
-  <script src="./assets/js/breakpoints.min.js"></script>
-  <script src="./assets/js/util.js"></script>
-  <script src="./assets/js/main.js"></script>
-  <script type="text/javascript" src="./assets/js/music.js"></script>
-  <script type="text/javascript">
-    window.onload = function() {
-      MC.music({
-        hasAjax: false,
-        left: '50%',
-        top: '5%',
-        musicChanged: function(ret) {
-          // alert(ret.url);
-          // getMusic_buffer(ret.url);
-          // return;
-          var data = ret.data;
-          var index = ret.index;
-          var imageUrl = data[index].img_url;
+  <!-- 底部任务栏 -->
+  <footer id="taskbar">
+    <button id="start-button">
+      <img src="./assets/icons/win98_flag.svg" alt="Win">
+      <span>开始</span>
+    </button>
+    <div class="taskbar-divider"></div>
+    <div id="taskbar-tasks">
+      <!-- 动态填充已打开任务 -->
+    </div>
+    <div id="system-tray">
+      <img class="tray-icon" src="./assets/icons/player.svg" alt="Sound" title="NewRetroWave Radio">
+      <span id="taskbar-clock">12:00 PM</span>
+    </div>
+  </footer>
 
-          /*var music_bg = document.getElementById('music-bg');
-          music_bg.style.background = 'url('+imageUrl+')no-repeat';
-          music_bg.style.backgroundSize = 'cover';
-          music_bg.style.backgroundPosition = 'center 30%';*/
-        },
+  <!-- 核心逻辑与脚本库 -->
+  <script src="./assets/js/neon-sunset.js"></script>
+  <script src="./assets/js/radio-engine.js"></script>
+  <script src="./assets/js/butterchurn.min.js"></script>
+  <script src="./assets/js/butterchurnPresets.min.js"></script>
+  <script src="./assets/js/visualizer-app.js"></script>
+  <script src="./assets/js/clippy-assistant.js"></script>
+  <script src="./assets/js/desktop-os.js"></script>
 
-        getMusicInfo: function(data) {
+  <!-- 页面主控胶水层脚本 -->
+  <script>
+    (function () {
+      'use strict';
 
-        },
+      // 1. 初始化 Neon Sunset 现场渲染画布
+      const retroBg = new RetroBackground('bg-canvas');
+      window.retroBackground = retroBg;
 
-        musicPlayByWebAudio: function(ret) {
+      // 2. 初始化桌面操作系统管理器
+      const desktop = new DesktopOS();
+      window.desktopOS = desktop;
 
-        },
+      // 3. 初始化 NRW Radio 音乐引擎
+      const radio = new RadioEngine();
+      window.radioEngine = radio;
+
+      // 4. 初始化 Butterchurn Milkdrop 视觉器管理器
+      const visualizer = new VisualizerManager('visualizer-canvas');
+      window.visualizerManager = visualizer;
+
+      // 5. 初始化 Clippy 助手
+      const clippy = new ClippyAssistant();
+      window.clippy = clippy;
+
+      // 6. 绑定播放器 UI 控件
+      const playerTitle = document.getElementById('player-title');
+      const playerArtist = document.getElementById('player-artist');
+      const playerTime = document.getElementById('player-time');
+      const playerCover = document.getElementById('player-cover');
+      const playerScrubber = document.getElementById('player-scrubber');
+      const playerStats = document.getElementById('player-stats');
+      const btnPlay = document.getElementById('btn-player-play');
+      const btnNext = document.getElementById('btn-player-next');
+      const btnPrev = document.getElementById('btn-player-prev');
+      const volumeSlider = document.getElementById('player-volume');
+
+      radio.on('playlistready', (data) => {
+        playerStats.textContent = `在线曲库: 已就绪 (${data.count} 首在线随机)`;
+        const cur = radio.getCurrentTrack();
+        if (cur) updatePlayerDisplay(cur);
       });
-    }
+
+      radio.on('songchanged', (data) => {
+        updatePlayerDisplay(data.track);
+        btnPlay.textContent = '⏸ 暂停';
+      });
+
+      radio.on('playstatechanged', (data) => {
+        btnPlay.textContent = data.isPlaying ? '⏸ 暂停' : '▶ 播放';
+      });
+
+      radio.on('timeupdated', (data) => {
+        if (data.duration > 0) {
+          const pct = (data.currentTime / data.duration) * 100;
+          playerScrubber.value = pct;
+          playerTime.textContent = `${formatTime(data.currentTime)} / ${formatTime(data.duration)}`;
+        }
+      });
+
+      function updatePlayerDisplay(track) {
+        if (!track) return;
+        playerTitle.textContent = `${track.title} - ${track.album_title || 'NewRetroWave'}`;
+        playerArtist.textContent = `艺术家: ${track.artist_name} (${track.year || '2026'})`;
+        if (track.cover) playerCover.src = track.cover;
+      }
+
+      function formatTime(sec) {
+        const m = Math.floor(sec / 60);
+        const s = Math.floor(sec % 60);
+        return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
+      }
+
+      btnPlay.addEventListener('click', () => {
+        radio.toggle();
+        // 首次交互确保 AudioContext 与 Visualizer 激活
+        if (!visualizer.isInitialized) {
+          visualizer.init(radio);
+        }
+      });
+
+      btnNext.addEventListener('click', () => radio.next());
+      btnPrev.addEventListener('click', () => radio.prev());
+
+      playerScrubber.addEventListener('input', (e) => {
+        radio.seek(e.target.value / 100);
+      });
+
+      volumeSlider.addEventListener('input', (e) => {
+        radio.setVolume(e.target.value / 100);
+      });
+
+      // 视觉器窗口按钮绑定
+      const btnOpenVis = document.getElementById('btn-open-visualizer');
+      if (btnOpenVis) {
+        btnOpenVis.addEventListener('click', () => {
+          desktop.openWindow('win-visualizer');
+          if (!visualizer.isInitialized) {
+            visualizer.init(radio);
+          }
+        });
+      }
+
+      document.getElementById('vis-prev-btn').addEventListener('click', () => visualizer.prevPreset());
+      document.getElementById('vis-next-btn').addEventListener('click', () => visualizer.nextPreset());
+      document.getElementById('vis-rand-btn').addEventListener('click', () => visualizer.randomPreset());
+      document.getElementById('vis-autocycle-chk').addEventListener('change', (e) => {
+        visualizer.autoCycle = e.target.checked;
+        visualizer.startCycleTimer();
+      });
+      document.getElementById('vis-fullscreen-btn').addEventListener('click', () => {
+        const canvas = document.getElementById('visualizer-canvas');
+        if (canvas.requestFullscreen) {
+          canvas.requestFullscreen();
+        }
+      });
+
+      // 7. 加载 NRW 在线曲库
+      radio.loadOnlineSongs();
+
+      // 8. 网址导航书签数据与搜索
+      const BOOKMARKS = [
+        {
+          category: '🛠️ 研发与极客工具',
+          items: [
+            { name: 'GitHub', url: 'https://github.com', desc: '代码托管与开源世界', icon: './assets/icons/github.svg' },
+            { name: 'VS Code Web', url: 'https://vscode.dev', desc: '在线代码编辑器', icon: './assets/icons/notepad.svg' },
+            { name: 'Hugging Face', url: 'https://huggingface.co', desc: 'AI 模型与开源权重中心', icon: './assets/icons/computer.svg' },
+            { name: 'Vercel', url: 'https://vercel.com', desc: '前端全栈部署平台', icon: './assets/icons/network.svg' },
+            { name: 'Cloudflare', url: 'https://cloudflare.com', desc: '网络安全与边缘计算', icon: './assets/icons/network.svg' }
+          ]
+        },
+        {
+          category: '🤖 AI 与大模型探索',
+          items: [
+            { name: 'ChatGPT', url: 'https://chat.openai.com', desc: 'OpenAI 对话模型', icon: './assets/icons/computer.svg' },
+            { name: 'Claude', url: 'https://claude.ai', desc: 'Anthropic 深度思考助手', icon: './assets/icons/computer.svg' },
+            { name: 'Google Gemini', url: 'https://gemini.google.com', desc: '谷歌多模态大模型', icon: './assets/icons/computer.svg' },
+            { name: 'DeepSeek', url: 'https://chat.deepseek.com', desc: '深度求索推理与代码模型', icon: './assets/icons/computer.svg' }
+          ]
+        },
+        {
+          category: '🎵 音乐与合成波文化',
+          items: [
+            { name: 'NewRetroWave Radio', url: 'https://nrwradio.com', desc: '官方合成波 80s 音乐电台', icon: './assets/icons/player.svg' },
+            { name: 'Bandcamp', url: 'https://bandcamp.com', desc: '独立音乐人聚集地', icon: './assets/icons/player.svg' },
+            { name: 'SoundCloud', url: 'https://soundcloud.com', desc: '原创音频流媒体', icon: './assets/icons/player.svg' }
+          ]
+        },
+        {
+          category: '🕹️ 怀旧与复古计算',
+          items: [
+            { name: 'Internet Archive', url: 'https://archive.org', desc: '全球数字互联网档案馆', icon: './assets/icons/network.svg' },
+            { name: 'WinWorld', url: 'https://winworldpc.com', desc: '复古操作系统博物馆', icon: './assets/icons/computer.svg' },
+            { name: 'The Cyberpunk Wiki', url: 'https://cyberpunk.fandom.com', desc: '赛博朋克百科全书', icon: './assets/icons/notepad.svg' }
+          ]
+        }
+      ];
+
+      function renderBookmarks(filter = '') {
+        const container = document.getElementById('nav-bookmarks-container');
+        container.innerHTML = '';
+        const lower = filter.toLowerCase().trim();
+        let totalCount = 0;
+
+        BOOKMARKS.forEach(cat => {
+          const matched = cat.items.filter(it => it.name.toLowerCase().includes(lower) || it.desc.toLowerCase().includes(lower));
+          if (matched.length === 0) return;
+          totalCount += matched.length;
+
+          const fieldset = document.createElement('fieldset');
+          const legend = document.createElement('legend');
+          legend.textContent = cat.category;
+          fieldset.appendChild(legend);
+
+          const grid = document.createElement('div');
+          grid.className = 'nav-grid';
+
+          matched.forEach(item => {
+            const card = document.createElement('a');
+            card.className = 'nav-card';
+            card.href = item.url;
+            card.target = '_blank';
+            card.rel = 'noopener noreferrer';
+            card.title = `${item.name}: ${item.desc}`;
+            card.innerHTML = `
+              <img src="${item.icon}" alt="">
+              <div style="overflow: hidden;">
+                <div style="font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${item.name}</div>
+                <div style="font-size: 10px; color: #666; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${item.desc}</div>
+              </div>
+            `;
+            grid.appendChild(card);
+          });
+
+          fieldset.appendChild(grid);
+          container.appendChild(fieldset);
+        });
+
+        document.getElementById('nav-status-count').textContent = `共匹配到 ${totalCount} 个站点`;
+      }
+
+      renderBookmarks();
+
+      const navSearch = document.getElementById('nav-search-input');
+      navSearch.addEventListener('input', (e) => renderBookmarks(e.target.value));
+      document.getElementById('nav-reset-btn').addEventListener('click', () => {
+        navSearch.value = '';
+        renderBookmarks();
+      });
+
+      // 添加自定义书签功能
+      document.getElementById('nav-add-custom-btn').addEventListener('click', () => {
+        const name = prompt('请输入书签名称:');
+        if (!name) return;
+        const url = prompt('请输入网址 (以 http/https 开头):', 'https://');
+        if (!url) return;
+        BOOKMARKS[0].items.unshift({
+          name: name,
+          url: url,
+          desc: '自定义添加的书签',
+          icon: './assets/icons/network.svg'
+        });
+        renderBookmarks();
+      });
+
+      // 9. 记事本自动保存与字符数统计
+      const notepad = document.getElementById('notepad-textarea');
+      const notepadCount = document.getElementById('notepad-char-count');
+      const savedNote = localStorage.getItem('zgq_win98_notepad');
+      if (savedNote) {
+        notepad.value = savedNote;
+        notepadCount.textContent = `字符数: ${savedNote.length}`;
+      }
+      notepad.addEventListener('input', () => {
+        localStorage.setItem('zgq_win98_notepad', notepad.value);
+        notepadCount.textContent = `字符数: ${notepad.value.length}`;
+      });
+
+      // 10. 留言板本地保存
+      const guestbookInput = document.getElementById('guestbook-input');
+      const guestbookMsg = document.getElementById('guestbook-msg');
+      const savedGuestbook = localStorage.getItem('zgq_win98_guestbook');
+      if (savedGuestbook) {
+        guestbookInput.value = savedGuestbook;
+      }
+      document.getElementById('guestbook-save-btn').addEventListener('click', () => {
+        localStorage.setItem('zgq_win98_guestbook', guestbookInput.value);
+        guestbookMsg.textContent = '✔ 留言已保存在您的本地浏览器中！';
+        setTimeout(() => guestbookMsg.textContent = '', 3000);
+      });
+      document.getElementById('guestbook-clear-btn').addEventListener('click', () => {
+        guestbookInput.value = '';
+        localStorage.removeItem('zgq_win98_guestbook');
+        guestbookMsg.textContent = '已清空留言。';
+        setTimeout(() => guestbookMsg.textContent = '', 2000);
+      });
+
+      // 11. 复制邮箱按钮
+      document.getElementById('copy-email-btn').addEventListener('click', () => {
+        navigator.clipboard.writeText('zgqinc@gmail.com').then(() => {
+          alert('已成功复制邮箱: zgqinc@gmail.com');
+        }).catch(() => {
+          alert('邮箱: zgqinc@gmail.com');
+        });
+      });
+
+      // 12. 播放 Windows 98 经典启动开机音乐合成声
+      window.addEventListener('click', function playStartupOnce() {
+        desktop.playChime();
+        window.removeEventListener('click', playStartupOnce);
+      });
+
+    })();
   </script>
+
 </body>
 
 </html>
