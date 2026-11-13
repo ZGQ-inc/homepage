@@ -75,6 +75,16 @@
         <span class="icon-label">记事本</span>
       </div>
 
+      <div class="desktop-icon" data-target="win-mywords" title="双击打开 站长心声《我想说的话》">
+        <img class="icon-img" src="./assets/icons/notepad-file-32x32.png" alt="我想说的话">
+        <span class="icon-label">我想说的话</span>
+      </div>
+
+      <div class="desktop-icon" data-target="win-fbi" title="双击打开 经典高能彩蛋 FBI WARNING">
+        <img class="icon-img" src="./assets/icons/warning-32x32-8bpp.png" alt="FBI WARNING">
+        <span class="icon-label">FBI WARNING</span>
+      </div>
+
       <div class="desktop-icon" data-target="win-recycle" title="双击打开 回收站">
         <img class="icon-img" src="./assets/icons/recycle-bin-32x32.png" alt="回收站">
         <span class="icon-label">回收站</span>
@@ -135,11 +145,11 @@
     </div>
 
     <!-- ==================== 窗口 2: GitHub 个人主页 (GitHub Profile) ==================== -->
-    <div class="window hidden" id="win-github" data-window-id="win-github" style="left: 140px; top: 50px; width: 520px;">
+    <div class="window hidden" id="win-github" data-window-id="win-github" style="left: 140px; top: 40px; width: 620px;">
       <div class="title-bar">
         <div class="title-bar-text">
           <img src="./assets/icons/my-documents-16x16.png" alt="">
-          <span>ZGQ-inc 的 GitHub 个人主页</span>
+          <span>ZGQ Inc. (@ZGQ-inc) 的 GitHub 个人主页</span>
         </div>
         <div class="title-bar-controls">
           <button aria-label="Minimize"></button>
@@ -147,39 +157,227 @@
           <button aria-label="Close"></button>
         </div>
       </div>
-      <div class="window-body">
-        <div class="gh-profile-header">
-          <img src="./images/avatar.png" alt="Avatar" class="gh-avatar">
-          <div style="flex: 1;">
-            <h3 style="margin: 0 0 4px 0; font-size: 14px;">ZGQ Inc.</h3>
-            <p style="margin: 0 0 6px 0; color: #555;">开源开发者 & 极客爱好者 | 探索 AI、逆向与全栈技术</p>
-            <a href="https://github.com/ZGQ-inc" target="_blank" rel="noopener noreferrer">
-              <button style="font-weight: bold;">👉 前往 GitHub 官方主页 (@ZGQ-inc)</button>
-            </a>
+      <div class="window-body" style="padding: 6px;">
+        <!-- 标签页导航栏 -->
+        <div class="gh-tab-bar">
+          <button class="gh-tab-btn active" data-ghtab="overview">📊 概览与成就 (Overview)</button>
+          <button class="gh-tab-btn" data-ghtab="articles">📰 逆向与实战博文 (Articles)</button>
+          <button class="gh-tab-btn" data-ghtab="rig">💻 极客装备库 (Rig & Devices)</button>
+          <button class="gh-tab-btn" data-ghtab="skills">🛠️ 技术栈与生态 (Tech Stack)</button>
+        </div>
+
+        <!-- 标签页 1: 概览与成就 -->
+        <div class="gh-tab-content active" id="ghtab-overview">
+          <div class="gh-profile-header">
+            <img src="./images/avatar.png" alt="Avatar" class="gh-avatar">
+            <div style="flex: 1;">
+              <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+                <h3 style="margin: 0; font-size: 15px;">ZGQ Inc. (@ZGQ-inc)</h3>
+                <span style="background: #1428A0; color: #fff; font-size: 10px; padding: 1px 6px; border-radius: 2px;">Furry & Gay 🦊</span>
+                <span style="background: #008000; color: #fff; font-size: 10px; padding: 1px 6px; border-radius: 2px;">Reverse Eng & FullStack</span>
+              </div>
+              <p style="margin: 4px 0 6px 0; color: #444; font-size: 11px;">北极狐 | 开源安全取证、底层逆向分析、嵌入式软硬件创客 & 极客玩家</p>
+              <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+                <a href="https://github.com/ZGQ-inc" target="_blank" rel="noopener noreferrer"><button style="font-weight: bold; font-size: 11px;">👉 前往 GitHub 主页</button></a>
+                <a href="https://blog.zgqinc.gq/" target="_blank" rel="noopener noreferrer"><button style="font-size: 11px;">📖 个人博客 (blog.zgqinc.gq)</button></a>
+                <a href="https://t.me/CopyRightZGQInc" target="_blank" rel="noopener noreferrer"><button style="font-size: 11px;">📢 TG 频道</button></a>
+              </div>
+            </div>
+          </div>
+
+          <!-- Typing SVG 动态打字机问候 -->
+          <div style="text-align: center; margin-bottom: 8px; background: #000; padding: 4px; border: 2px inset #808080;">
+            <img src="https://readme-typing-svg.demolab.com?font=Fira+Code&duration=2500&pause=2500&color=BABABA&background=000000B8&center=true&vCenter=true&width=480&separator=%3C&lines=Hi%F0%9F%91%8B%E6%88%91%E6%98%AFZGQ;%E6%88%91%E6%98%AF%E4%B8%80%E5%8F%AA%E5%8C%97%E6%9E%81%E7%8B%90" alt="Typing SVG" style="max-width: 100%;">
+          </div>
+
+          <fieldset style="margin-bottom: 8px;">
+            <legend>GitHub 动态统计与成就展台</legend>
+            <div style="display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; margin-bottom: 8px;">
+              <a href="https://github.com/ZGQ-inc" target="_blank" style="flex: 1; min-width: 240px; text-align: center;">
+                <img src="https://github-readme-stats.vercel.app/api?username=ZGQ-inc&show_icons=true&theme=radical&hide_border=true" alt="GitHub Stats" style="width: 100%; max-width: 320px;" loading="lazy">
+              </a>
+              <a href="https://github.com/ZGQ-inc" target="_blank" style="flex: 1; min-width: 240px; text-align: center;">
+                <img src="https://github-readme-streak-stats.herokuapp.com/?user=ZGQ-inc&theme=radical&hide_border=true" alt="Streak Stats" style="width: 100%; max-width: 320px;" loading="lazy">
+              </a>
+            </div>
+            <div style="text-align: center; overflow-x: auto; padding-top: 4px;">
+              <img src="https://github-profile-trophy.vercel.app/?username=ZGQ-inc&theme=radical&no-frame=true&no-bg=true&margin-w=4" alt="GitHub Profile Trophies" style="max-width: 100%;" loading="lazy">
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>实时访客与在线收听动态</legend>
+            <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap;">
+              <div>
+                <span style="font-size: 11px; font-weight: bold;">Moe-Counter 实时访客计数器:</span><br>
+                <img src="https://count.getloli.com/get/@ZGQ-inc?theme=rule34" alt="Moe-Counter" style="height: 36px; margin-top: 4px;" loading="lazy">
+              </div>
+              <div style="flex: 1; min-width: 220px; text-align: right;">
+                <a href="https://open.spotify.com/user/a54fe2pnapk5pbzbh0on5gczd" target="_blank" rel="noopener noreferrer">
+                  <img src="https://img.shields.io/badge/Spotify-ZGQ%20Listening-1DB954?style=for-the-badge&logo=spotify&logoColor=white" alt="Spotify" style="height: 28px;">
+                </a>
+              </div>
+            </div>
+          </fieldset>
+        </div>
+
+        <!-- 标签页 2: 最新逆向与博客文章 -->
+        <div class="gh-tab-content" id="ghtab-articles" style="max-height: 420px; overflow-y: auto;">
+          <div class="gh-article-card">
+            <div style="flex: 1;">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 2px;">
+                <span class="gh-article-badge">逆向实录</span>
+                <span style="font-size: 11px; color: #666;">🗓️ 2026-11-10</span>
+              </div>
+              <a href="https://blog.zgqinc.gq/posts/giggle/" target="_blank" style="font-weight: bold; font-size: 12px; color: #000080; text-decoration: none;">
+                《危笑乐园》（Giggleland）全文本深度汉化补丁发布与底层本地化缺陷逆向实录
+              </a>
+              <p style="margin: 4px 0 0 0; font-size: 11px; color: #444; line-height: 1.4;">
+                从底层逆向挖掘到全流程实机通关，详尽复盘《危笑乐园》汉化全景历程：曝光官方代码隐藏开关、思源黑体/CJK减速算法底层修复与全笔记存档。
+              </p>
+            </div>
+          </div>
+
+          <div class="gh-article-card">
+            <div style="flex: 1;">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 2px;">
+                <span class="gh-article-badge">安全取证</span>
+                <span style="font-size: 11px; color: #666;">🗓️ 2026-11-05</span>
+              </div>
+              <a href="https://blog.zgqinc.gq/posts/syshlp/" target="_blank" style="font-weight: bold; font-size: 12px; color: #000080; text-decoration: none;">
+                移动终端预装系统级组件 SystemHelper 深度逆向分析与时空行为监控技术取证白皮书
+              </a>
+              <p style="margin: 4px 0 0 0; font-size: 11px; color: #444; line-height: 1.4;">
+                国家级/运营商级预装系统组件 SystemHelper (com.mobiletools.systemhelper) 深度逆向技术取证白皮书：横跨 4 年 5 代全量样本时空行为分析。
+              </p>
+            </div>
+          </div>
+
+          <div class="gh-article-card">
+            <div style="flex: 1;">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 2px;">
+                <span class="gh-article-badge">Steam逆向</span>
+                <span style="font-size: 11px; color: #666;">🗓️ 2026-11-05</span>
+              </div>
+              <a href="https://blog.zgqinc.gq/posts/c8k3m9/" target="_blank" style="font-weight: bold; font-size: 12px; color: #000080; text-decoration: none;">
+                教程：翻车与神级反转！以《The Classrooms》实战起底 Steam 物品强校验与资产层“后门”拦截
+              </a>
+              <p style="margin: 4px 0 0 0; font-size: 11px; color: #444; line-height: 1.4;">
+                解析为什么常规 SmokeAPI 会在强校验游戏中折戟？深度追踪《The Classrooms》内部 SteamInventory 签名序列化拦截链与 DepotDownloader 清单提取。
+              </p>
+            </div>
+          </div>
+
+          <div class="gh-article-card">
+            <div style="flex: 1;">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 2px;">
+                <span class="gh-article-badge">3D打印DIY</span>
+                <span style="font-size: 11px; color: #666;">🗓️ 2026-11-04</span>
+              </div>
+              <a href="https://blog.zgqinc.gq/posts/ag140s/" target="_blank" style="font-weight: bold; font-size: 12px; color: #000080; text-decoration: none;">
+                86 元官方支架平替！MINIWARE AirGo 140 3D 打印“双模自动休眠支架”开源实测
+              </a>
+              <p style="margin: 4px 0 0 0; font-size: 11px; color: #444; line-height: 1.4;">
+                面对原厂高达 86 元且存在结构缺陷的钣金支架，基于拓竹 A1 mini 打造 3D 打印双模自动休眠支架并开源。
+              </p>
+            </div>
+          </div>
+
+          <div class="gh-article-card">
+            <div style="flex: 1;">
+              <div style="display: flex; justify-content: space-between; margin-bottom: 2px;">
+                <span class="gh-article-badge">硬件拆解</span>
+                <span style="font-size: 11px; color: #666;">🗓️ 2026-11-02</span>
+              </div>
+              <a href="https://blog.zgqinc.gq/posts/ag140d/" target="_blank" style="font-weight: bold; font-size: 12px; color: #000080; text-decoration: none;">
+                全网首拆！MINIWARE AirGo 140 便携热风枪深度拆解与硬件架构全景分析
+              </a>
+              <p style="margin: 4px 0 0 0; font-size: 11px; color: #444; line-height: 1.4;">
+                全网首个 AirGo 140 便携热风枪深度硬核拆解，全面剖析 140W 微型涡轮与发热芯驱动拓扑。
+              </p>
+            </div>
           </div>
         </div>
 
-        <fieldset style="margin-bottom: 8px;">
-          <legend>开源技术栈 & 涉及领域</legend>
-          <div class="tag-cloud">
-            <span class="tech-tag">JavaScript / TypeScript</span>
-            <span class="tech-tag">Python & AI Pipeline</span>
-            <span class="tech-tag">PyQt / Qt Desktop</span>
-            <span class="tech-tag">Android Tools & Reverse</span>
-            <span class="tech-tag">C# / .NET</span>
-            <span class="tech-tag">WebGL & Milkdrop Shaders</span>
-            <span class="tech-tag">Cyberpunk / Synthwave</span>
-          </div>
-        </fieldset>
+        <!-- 标签页 3: 极客装备库 -->
+        <div class="gh-tab-content" id="ghtab-rig" style="max-height: 420px; overflow-y: auto;">
+          <fieldset style="margin-bottom: 8px;">
+            <legend>🖥️ 高性能工作站 (Main Rig)</legend>
+            <table style="width: 100%; font-size: 11px; border-collapse: collapse;">
+              <tr><td style="width: 100px; font-weight: bold; padding: 2px 0;">处理器:</td><td>AMD Ryzen 5 9600X (6核12线程 极客体质)</td></tr>
+              <tr><td style="font-weight: bold; padding: 2px 0;">独立显卡:</td><td>NVIDIA GeForce RTX 5070 (新一代光追架构)</td></tr>
+              <tr><td style="font-weight: bold; padding: 2px 0;">运行内存:</td><td>32GB High-Speed DDR5</td></tr>
+              <tr><td style="font-weight: bold; padding: 2px 0;">运行系统:</td><td>Windows 11 Pro / Ubuntu 24.04 / WSL2</td></tr>
+              <tr><td style="font-weight: bold; padding: 2px 0;">基准评级:</td><td><span style="color: #008000; font-weight: bold;">PCGameBenchmark: Beast Class ⭐⭐⭐⭐⭐ (顶尖游戏与生产力)</span></td></tr>
+            </table>
+          </fieldset>
 
-        <fieldset>
-          <legend>GitHub 动态展台</legend>
-          <div style="text-align: center;">
-            <a href="https://github.com/ZGQ-inc" target="_blank">
-              <img class="gh-stats-badge" src="https://github-readme-stats.vercel.app/api?username=ZGQ-inc&show_icons=true&theme=radical&hide_border=true" alt="GitHub Stats" loading="lazy">
-            </a>
-          </div>
-        </fieldset>
+          <fieldset style="margin-bottom: 8px;">
+            <legend>📱 移动终端与便携掌机 (Mobile & UMPC)</legend>
+            <div style="display: flex; gap: 4px; flex-wrap: wrap;">
+              <span class="tech-tag" style="background: #1428A0; color: #fff;">Galaxy Z Fold7 (主力折叠旗舰)</span>
+              <span class="tech-tag" style="background: #1428A0; color: #fff;">Galaxy Tab S10+</span>
+              <span class="tech-tag" style="background: #1428A0; color: #fff;">Galaxy Watch9 44mm</span>
+              <span class="tech-tag" style="background: #333; color: #fff;">GPD Win Max 2 (2023) 便携掌机</span>
+              <span class="tech-tag" style="background: #333; color: #fff;">One-netbook OneMix 1s+ 口袋本</span>
+              <span class="tech-tag" style="background: #000; color: #fff;">Sony Ericsson Xperia X10i (情怀机)</span>
+              <span class="tech-tag" style="background: #1428A0; color: #fff;">Galaxy Buds3 Pro</span>
+              <span class="tech-tag" style="background: #0467DF; color: #fff;">Meta Quest 3 (VR)</span>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>🔧 DIY 创客工坊与逆向仪器</legend>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; font-size: 11px;">
+              <div>🔹 <strong>3D打印机:</strong> 拓竹 Bambu Lab A1 mini</div>
+              <div>🔹 <strong>智能热风枪:</strong> MINIWARE AirGo 140</div>
+              <div>🔹 <strong>示波器/万用表:</strong> 菲尼瑞斯 2D15P</div>
+              <div>🔹 <strong>智能电烙铁:</strong> 正点原子 T90B / TB1</div>
+              <div>🔹 <strong>电动螺丝刀:</strong> 正点原子 S40P</div>
+              <div>🔹 <strong>数控电源:</strong> 菲尼瑞斯 DPS-150</div>
+              <div>🔹 <strong>逻辑分析仪:</strong> NanoDLA 开源方案</div>
+              <div>🔹 <strong>快充测试仪:</strong> ChargerLab KM003C</div>
+            </div>
+          </fieldset>
+        </div>
+
+        <!-- 标签页 4: 技术栈与生态 -->
+        <div class="gh-tab-content" id="ghtab-skills" style="max-height: 420px; overflow-y: auto;">
+          <fieldset style="margin-bottom: 8px;">
+            <legend>🛠️ 核心开发技术栈</legend>
+            <div class="tag-cloud" style="display: flex; gap: 4px; flex-wrap: wrap;">
+              <span class="tech-tag">Android / NDK</span>
+              <span class="tech-tag">Python (PyQt/QtPy)</span>
+              <span class="tech-tag">C# / .NET</span>
+              <span class="tech-tag">C / C++</span>
+              <span class="tech-tag">JavaScript / ES6+</span>
+              <span class="tech-tag">WebGL / Three.js</span>
+              <span class="tech-tag">Bash / PowerShell</span>
+              <span class="tech-tag">Docker / WSL</span>
+              <span class="tech-tag">Git / GitHub Actions</span>
+              <span class="tech-tag">Cloudflare Workers</span>
+              <span class="tech-tag">Frida / Ghidra / IDA (逆向)</span>
+              <span class="tech-tag">Blender 3D</span>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>🏠 智能家居环境 (Smart Home & IoT)</legend>
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px; font-size: 11px;">
+              <div>💡 <strong>控制中心:</strong> Home Assistant + 米家生态</div>
+              <div>💡 <strong>氛围照明:</strong> Yeelight 挂灯 Pro + 幻彩灯带</div>
+              <div>💡 <strong>自制极客灯:</strong> DIY ESP32 水波纹/极光氛围灯</div>
+              <div>💡 <strong>人体感应:</strong> 领普人体存在传感器 ES5</div>
+              <div>💡 <strong>远程开机:</strong> 久豪电脑远程开机卡 Pro (WiFi)</div>
+              <div>💡 <strong>无线控制:</strong> 领普无线开关 KS1Pro + 智能计量插座</div>
+            </div>
+          </fieldset>
+        </div>
+      </div>
+      <div class="status-bar">
+        <p class="status-bar-field" id="gh-status-view">当前视图: 概览与成就</p>
+        <p class="status-bar-field">状态: 已连线 GitHub</p>
+        <p class="status-bar-field">@ZGQ-inc</p>
       </div>
     </div>
 
@@ -465,6 +663,110 @@
       </div>
     </div>
 
+    <!-- ==================== 窗口 10: 站长心声《我想说的话》 (Author Manifesto) ==================== -->
+    <div class="window hidden" id="win-mywords" data-window-id="win-mywords" style="left: 160px; top: 75px; width: 620px;">
+      <div class="title-bar">
+        <div class="title-bar-text">
+          <img src="./assets/icons/notepad-file-16x16.png" alt="">
+          <span>我想说的话 - 站长心声 (2022-02-06 历史原稿)</span>
+        </div>
+        <div class="title-bar-controls">
+          <button aria-label="Minimize"></button>
+          <button aria-label="Maximize"></button>
+          <button aria-label="Close"></button>
+        </div>
+      </div>
+      <div class="window-body" style="padding: 6px;">
+        <div class="mywords-paper" style="background: #ffffff; border: 2px inset #808080; padding: 16px; max-height: 420px; overflow-y: auto; font-family: 'SimSun', 'MS Sans Serif', serif; font-size: 13px; line-height: 1.8; color: #111;">
+          <div style="border-bottom: 2px solid #000080; padding-bottom: 8px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap;">
+            <div>
+              <h2 style="margin: 0; font-size: 16px; color: #000080;">📜 《我想说的话》</h2>
+              <span style="font-size: 11px; color: #666;">原作者: ZGQ Inc. | 发布日期: 2022年2月6日</span>
+            </div>
+            <span style="background: #000080; color: #ffd700; font-size: 11px; font-weight: bold; padding: 2px 8px; border: 1px outset #fff;">原站历史原件</span>
+          </div>
+
+          <p><strong>致所有来到我的个人主页的访客：</strong></p>
+          <p style="text-indent: 2em;">首先非常感谢各位来到我的主页。</p>
+          <p style="text-indent: 2em; font-weight: bold; color: #a00;">开门见山，我将会在2022年4月份的时候停更。明年回来。空闲时间还是会上线的。</p>
+          
+          <h4 style="margin: 14px 0 6px 0; color: #000080; font-size: 14px; border-left: 3px solid #000080; padding-left: 6px;">先说说我为什么要做资源分享</h4>
+          <p style="text-indent: 2em;">我做资源分享一做就是2年，在此期间有很多人支持我，对支持我的人表示真诚的感谢，谢谢你们一直以来对我的支持。</p>
+          <p style="text-indent: 2em;">相信很多人都注意到我的个人主页上面写着<strong>承诺永久免费资源分享</strong>，说一下我为什么要这么做：2年前我还是白嫖党，但是某天我突然意识到我应该做些什么，我的初衷很简单：<strong>一是为了报答资源这个广阔天地，二是我想建立一片“互联网的净土”</strong>（*果核剥壳站点标题），像果核剥壳的站长以及那些良心非盈利的资源分享站一样。未来的目标我暂时没有决定，但是我觉得我会开个个人博客之类的，这也是以后的事了。</p>
+          <p style="text-indent: 2em; background: #fffbdd; border-left: 3px solid #ffcc00; padding: 4px 8px; margin: 8px 0;"><strong>很多人都问我我做这些有没有盈利，其实并没有，完全出于我的业余兴趣，我做资源分享本来就不是为了钱。</strong></p>
+
+          <h4 style="margin: 14px 0 6px 0; color: #000080; font-size: 14px; border-left: 3px solid #000080; padding-left: 6px;">我为什么突然之间不干了呢？—— 不是跑路！</h4>
+          <p style="text-indent: 2em;">可能很多人并不知道我是来自上海浦东新区的高二学生，而我也就是因为学业负担而决定停更，所以不是跑路，是实在没有精力继续干下去，毕竟学业还是重要的，心有余而力不足，估计暑假还能回来摸一会儿鱼，其它时间大概都在复习冲刺，准备改变人生的一仗——高考。</p>
+          <p style="text-indent: 2em;">上海太卷，真的卷死人，我明显感受到了压力，今年6月份有一次叫做等级考的考试，也是算在高考分数里面的一门非语数英，而是小科目的考试。这也就是为什么我会在4月份退网，其实就是为了准备这场考试。</p>
+          <p style="text-indent: 2em;">明年就是我高考的那一年了，上海这边有2个高考，一个春考，一个秋考。如果春考顺利，我会在明年3月份回来，如果春考失利，那么会在6月份回来。</p>
+
+          <div style="margin-top: 16px; padding: 10px; border: 1px dashed #808080; background: #f8f9fa;">
+            <p style="font-weight: bold; font-size: 14px; text-align: center; margin: 0; color: #000080;">祝我高考取得成功，祝愿各位网上冲浪一切顺利，白嫖愉快！</p>
+            <div style="text-align: right; margin-top: 8px; color: #555;">
+              <span>&copy; ZGQ Inc.</span><br>
+              <i>22/02/06 原稿</i>
+            </div>
+          </div>
+
+          <div style="margin-top: 16px; padding: 10px; background: #e8f4fd; border: 1px solid #1084d0;">
+            <p style="margin: 0; font-size: 12px; color: #000080;"><strong>🌟 2026 年回望注记：</strong> 站长已顺利考取并建立独立博客 <code>blog.zgqinc.gq</code>，逆向工程与极客分享生生不息，不忘初心！</p>
+          </div>
+        </div>
+      </div>
+      <div class="status-bar">
+        <p class="status-bar-field">文档: /old/mywords.html</p>
+        <p class="status-bar-field">字数: 846</p>
+        <p class="status-bar-field">编码: UTF-8</p>
+      </div>
+    </div>
+
+    <!-- ==================== 窗口 11: FBI WARNING 经典彩蛋 (Memes Player) ==================== -->
+    <div class="window hidden" id="win-fbi" data-window-id="win-fbi" style="left: 130px; top: 60px; width: 560px;">
+      <div class="title-bar">
+        <div class="title-bar-text">
+          <img src="./assets/icons/warning-16x16-8bpp.png" alt="">
+          <span>⚠️ FBI WARNING - 经典高能彩蛋</span>
+        </div>
+        <div class="title-bar-controls">
+          <button aria-label="Minimize"></button>
+          <button aria-label="Maximize"></button>
+          <button aria-label="Close"></button>
+        </div>
+      </div>
+      <div class="window-body" style="padding: 2px;">
+        <div style="background: #111; color: #ffd700; text-align: center; padding: 4px; font-size: 11px; border-bottom: 1px solid #333;">
+          ⚠️ 原站经典高能整活！请适度调适音量，点击下方 ACCEPT 开启神秘体验~
+        </div>
+        <iframe src="./old/FBI_WARNING.html" style="width: 100%; height: 380px; border: 2px inset #808080; background: #000; display: block;" frameborder="0" allowfullscreen></iframe>
+      </div>
+      <div class="status-bar">
+        <p class="status-bar-field">来源: /old/FBI_WARNING.html</p>
+        <p class="status-bar-field">状态: 高能预警</p>
+      </div>
+    </div>
+
+    <!-- ==================== 窗口 12: 愚人节经典彩蛋 (RickRoll) ==================== -->
+    <div class="window hidden" id="win-fool" data-window-id="win-fool" style="left: 190px; top: 90px; width: 520px;">
+      <div class="title-bar">
+        <div class="title-bar-text">
+          <img src="./assets/icons/video-16x16.png" alt="">
+          <span>🕺 经典愚人节彩蛋 - Never Gonna Give You Up</span>
+        </div>
+        <div class="title-bar-controls">
+          <button aria-label="Minimize"></button>
+          <button aria-label="Maximize"></button>
+          <button aria-label="Close"></button>
+        </div>
+      </div>
+      <div class="window-body" style="padding: 2px;">
+        <iframe src="./old/fool.html" style="width: 100%; height: 350px; border: 2px inset #808080; display: block;" frameborder="0"></iframe>
+      </div>
+      <div class="status-bar">
+        <p class="status-bar-field">来源: /old/fool.html</p>
+        <p class="status-bar-field">状态: RickRoll 活跃中</p>
+      </div>
+    </div>
+
   </main>
 
   <!-- 桌面右键上下文菜单 -->
@@ -481,7 +783,10 @@
 
   <!-- Windows 98 1:1 开始菜单 -->
   <div id="start-menu">
-    <img src="./assets/images/start-menu-side-98.png" class="start-sidebar-img" alt="Windows 98">
+    <div class="start-sidebar-custom">
+      <span class="start-sidebar-brand">𝐙𝐆𝐐 ɪɴᴄ.</span>
+      <span class="start-sidebar-sub">© 2026 COPYRIGHT</span>
+    </div>
     <div class="start-items">
       <div class="start-item" data-open-window="win-navigation">
         <img src="./assets/icons/network-16x16.png" alt=""> 个人项目与网址导航
@@ -489,18 +794,28 @@
       <div class="start-item" data-open-window="win-github">
         <img src="./assets/icons/my-documents-16x16.png" alt=""> GitHub 个人主页
       </div>
+      <div class="start-item" data-open-window="win-mywords">
+        <img src="./assets/icons/notepad-file-16x16.png" alt=""> 📜 站长心声《我想说的话》
+      </div>
+      <div class="start-item" data-open-window="win-fbi">
+        <img src="./assets/icons/warning-16x16-8bpp.png" alt=""> ⚠️ FBI WARNING 经典彩蛋
+      </div>
+      <div class="start-item" data-open-window="win-fool">
+        <img src="./assets/icons/video-16x16.png" alt=""> 🕺 经典愚人节彩蛋 (RickRoll)
+      </div>
+      <div class="start-divider"></div>
       <div class="start-item" data-open-window="win-channel">
         <img src="./assets/icons/news-16x16.png" alt=""> 个人 Telegram 频道
       </div>
       <div class="start-item" data-open-window="win-contact">
-        <img src="./assets/icons/outlook-express-16x16.png" alt=""> 联系方式 / 留言
+        <img src="./assets/icons/outlook-express-16x16.png" alt=""> 联系方式 / 通讯簿
       </div>
       <div class="start-divider"></div>
       <div class="start-item" data-open-window="win-player">
         <img src="./assets/icons/media-player-16x16.png" alt=""> NRW 音乐电台
       </div>
       <div class="start-item" data-open-window="winamp">
-        <img src="./assets/icons/winamp2-16x16.png" alt=""> Winamp 播放器
+        <img src="./assets/icons/winamp2-16x16.png" alt=""> Winamp 经典播放器
       </div>
       <div class="start-item" data-open-window="win-visualizer">
         <img src="./assets/icons/3d-mode-32x32.png" alt=""> Milkdrop 3D 视觉器
@@ -835,18 +1150,48 @@
       }
 
       // 添加自定义书签功能
-      document.getElementById('nav-add-custom-btn').addEventListener('click', () => {
-        const name = prompt('请输入书签名称:');
-        if (!name) return;
-        const url = prompt('请输入网址 (以 http/https 开头):', 'https://');
-        if (!url) return;
-        BOOKMARKS[0].items.unshift({
-          name: name,
-          url: url,
-          desc: '自定义添加的书签',
-          icon: './assets/icons/network-16x16.png'
+      const navAddBtn = document.getElementById('nav-add-custom-btn');
+      if (navAddBtn) {
+        navAddBtn.addEventListener('click', () => {
+          const name = prompt('请输入书签名称:');
+          if (!name) return;
+          const url = prompt('请输入网址 (以 http/https 开头):', 'https://');
+          if (!url) return;
+          BOOKMARKS[0].items.unshift({
+            name: name,
+            url: url,
+            desc: '自定义添加的书签',
+            icon: './assets/icons/network-16x16.png'
+          });
+          renderBookmarks();
         });
-        renderBookmarks();
+      }
+
+      // 8.5. GitHub 窗口选项卡切换
+      const ghTabBtns = document.querySelectorAll('.gh-tab-btn');
+      const ghTabPanes = document.querySelectorAll('.gh-tab-content');
+      const ghStatusView = document.getElementById('gh-status-view');
+      const ghTabLabels = {
+        'overview': '当前视图: 概览与成就',
+        'articles': '当前视图: 逆向与实战博文',
+        'rig': '当前视图: 极客装备库',
+        'skills': '当前视图: 技术栈与生态'
+      };
+
+      ghTabBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+          const tabKey = btn.dataset.ghtab;
+          ghTabBtns.forEach(b => b.classList.remove('active'));
+          ghTabPanes.forEach(p => p.classList.remove('active'));
+
+          btn.classList.add('active');
+          const targetPane = document.getElementById(`ghtab-${tabKey}`);
+          if (targetPane) targetPane.classList.add('active');
+          if (ghStatusView && ghTabLabels[tabKey]) {
+            ghStatusView.textContent = ghTabLabels[tabKey];
+          }
+          desktop.playSound('ding');
+        });
       });
 
       // 9. 记事本自动保存与字符数统计

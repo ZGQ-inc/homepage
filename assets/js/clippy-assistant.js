@@ -1,20 +1,29 @@
 /**
  * Clippy Assistant for ZGQ Inc. Web OS
- * Supports official clippyjs agent with pixel-perfect fallback & speech bubble
+ * Supports official clippyjs agent with rich animations, idle behaviors,
+ * mouse tracking, music reactions & retro geek quotes.
  */
 
 (function (window) {
   'use strict';
 
-  const CLIPPY_QUOTES = [
-    "It looks like you're browsing ZGQ Inc.'s homepage. Would you like some help discovering awesome synthwave music?",
-    "Did you know? You can drag, resize, and minimize any window just like in Windows 98!",
-    "Tip: Right-click anywhere on the desktop to change the wallpaper or trigger retro CRT effects!",
-    "NewRetroWave radio brings you 600+ hand-picked retro synth tracks. Sit back and enjoy the ride!",
-    "Need to contact ZGQ? Check out the 'Contact' window to reach Telegram @ZGQinc or send an email.",
-    "Butterchurn Milkdrop visualizer features 36+ hand-picked visual presets. Click fullscreen for the full trance experience!",
-    "Have you checked out ZGQ's GitHub yet? Lots of exciting projects waiting for you!",
-    "Remember: Never turn off your computer until it's safe to do so."
+  const CLIPPY_IDLE_ACTIONS = [
+    { anim: 'Thinking', text: "我正在思考：今天是不是一个适合写代码和逆向分析的好日子？🤔" },
+    { anim: 'GetTechy', text: "正在扫描主机网络... 发现 NewRetroWave 曲库已载入 612 首合成波神曲！💻" },
+    { anim: 'GetWizardy', text: "见证奇迹的时刻！双击桌面图标可以唤起复古视窗，拖拽随意排列！✨" },
+    { anim: 'GetArtsy', text: "Milkdrop 3D 视觉器拥有 100 款经典预设，随音乐流光溢彩，帧率拉满！🎨" },
+    { anim: 'IdleHeadScratch', text: "哇，这个页面竟然是用现代前端 1:1 像素级复刻 Windows 98 的！" },
+    { anim: 'IdleFingerTap', text: "听这首合成波的时候忍不住跟着节拍敲键盘了~ 🎹" },
+    { anim: 'IdleSnooze', text: "Zzz... 80年代的复古霓虹夜景真的好让人放松..." },
+    { anim: 'IdleAtom', text: "科学与极客！右键点击桌面可以一键切换 Wallpaper Engine 霓虹日落壁纸哦！⚛️" },
+    { anim: 'Searching', text: "想找 ZGQ 的作品吗？快双击打开『项目与导航』搜索 41 个在线项目！🔍" },
+    { anim: 'Congratulate', text: "欢迎来到 ZGQ Inc. 的数字世界，祝你今天也是极客精神满满的一天！🎉" },
+    { anim: 'Writing', text: "正在记事本里记录极客灵感... 灵感+1！📝" },
+    { anim: 'SendMail', text: "想联系作者？通讯簿里有 Telegram @ZGQinc 和 Gmail 邮箱！📬" }
+  ];
+
+  const CLIPPY_CLICK_ANIMATIONS = [
+    'GetAttention', 'Wave', 'Explain', 'GetTechy', 'GetWizardy', 'Congratulate', 'IdleEyeBrowRaise'
   ];
 
   class ClippyAssistant {
@@ -25,6 +34,8 @@
       this.balloon = null;
       this.balloonText = null;
       this.isVisible = true;
+      this.idleTimer = null;
+      this.lastLookTime = 0;
 
       this.init();
     }
@@ -42,9 +53,23 @@
           this.agent = await clippyModule.initAgent(agentsModule.Clippy);
           this.agent.show();
           this.isAgentLoaded = true;
-          this.bindEvents();
-          this.speak("Hi! I'm Clippy. Welcome to ZGQ Inc.'s retro portal!");
-          console.log('Official Clippy agent loaded successfully!');
+
+          // Grand entrance
+          setTimeout(() => {
+            if (this.agent) {
+              try {
+                this.agent.play('Greeting');
+                this.speak("Hi! 我是 Clippy 📎 欢迎来到 ZGQ Inc. 的复古视窗世界！");
+                setTimeout(() => {
+                  if (this.agent) this.agent.play('Wave');
+                }, 2000);
+              } catch (e) {}
+            }
+          }, 600);
+
+          this.bindAgentInteractions();
+          this.startLivelyIdleRoutine();
+          console.log('Official Clippy agent loaded successfully with full animation suite!');
           return;
         }
       } catch (e) {
@@ -55,8 +80,159 @@
       this.createFallbackDOM();
       this.bindEvents();
       setTimeout(() => {
-        this.speak("Hi! I'm Clippy. Welcome to ZGQ Inc.'s retro portal! 📎");
+        this.speak("Hi! 我是 Clippy 📎 欢迎来到 ZGQ Inc. 的复古视窗世界！");
       }, 1000);
+    }
+
+    bindAgentInteractions() {
+      // Click & double click on clippy element
+      setTimeout(() => {
+        const el = document.querySelector('.clippy') || document.querySelector('[class*="clippy"]');
+        if (el) {
+          el.style.cursor = 'pointer';
+          el.title = '我是 Clippy！点击我互动，双击看绝活！';
+
+          el.addEventListener('click', () => {
+            this.reactToClick();
+          });
+
+          el.addEventListener('dblclick', (e) => {
+            e.stopPropagation();
+            this.reactToDoubleClick();
+          });
+        }
+      }, 1500);
+
+      // Listen to radio song changes
+      window.addEventListener('radio:songchanged', (e) => {
+        const track = e.detail && e.detail.track;
+        if (track && this.isVisible && this.agent) {
+          try {
+            this.agent.stop();
+            this.agent.play('Hearing_1');
+            this.speak(`🎶 正在播放: "${track.title}" - ${track.artist_name}`);
+            setTimeout(() => {
+              if (this.agent) this.agent.play('Congratulate');
+            }, 3000);
+          } catch (err) {}
+        }
+      });
+
+      // Mouse tracking glance (debounced)
+      window.addEventListener('mousemove', (e) => {
+        const now = Date.now();
+        if (now - this.lastLookTime < 6000 || !this.agent || !this.isVisible) return;
+
+        const clippyEl = document.querySelector('.clippy');
+        if (!clippyEl) return;
+
+        const rect = clippyEl.getBoundingClientRect();
+        const clippyCenterX = rect.left + rect.width / 2;
+        const clippyCenterY = rect.top + rect.height / 2;
+
+        const deltaX = e.clientX - clippyCenterX;
+        const deltaY = e.clientY - clippyCenterY;
+
+        // If mouse is far to the left
+        if (deltaX < -250 && Math.abs(deltaY) < 200) {
+          this.lastLookTime = now;
+          try { this.agent.play('LookLeft'); } catch (err) {}
+        } else if (deltaY < -200) {
+          this.lastLookTime = now;
+          try { this.agent.play('LookUp'); } catch (err) {}
+        }
+      });
+    }
+
+    startLivelyIdleRoutine() {
+      if (this.idleTimer) clearInterval(this.idleTimer);
+
+      const triggerIdleAction = () => {
+        if (!this.agent || !this.isVisible) return;
+        const item = CLIPPY_IDLE_ACTIONS[Math.floor(Math.random() * CLIPPY_IDLE_ACTIONS.length)];
+        try {
+          this.agent.stop();
+          this.agent.play(item.anim);
+          // 40% chance to speak a humorous quote
+          if (Math.random() < 0.45) {
+            this.speak(item.text, 5000);
+          }
+        } catch (e) {}
+      };
+
+      // Periodic random animations every 16 to 28 seconds
+      this.idleTimer = setInterval(() => {
+        triggerIdleAction();
+      }, 18000);
+    }
+
+    reactToClick() {
+      if (!this.agent) return;
+      const anim = CLIPPY_CLICK_ANIMATIONS[Math.floor(Math.random() * CLIPPY_CLICK_ANIMATIONS.length)];
+      try {
+        this.agent.stop();
+        this.agent.play(anim);
+      } catch (e) {}
+
+      const quotes = [
+        "你点击了我！需要探索 ZGQ 的哪个开源项目吗？📎",
+        "提示：Milkdrop 视觉器支持全屏，按 [全屏] 享受极致视效！🌌",
+        "听歌提示：点击『随机下一首』探索 600+ 首合成波宝藏！🎵",
+        "右键点击桌面空白处，可以切换 Wallpaper Engine 霓虹日落或 CRT 特效！🖼️",
+        "在找彩蛋吗？开始菜单里有原站经典的 FBI WARNING 和愚人节彩蛋哦！⚠️"
+      ];
+      const q = quotes[Math.floor(Math.random() * quotes.length)];
+      this.speak(q, 4500);
+    }
+
+    reactToDoubleClick() {
+      if (!this.agent) return;
+      try {
+        this.agent.stop();
+        const trick = Math.random() > 0.5 ? 'GetWizardy' : 'Congratulate';
+        this.agent.play(trick);
+        this.speak("Ta-da! 魔法时刻！你发现了 Clippy 的隐藏绝活！🎩✨", 4500);
+      } catch (e) {}
+    }
+
+    reactToWindow(winId) {
+      if (!this.agent || !this.isVisible) return;
+      try {
+        if (winId === 'win-visualizer') {
+          this.agent.play('GetArtsy');
+          this.speak("Milkdrop 3D 视觉器启动！流光溢彩，震撼视界！🎨", 4000);
+        } else if (winId === 'win-navigation') {
+          this.agent.play('Explain');
+          this.speak("这里汇集了 ZGQ 的 41 个在线项目、GitHub仓库与历史归档！🌐", 4000);
+        } else if (winId === 'win-github') {
+          this.agent.play('GetTechy');
+          this.speak("这里展示了 ZGQ 的 GitHub 活跃数据、设备装备库与深度逆向博文！💻", 4000);
+        } else if (winId === 'win-fbi') {
+          this.agent.play('Alert');
+          this.speak("⚠️ 经典 FBI WARNING 高能彩蛋出没！请调大音量欣赏！", 4000);
+        } else if (winId === 'win-mywords') {
+          this.agent.play('Writing');
+          this.speak("这是站长当年写给所有访客的真情独白《我想说的话》📜", 4000);
+        }
+      } catch (e) {}
+    }
+
+    speak(text, duration = 6000) {
+      if (this.isAgentLoaded && this.agent) {
+        try {
+          this.agent.speak(text);
+          return;
+        } catch (e) {}
+      }
+
+      if (!this.balloon || !this.balloonText) return;
+      this.balloonText.textContent = text;
+      this.balloon.style.display = 'block';
+
+      clearTimeout(this._hideTimer);
+      this._hideTimer = setTimeout(() => {
+        if (this.balloon) this.balloon.style.display = 'none';
+      }, duration);
     }
 
     createFallbackDOM() {
@@ -84,53 +260,11 @@
     }
 
     bindEvents() {
-      // Click on clippy for tips
       const char = document.getElementById('clippy-character');
       if (char) {
         char.addEventListener('click', () => {
-          this.speakRandomQuote();
-          this.wiggle();
+          this.reactToClick();
         });
-      }
-
-      // Listen to radio song changes
-      window.addEventListener('radio:songchanged', (e) => {
-        const track = e.detail.track;
-        if (track && this.isVisible) {
-          this.speak(`🎶 Now Playing: "${track.title}" - ${track.artist_name}`);
-        }
-      });
-    }
-
-    speak(text, duration = 6000) {
-      if (this.isAgentLoaded && this.agent) {
-        try {
-          this.agent.speak(text);
-          return;
-        } catch (e) {}
-      }
-
-      if (!this.balloon || !this.balloonText) return;
-      this.balloonText.textContent = text;
-      this.balloon.style.display = 'block';
-      this.balloon.classList.add('animate-pop');
-
-      clearTimeout(this._hideTimer);
-      this._hideTimer = setTimeout(() => {
-        this.balloon.style.display = 'none';
-      }, duration);
-    }
-
-    speakRandomQuote() {
-      const q = CLIPPY_QUOTES[Math.floor(Math.random() * CLIPPY_QUOTES.length)];
-      this.speak(q);
-    }
-
-    wiggle() {
-      const char = document.getElementById('clippy-character');
-      if (char) {
-        char.classList.add('clippy-wiggle');
-        setTimeout(() => char.classList.remove('clippy-wiggle'), 600);
       }
     }
 

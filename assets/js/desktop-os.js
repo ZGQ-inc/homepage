@@ -236,6 +236,11 @@
           window.visualizerManager.init(window.radioEngine);
         }, 50);
       }
+
+      // Trigger lively Clippy reaction to window opening
+      if (window.clippy && typeof window.clippy.reactToWindow === 'function') {
+        window.clippy.reactToWindow(id);
+      }
     }
 
     closeWindow(id) {

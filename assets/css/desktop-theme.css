@@ -288,7 +288,7 @@ html, body {
   position: fixed;
   bottom: var(--taskbar-height);
   left: 2px;
-  width: 200px;
+  width: 235px;
   background: var(--win-bg);
   border: 2px outset #fff;
   box-shadow: 3px 3px 10px rgba(0,0,0,0.5);
@@ -299,6 +299,45 @@ html, body {
 
 #start-menu.open {
   display: flex;
+}
+
+/* Custom Start Menu Sidebar with Vertical Gradient & Copyright */
+.start-sidebar-custom {
+  width: 30px;
+  min-width: 30px;
+  background: linear-gradient(180deg, #1084d0 0%, #000080 50%, #050528 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 12px 2px;
+  box-sizing: border-box;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  user-select: none;
+  border-right: 1px solid #808080;
+  box-shadow: inset 1px 0 0 rgba(255, 255, 255, 0.4);
+}
+
+.start-sidebar-custom .start-sidebar-brand {
+  font-family: 'MS Sans Serif', 'Segoe UI', Tahoma, sans-serif;
+  font-weight: 900;
+  font-size: 13px;
+  letter-spacing: 2px;
+  color: #ffffff;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.9);
+  white-space: nowrap;
+  margin-bottom: 6px;
+}
+
+.start-sidebar-custom .start-sidebar-sub {
+  font-family: 'MS Sans Serif', 'Segoe UI', Tahoma, sans-serif;
+  font-size: 9px;
+  letter-spacing: 1.5px;
+  color: #ffd700;
+  font-weight: bold;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.9);
+  white-space: nowrap;
 }
 
 .start-sidebar-img {
@@ -459,6 +498,43 @@ body.crt-active .crt-overlay {
 }
 
 /* GitHub Profile Window */
+.gh-tab-bar {
+  display: flex;
+  gap: 3px;
+  border-bottom: 2px solid #808080;
+  padding-bottom: 4px;
+  margin-bottom: 8px;
+  flex-wrap: wrap;
+}
+
+.gh-tab-btn {
+  font-family: inherit;
+  font-size: 11px;
+  padding: 3px 8px;
+  cursor: pointer;
+  background: #c0c0c0;
+  border: 2px outset #fff;
+}
+
+.gh-tab-btn:hover {
+  background: #d4d0c8;
+}
+
+.gh-tab-btn.active {
+  font-weight: bold;
+  background: #ffffff;
+  border: 2px inset #808080;
+  box-shadow: inset 1px 1px 0px #000;
+}
+
+.gh-tab-content {
+  display: none;
+}
+
+.gh-tab-content.active {
+  display: block;
+}
+
 .gh-profile-header {
   display: flex;
   gap: 12px;
@@ -470,8 +546,8 @@ body.crt-active .crt-overlay {
 }
 
 .gh-avatar {
-  width: 52px;
-  height: 52px;
+  width: 56px;
+  height: 56px;
   border: 2px inset #808080;
   object-fit: cover;
 }
@@ -481,6 +557,30 @@ body.crt-active .crt-overlay {
   max-width: 440px;
   margin-top: 8px;
   border: 1px solid #808080;
+}
+
+.gh-article-card {
+  display: flex;
+  gap: 10px;
+  background: #ffffff;
+  border: 1px inset #808080;
+  padding: 8px;
+  margin-bottom: 8px;
+  transition: background 0.15s;
+}
+
+.gh-article-card:hover {
+  background: #f0f4f8;
+}
+
+.gh-article-badge {
+  display: inline-block;
+  font-size: 10px;
+  font-weight: bold;
+  padding: 1px 5px;
+  background: #000080;
+  color: #fff;
+  border-radius: 2px;
 }
 
 .tag-cloud {
