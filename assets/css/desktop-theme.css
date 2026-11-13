@@ -112,6 +112,83 @@ body *::-webkit-scrollbar-corner {
   background: silver;
 }
 
+/* Firefox Windows 98 Authentic Scrollbar Polyfill */
+.win98-scrollable-ff {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
+
+.win98-sb-v {
+  position: absolute;
+  width: 16px;
+  display: flex;
+  flex-direction: column;
+  user-select: none;
+  -moz-user-select: none;
+  z-index: 99;
+  background: silver;
+  box-sizing: border-box;
+}
+
+.win98-sb-btn {
+  width: 16px;
+  height: 16px;
+  min-height: 16px;
+  background: silver;
+  box-shadow: inset 1px 1px #dfdfdf, inset -1px -1px gray;
+  border: 1px solid;
+  border-color: silver #000 #000 silver;
+  background-repeat: no-repeat;
+  background-size: 16px;
+  flex-shrink: 0;
+  cursor: default;
+  box-sizing: border-box;
+}
+
+.win98-sb-btn:active {
+  box-shadow: inset 1px 1px #000, inset -1px -1px #dfdfdf;
+  border-color: #000 silver silver #000;
+}
+
+.win98-sb-up {
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgLTAuNSAxNiAxNiIgc2hhcGUtcmVuZGVyaW5nPSJjcmlzcEVkZ2VzIj4KPG1ldGFkYXRhPk1hZGUgd2l0aCBQaXhlbHMgdG8gU3ZnIGh0dHBzOi8vY29kZXBlbi5pby9zaHNoYXcvcGVuL1hieHZOajwvbWV0YWRhdGE+CjxwYXRoIHN0cm9rZT0iIzAwMDAwMCIgZD0iTTcgNWgxTTYgNmgzTTUgN2g1TTQgOGg3IiAvPgo8L3N2Zz4=");
+}
+
+.win98-sb-down {
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgLTAuNSAxNiAxNiIgc2hhcGUtcmVuZGVyaW5nPSJjcmlzcEVkZ2VzIj4KPG1ldGFkYXRhPk1hZGUgd2l0aCBQaXhlbHMgdG8gU3ZnIGh0dHBzOi8vY29kZXBlbi5pby9zaHNoYXcvcGVuL1hieHZOajwvbWV0YWRhdGE+CjxwYXRoIHN0cm9rZT0iIzAwMDAwMCIgZD0iTTQgNWg3TTUgNmg1TTYgN2gzTTcgOGgxIiAvPgo8L3N2Zz4=");
+}
+
+.win98-sb-track {
+  flex: 1 1 auto;
+  position: relative;
+  width: 16px;
+  image-rendering: optimizeSpeed;
+  image-rendering: pixelated;
+  image-rendering: optimize-contrast;
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgLTAuNSAyIDIiIHNoYXBlLXJlbmRlcmluZz0iY3Jpc3BFZGdlcyI+CjxtZXRhZGF0YT5NYWRlIHdpdGggUGl4ZWxzIHRvIFN2ZyBodHRwczovL2NvZGVwZW4uaW8vc2hzaGF3L3Blbi9YYnh2Tmo8L21ldGFkYXRhPgo8cGF0aCBzdHJva2U9IiNjMGMwYzAiIGQ9Ik0wIDBoMU0xIDFoMSIgLz4KPC9zdmc+");
+  background-position: 0 0;
+  background-repeat: repeat;
+  background-size: 2px;
+  box-sizing: border-box;
+}
+
+.win98-sb-thumb {
+  position: absolute;
+  left: 0;
+  width: 16px;
+  min-height: 16px;
+  background: silver;
+  box-shadow: inset 1px 1px #dfdfdf, inset -1px -1px gray;
+  border: 1px solid;
+  border-color: silver #000 #000 silver;
+  cursor: default;
+  box-sizing: border-box;
+}
+
+.win98-sb-thumb:active {
+  background: silver;
+}
+
 html, body {
   margin: 0;
   padding: 0;
