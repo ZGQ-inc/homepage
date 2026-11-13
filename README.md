@@ -33,8 +33,8 @@
 - **Webamp (Winamp 2.9)**：内置 10 首复古合成波（Synthwave / Retrowave）经典曲目，包含双通道波形/频谱仪、10 段专业均衡器与播放列表编辑器。
 - **Butterchurn (Milkdrop 2 WebGL)**：纯前端 WebGL 移植的经典 Milkdrop 音乐可视化引擎，内置多样化视觉预设，随着音频实时律动变换光影。
 
-### 📻 3. Nightride FM (NRW) 专属合成波电台
-- 独立于本地音频文件的在线实时广播电台客户端，直接接入 Nightride FM 官方高质量无损流媒体音频源，支持播放/暂停状态无缝恢复与声量调节。
+### 📻 3. NewRetroWave (NRW) 专属合成波电台
+- 独立于本地音频文件的在线实时广播电台客户端，直接接入 NewRetroWave (NRW) 官方高质量无损流媒体音频源 (`https://backend.nrwmusic.stream/`)，支持实时曲库拉取、在线随机下一首与声量调节。
 
 ### 👤 4. 全量原样集成的 GitHub 个人主页
 严格按照 [@ZGQ-inc](https://github.com/ZGQ-inc) 真实 Profile 结构重构，**不作任何精简**，直接原封不动引用外部原生 Badge 与 Icon：
@@ -135,7 +135,9 @@ homepage/
 | **Devicon** | Devicon Team | 开发者与编程语言原生矢量图标库 | [GitHub](https://github.com/devicons/devicon) |
 | **Dashboard Icons** | Homarr Labs | 高清 Homelab / 服务 Dashboard 图标库 | [GitHub](https://github.com/homarr-labs/dashboard-icons) |
 | **Shields.io** | Shields Team | 简洁规范的代码徽章生成服务 | [GitHub](https://github.com/badges/shields) |
-| **Nightride FM** | Nightride.fm | 优质 80s 合成波、赛博朋克流媒体电台 | [Website](https://nightride.fm/) |
+| **NewRetroWave (NRW)** | NRW Records | 80s 复古合成波官方流媒体电台与曲库 | [Website](https://newretrowave.com/) · [Stream](https://nrwmusic.stream/) |
+| **IFmiss/music** | IFmiss | 原站经典 HTML5 音乐播放器组件 | [GitHub](https://github.com/IFmiss/music) |
+| **HTML5 UP (Dimension)** | @ajlkn | 原站毛玻璃卡片响应式前端设计主题 | [HTML5 UP](https://html5up.net/dimension) |
 
 ---
 
