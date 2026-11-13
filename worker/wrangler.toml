@@ -7,7 +7,7 @@ compatibility_flags = ["python_workers"]
 [[d1_databases]]
 binding       = "DB"
 database_name = "homepage-db"
-database_id   = "homepage-db"
+database_id   = "1f35ef65-f2fc-4ad5-a091-dcf85356e4f0"
 
 # Public environment variables
 [vars]
