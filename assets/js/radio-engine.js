@@ -22,8 +22,8 @@
       title: 'Running in the Night',
       artist_name: 'FM-84 & Ollie Wride',
       album_title: 'Atlas',
-      urlsong: './music/Running_in_the_Night-FM-84&Ollie_Wride.mp3',
-      cover: './music/Running_in_the_Night-FM-84&Ollie_Wride.jpg',
+      urlsong: './old/music/Running_in_the_Night-FM-84&Ollie_Wride.mp3',
+      cover: './old/music/Running_in_the_Night-FM-84&Ollie_Wride.jpg',
       duration: '04:30',
       isLocal: true
     },
@@ -32,8 +32,8 @@
       title: 'Los Angeles',
       artist_name: 'The Midnight',
       album_title: 'Days of Thunder',
-      urlsong: './music/The_Midnight-Los_Angeles.mp3',
-      cover: './music/The_Midnight-Los_Angeles.png',
+      urlsong: './old/music/The_Midnight-Los_Angeles.mp3',
+      cover: './old/music/The_Midnight-Los_Angeles.png',
       duration: '06:30',
       isLocal: true
     },
@@ -42,8 +42,8 @@
       title: "Please Don't Cry",
       artist_name: 'LeBrock',
       album_title: 'Action & Romance',
-      urlsong: "./music/LeBrock-Please_Don`t_Cry.mp3",
-      cover: "./music/LeBrock-Please_Don`t_Cry.png",
+      urlsong: "./old/music/LeBrock-Please_Don`t_Cry.mp3",
+      cover: "./old/music/LeBrock-Please_Don`t_Cry.png",
       duration: '04:02',
       isLocal: true
     },
@@ -52,8 +52,8 @@
       title: 'When You Grow up, Your Heart Dies',
       artist_name: 'GUNSHIP',
       album_title: 'Dark All Day',
-      urlsong: './music/GUNSHIP-When_You_Grow_up,_Your_Heart_Dies.mp3',
-      cover: './music/When_You_Grow_Up,_Your_Heart_Dies-GUNSHIP.jpg',
+      urlsong: './old/music/GUNSHIP-When_You_Grow_up,_Your_Heart_Dies.mp3',
+      cover: './old/music/When_You_Grow_Up,_Your_Heart_Dies-GUNSHIP.jpg',
       duration: '05:48',
       isLocal: true
     },
@@ -62,8 +62,8 @@
       title: 'Dead of Night',
       artist_name: 'Dance With The Dead',
       album_title: 'Loved to Death',
-      urlsong: './music/Dance_With_The_Dead-Dead_of_Night.mp3',
-      cover: './music/Dance_With_The_Dead-Dead_of_Night.png',
+      urlsong: './old/music/Dance_With_The_Dead-Dead_of_Night.mp3',
+      cover: './old/music/Dance_With_The_Dead-Dead_of_Night.png',
       duration: '04:03',
       isLocal: true
     },
@@ -72,8 +72,8 @@
       title: 'On the Run',
       artist_name: 'Timecop1983',
       album_title: 'Journeys',
-      urlsong: './music/Timecop1983-On_the_Run.mp3',
-      cover: './music/Timecop1983-On_the_Run.png',
+      urlsong: './old/music/Timecop1983-On_the_Run.mp3',
+      cover: './old/music/Timecop1983-On_the_Run.png',
       duration: '04:47',
       isLocal: true
     }
@@ -235,7 +235,7 @@
             artist_name: item.artist_name || 'NRW Artist',
             album_title: item.album_title || 'NewRetroWave',
             urlsong: item.urlsong.startsWith('http') ? item.urlsong : (NRW_AUDIO_BASE + item.urlsong),
-            cover: item.cover ? (item.cover.startsWith('//') ? 'https:' + item.cover : (item.cover.startsWith('http') ? item.cover : NRW_IMAGE_BASE + item.cover)) : './images/avatar.png',
+            cover: item.cover ? (item.cover.startsWith('//') ? 'https:' + item.cover : (item.cover.startsWith('http') ? item.cover : NRW_IMAGE_BASE + item.cover)) : './assets/images/avatar.png',
             duration: item.duration || '03:45',
             year: item.year || 2026,
             isLocal: false

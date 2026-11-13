@@ -492,70 +492,70 @@
             artist: "FM-84 & Ollie Wride",
             title: "Running in the Night"
           },
-          url: "./music/Running_in_the_Night-FM-84&Ollie_Wride.mp3"
+          url: "./old/music/Running_in_the_Night-FM-84&Ollie_Wride.mp3"
         },
         {
           metaData: {
             artist: "The Midnight",
             title: "Los Angeles"
           },
-          url: "./music/The_Midnight-Los_Angeles.mp3"
+          url: "./old/music/The_Midnight-Los_Angeles.mp3"
         },
         {
           metaData: {
             artist: "The Midnight & Timecop1983",
             title: "River of Darkness"
           },
-          url: "./music/The_Midnight&Timecop1983-River_of_Darkness_(feat._Timecop1983).mp3"
+          url: "./old/music/The_Midnight&Timecop1983-River_of_Darkness_(feat._Timecop1983).mp3"
         },
         {
           metaData: {
             artist: "LeBrock",
             title: "Please Don't Cry"
           },
-          url: "./music/LeBrock-Please_Don`t_Cry.mp3"
+          url: "./old/music/LeBrock-Please_Don`t_Cry.mp3"
         },
         {
           metaData: {
             artist: "LeBrock",
             title: "Hangin' On"
           },
-          url: "./music/LeBrock-Hangin`_On.mp3"
+          url: "./old/music/LeBrock-Hangin`_On.mp3"
         },
         {
           metaData: {
             artist: "LeBrock",
             title: "Takes All Night"
           },
-          url: "./music/LeBrock-Takes_All_Night.mp3"
+          url: "./old/music/LeBrock-Takes_All_Night.mp3"
         },
         {
           metaData: {
             artist: "Dance With The Dead",
             title: "Dead of Night"
           },
-          url: "./music/Dance_With_The_Dead-Dead_of_Night.mp3"
+          url: "./old/music/Dance_With_The_Dead-Dead_of_Night.mp3"
         },
         {
           metaData: {
             artist: "GUNSHIP",
             title: "When You Grow up, Your Heart Dies"
           },
-          url: "./music/GUNSHIP-When_You_Grow_up,_Your_Heart_Dies.mp3"
+          url: "./old/music/GUNSHIP-When_You_Grow_up,_Your_Heart_Dies.mp3"
         },
         {
           metaData: {
             artist: "Timecop1983",
             title: "On the Run"
           },
-          url: "./music/Timecop1983-On_the_Run.mp3"
+          url: "./old/music/Timecop1983-On_the_Run.mp3"
         },
         {
           metaData: {
             artist: "PYLOT",
             title: "A Race Against Time"
           },
-          url: "./music/PYLOT-A_Race_Against_Time.mp3"
+          url: "./old/music/PYLOT-A_Race_Against_Time.mp3"
         }
       ];
 
