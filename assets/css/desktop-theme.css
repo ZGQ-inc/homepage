@@ -33,146 +33,88 @@
 }
 
 /* ==========================================================================
-   Windows 98 Authentic Pixel-Perfect Scrollbars & Universal Smooth Scrolling
+   Windows 95/98 Authentic Scrollbars (Dakedres Gist - windows93.net)
+   Source: https://gist.github.com/Dakedres/0ccda599648833a1c2f65d3967aa131b
+   With Universal Smooth Scrolling
    ========================================================================== */
 
 /* Universal smooth scrolling across all scroll containers */
-html {
-  scroll-behavior: smooth;
-}
-
-*, *::before, *::after {
+html, body, *, *::before, *::after {
   scroll-behavior: smooth;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  html, *, *::before, *::after {
+  html, body, *, *::before, *::after {
     scroll-behavior: auto !important;
   }
 }
 
 /* Standard CSS Scrollbars (Firefox & modern standards) */
 * {
-  scrollbar-color: #c0c0c0 #dfdfdf;
+  scrollbar-color: silver transparent;
   scrollbar-width: auto;
 }
 
-/* WebKit / Chromium / Edge / Safari 1:1 Windows 98 Authentic Scrollbars */
-::-webkit-scrollbar {
+/* Windows 95/98 Scrollbar by Dakedres */
+::-webkit-scrollbar,
+body *::-webkit-scrollbar {
   width: 16px;
   height: 16px;
-  background: var(--win-scrollbar-checker) repeat;
-  image-rendering: pixelated;
+  background: none;
 }
 
-::-webkit-scrollbar-track {
-  background: var(--win-scrollbar-checker) repeat;
-  image-rendering: pixelated;
-}
-
-::-webkit-scrollbar-thumb {
-  background-color: #c0c0c0;
-  border-top: 1px solid #dfdfdf;
-  border-left: 1px solid #dfdfdf;
-  border-right: 1px solid #000000;
-  border-bottom: 1px solid #000000;
-  box-shadow: 1px 1px 0 #ffffff inset, -1px -1px 0 #808080 inset;
-  box-sizing: border-box;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background-color: #c0c0c0;
-}
-
-::-webkit-scrollbar-thumb:active {
-  background-color: #c0c0c0;
-}
-
-::-webkit-scrollbar-corner {
-  background-color: #c0c0c0;
-}
-
-/* Stepper Buttons (16px x 16px with authentic COMCTL32 pixel arrows) */
-::-webkit-scrollbar-button {
-  display: block;
+::-webkit-scrollbar-thumb,
+::-webkit-scrollbar-button,
+body *::-webkit-scrollbar-thumb,
+body *::-webkit-scrollbar-button {
   width: 16px;
   height: 16px;
-  background-color: #c0c0c0;
-  border-top: 1px solid #dfdfdf;
-  border-left: 1px solid #dfdfdf;
-  border-right: 1px solid #000000;
-  border-bottom: 1px solid #000000;
-  box-shadow: 1px 1px 0 #ffffff inset, -1px -1px 0 #808080 inset;
-  background-image: var(--win-scrollbar-arrows);
+  background: silver;
+  box-shadow: inset 1px 1px #dfdfdf, inset -1px -1px gray;
+  border: 1px solid;
+  border-color: silver #000 #000 silver;
+}
+
+::-webkit-scrollbar-track,
+body *::-webkit-scrollbar-track {
+  image-rendering: optimizeSpeed;
   image-rendering: pixelated;
+  image-rendering: optimize-contrast;
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgLTAuNSAyIDIiIHNoYXBlLXJlbmRlcmluZz0iY3Jpc3BFZGdlcyI+CjxtZXRhZGF0YT5NYWRlIHdpdGggUGl4ZWxzIHRvIFN2ZyBodHRwczovL2NvZGVwZW4uaW8vc2hzaGF3L3Blbi9YYnh2Tmo8L21ldGFkYXRhPgo8cGF0aCBzdHJva2U9IiNjMGMwYzAiIGQ9Ik0wIDBoMU0xIDFoMSIgLz4KPC9zdmc+");
+  background-position: 0 0;
+  background-repeat: repeat;
+  background-size: 2px;
+}
+
+::-webkit-scrollbar-button,
+body *::-webkit-scrollbar-button {
   background-repeat: no-repeat;
-  box-sizing: border-box;
+  background-size: 16px;
 }
 
-/* Directional Arrow Positions (pixel-perfect centering in 16x16 button) */
-::-webkit-scrollbar-button:vertical:decrement,
-::-webkit-scrollbar-button:vertical:start:decrement,
-::-webkit-scrollbar-button:single-button:vertical:decrement {
-  background-position: calc(9px * -1 + 2px) 2px; /* Up arrow ▲ */
+::-webkit-scrollbar-button:single-button:vertical:decrement,
+body *::-webkit-scrollbar-button:single-button:vertical:decrement {
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgLTAuNSAxNiAxNiIgc2hhcGUtcmVuZGVyaW5nPSJjcmlzcEVkZ2VzIj4KPG1ldGFkYXRhPk1hZGUgd2l0aCBQaXhlbHMgdG8gU3ZnIGh0dHBzOi8vY29kZXBlbi5pby9zaHNoYXcvcGVuL1hieHZOajwvbWV0YWRhdGE+CjxwYXRoIHN0cm9rZT0iIzAwMDAwMCIgZD0iTTcgNWgxTTYgNmgzTTUgN2g1TTQgOGg3IiAvPgo8L3N2Zz4=");
 }
 
-::-webkit-scrollbar-button:vertical:increment,
-::-webkit-scrollbar-button:vertical:end:increment,
-::-webkit-scrollbar-button:single-button:vertical:increment {
-  background-position: calc(9px * -0 + 2px) 2px; /* Down arrow ▼ */
+::-webkit-scrollbar-button:single-button:vertical:increment,
+body *::-webkit-scrollbar-button:single-button:vertical:increment {
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgLTAuNSAxNiAxNiIgc2hhcGUtcmVuZGVyaW5nPSJjcmlzcEVkZ2VzIj4KPG1ldGFkYXRhPk1hZGUgd2l0aCBQaXhlbHMgdG8gU3ZnIGh0dHBzOi8vY29kZXBlbi5pby9zaHNoYXcvcGVuL1hieHZOajwvbWV0YWRhdGE+CjxwYXRoIHN0cm9rZT0iIzAwMDAwMCIgZD0iTTQgNWg3TTUgNmg1TTYgN2gzTTcgOGgxIiAvPgo8L3N2Zz4=");
 }
 
-::-webkit-scrollbar-button:horizontal:decrement,
-::-webkit-scrollbar-button:horizontal:start:decrement,
-::-webkit-scrollbar-button:single-button:horizontal:decrement {
-  background-position: calc(9px * -3 + 2px) 2px; /* Left arrow ◄ */
+::-webkit-scrollbar-button:single-button:horizontal:decrement,
+body *::-webkit-scrollbar-button:single-button:horizontal:decrement {
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgLTAuNSAxNiAxNiIgc2hhcGUtcmVuZGVyaW5nPSJjcmlzcEVkZ2VzIj4KPG1ldGFkYXRhPk1hZGUgd2l0aCBQaXhlbHMgdG8gU3ZnIGh0dHBzOi8vY29kZXBlbi5pby9zaHNoYXcvcGVuL1hieHZOajwvbWV0YWRhdGE+CjxwYXRoIHN0cm9rZT0iIzAwMDAwMCIgZD0iTTggM2gxTTcgNGgyTTYgNWgzTTUgNmg0TTYgN2gzTTcgOGgyTTggOWgxIiAvPgo8L3N2Zz4=");
 }
 
-::-webkit-scrollbar-button:horizontal:increment,
-::-webkit-scrollbar-button:horizontal:end:increment,
-::-webkit-scrollbar-button:single-button:horizontal:increment {
-  background-position: calc(9px * -2 + 2px) 2px; /* Right arrow ► */
+::-webkit-scrollbar-button:single-button:horizontal:increment,
+body *::-webkit-scrollbar-button:single-button:horizontal:increment {
+  background-image: url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgLTAuNSAxNiAxNiIgc2hhcGUtcmVuZGVyaW5nPSJjcmlzcEVkZ2VzIj4KPG1ldGFkYXRhPk1hZGUgd2l0aCBQaXhlbHMgdG8gU3ZnIGh0dHBzOi8vY29kZXBlbi5pby9zaHNoYXcvcGVuL1hieHZOajwvbWV0YWRhdGE+CjxwYXRoIHN0cm9rZT0iIzAwMDAwMCIgZD0iTTYgM2gxTTYgNGgyTTYgNWgzTTYgNmg0TTYgN2gzTTYgOGgyTTYgOWgxIiAvPgo8L3N2Zz4=");
 }
 
-/* Active / Pressed Stepper Button: Sunken border + 1px diagonal arrow depression */
-::-webkit-scrollbar-button:active {
-  border: 1px solid #808080;
-  border-right-color: #ffffff;
-  border-bottom-color: #ffffff;
-  box-shadow: inset 1px 1px 0 #000000;
-}
-
-::-webkit-scrollbar-button:vertical:decrement:active,
-::-webkit-scrollbar-button:vertical:start:decrement:active,
-::-webkit-scrollbar-button:single-button:vertical:decrement:active {
-  background-position: calc(9px * -1 + 3px) 3px;
-}
-
-::-webkit-scrollbar-button:vertical:increment:active,
-::-webkit-scrollbar-button:vertical:end:increment:active,
-::-webkit-scrollbar-button:single-button:vertical:increment:active {
-  background-position: calc(9px * -0 + 3px) 3px;
-}
-
-::-webkit-scrollbar-button:horizontal:decrement:active,
-::-webkit-scrollbar-button:horizontal:start:decrement:active,
-::-webkit-scrollbar-button:single-button:horizontal:decrement:active {
-  background-position: calc(9px * -3 + 3px) 3px;
-}
-
-::-webkit-scrollbar-button:horizontal:increment:active,
-::-webkit-scrollbar-button:horizontal:end:increment:active,
-::-webkit-scrollbar-button:single-button:horizontal:increment:active {
-  background-position: calc(9px * -2 + 3px) 3px;
-}
-
-/* Inactive / Disabled state */
-::-webkit-scrollbar-button:disabled {
-  border-top: 1px solid #dfdfdf;
-  border-left: 1px solid #dfdfdf;
-  border-right: 1px solid #000000;
-  border-bottom: 1px solid #000000;
-  box-shadow: 1px 1px 0 #ffffff inset, -1px -1px 0 #808080 inset;
+::-webkit-scrollbar-corner,
+body *::-webkit-scrollbar-corner {
+  background: silver;
 }
 
 html, body {
