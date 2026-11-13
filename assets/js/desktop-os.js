@@ -42,6 +42,7 @@
       this.setupContextMenu();
       this.setupClock();
       this.setupSoundToggle();
+      this.setupSoundBalloon();
       this.setupFoldableAdaptation();
       this.setupWebampLauncher();
 
@@ -71,18 +72,28 @@
       this.isSoundEnabled = !!enabled;
       localStorage.setItem('win98_sound_enabled', this.isSoundEnabled ? 'true' : 'false');
       this.updateSoundTrayIcon();
-      if (userTriggered) {
-        if (this.isSoundEnabled) {
+
+      if (this.isSoundEnabled) {
+        if (this.hideSoundBalloon) this.hideSoundBalloon();
+        if (userTriggered) {
           this.playSound('chord');
-          if (window.clippyAssistant) {
-            window.clippyAssistant.speak("网页声音已开启！🔊 现在可以听到复古音效啦~", 6000);
-          }
-        } else {
-          if (window.clippyAssistant) {
-            window.clippyAssistant.speak("网页声音已静音。🔇", 5000);
-          }
         }
+      } else {
+        // When muted, pause any ongoing sounds immediately
+        Object.values(this.sounds).forEach(s => {
+          try {
+            s.pause();
+            s.currentTime = 0;
+          } catch (e) {}
+        });
       }
+
+      // Sync all media elements on the page with global mute state
+      try {
+        document.querySelectorAll('audio, video').forEach(media => {
+          media.muted = !this.isSoundEnabled;
+        });
+      } catch (e) {}
     }
 
     setupSoundToggle() {
@@ -94,6 +105,38 @@
         e.stopPropagation();
         this.setSoundEnabled(!this.isSoundEnabled, true);
       });
+    }
+
+    setupSoundBalloon() {
+      const balloon = document.getElementById('win98-tray-balloon');
+      const closeBtn = document.getElementById('win98-balloon-close');
+      const soundIcon = document.getElementById('taskbar-sound-toggle');
+      if (!balloon) return;
+
+      const hideBalloon = () => {
+        balloon.style.display = 'none';
+      };
+
+      if (closeBtn) {
+        closeBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          hideBalloon();
+        });
+      }
+
+      // Clicking balloon enables sound
+      balloon.addEventListener('click', () => {
+        this.setSoundEnabled(true, true);
+        hideBalloon();
+      });
+
+      this.showSoundBalloon = () => {
+        if (this.isSoundEnabled) return;
+        balloon.style.display = 'block';
+        setTimeout(hideBalloon, 10000);
+      };
+
+      this.hideSoundBalloon = hideBalloon;
     }
 
     updateSoundTrayIcon() {

@@ -51,10 +51,8 @@
         const agentsModule = await import('https://unpkg.com/clippyjs/dist/agents/index.mjs');
         if (clippyModule && agentsModule && agentsModule.Clippy) {
           this.agent = await clippyModule.initAgent(agentsModule.Clippy);
-          this.agent.show();
-          this.isAgentLoaded = true;
 
-          // Mute clippy internal sound effects if desktop sound is muted
+          // Mute clippy internal sound effects immediately BEFORE show() if desktop sound is muted
           if (this.agent && this.agent._sound) {
             const origPlay = this.agent._sound.play;
             if (origPlay) {
@@ -64,6 +62,9 @@
               };
             }
           }
+
+          this.agent.show();
+          this.isAgentLoaded = true;
 
           // Grand entrance
           setTimeout(() => {
@@ -235,17 +236,6 @@
           this.speak("打开了通讯簿与留言板！支持直接提交到 Cloudflare D1 数据库哦！💬", 8000);
         }
       } catch (e) {}
-    }
-
-    promptEnableSound() {
-      if (!this.isVisible) return;
-      try {
-        if (this.agent) {
-          this.agent.stop();
-          this.agent.play('Explain');
-        }
-      } catch (e) {}
-      this.speak("提示：网页当前处于静音状态。如果想听取复古音效和 Windows 98 开机音乐，可以点击右下角任务栏的小喇叭图标开启声音哦！📎🔊", 10000);
     }
 
     speak(text, duration = 8000) {
