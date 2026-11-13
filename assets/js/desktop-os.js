@@ -81,6 +81,9 @@
           this.makeDraggable(el, titleBar);
         }
 
+        // 8-way border/corner resizing (inspired by 1j01/98 os-gui)
+        this.makeResizable(el);
+
         const closeBtn = el.querySelector('button[aria-label="Close"]');
         if (closeBtn) {
           closeBtn.addEventListener('click', (e) => {
@@ -199,6 +202,133 @@
       handleEl.addEventListener('dblclick', (e) => {
         if (e.target.tagName.toLowerCase() === 'button') return;
         this.toggleMaximize(winEl.dataset.windowId);
+      });
+    }
+
+    /* -------------------------------------------------------------------------
+     * 8-Way Window Resizing (Inspired by 1j01/98 $Window.js)
+     * Supports mouse & touch edge/corner dragging with constraints
+     * ------------------------------------------------------------------------- */
+    makeResizable(winEl) {
+      const directions = ['n', 's', 'w', 'e', 'nw', 'ne', 'sw', 'se'];
+      directions.forEach((dir) => {
+        const handle = document.createElement('div');
+        handle.className = `window-handle window-handle-${dir}`;
+        handle.dataset.direction = dir;
+        winEl.appendChild(handle);
+
+        let isResizing = false;
+        let startX = 0, startY = 0;
+        let startLeft = 0, startTop = 0, startWidth = 0, startHeight = 0;
+
+        const onResizeStart = (clientX, clientY) => {
+          if (winEl.classList.contains('maximized')) return;
+          isResizing = true;
+          startX = clientX;
+          startY = clientY;
+
+          const rect = winEl.getBoundingClientRect();
+          startLeft = rect.left;
+          startTop = rect.top;
+          startWidth = rect.width;
+          startHeight = rect.height;
+
+          this.bringToFront(winEl.dataset.windowId);
+          document.body.style.userSelect = 'none';
+          document.body.style.webkitUserSelect = 'none';
+        };
+
+        const onResizeMove = (clientX, clientY) => {
+          if (!isResizing) return;
+          const dx = clientX - startX;
+          const dy = clientY - startY;
+
+          const minW = 280;
+          const minH = 160;
+          const maxW = window.innerWidth - 8;
+          const maxH = window.innerHeight - 36;
+
+          let newWidth = startWidth;
+          let newHeight = startHeight;
+          let newLeft = startLeft;
+          let newTop = startTop;
+
+          // Horizontal
+          if (dir.includes('e')) {
+            newWidth = Math.max(minW, Math.min(maxW - startLeft, startWidth + dx));
+          } else if (dir.includes('w')) {
+            newWidth = Math.max(minW, startWidth - dx);
+            newLeft = startLeft + (startWidth - newWidth);
+            if (newLeft < 0) {
+              newWidth += newLeft;
+              newLeft = 0;
+            }
+          }
+
+          // Vertical
+          if (dir.includes('s')) {
+            newHeight = Math.max(minH, Math.min(maxH - startTop, startHeight + dy));
+          } else if (dir.includes('n')) {
+            newHeight = Math.max(minH, startHeight - dy);
+            newTop = startTop + (startHeight - newHeight);
+            if (newTop < 0) {
+              newHeight += newTop;
+              newTop = 0;
+            }
+          }
+
+          winEl.style.width = `${newWidth}px`;
+          winEl.style.height = `${newHeight}px`;
+          winEl.style.left = `${newLeft}px`;
+          winEl.style.top = `${newTop}px`;
+
+          // If visualizer window, update Milkdrop canvas dynamically
+          if (winEl.id === 'win-visualizer' && window.visualizerManager) {
+            const wrapper = winEl.querySelector('.visualizer-wrapper');
+            if (wrapper) {
+              window.visualizerManager.resize(wrapper.clientWidth, wrapper.clientHeight);
+            }
+          }
+        };
+
+        const onResizeEnd = () => {
+          if (isResizing) {
+            isResizing = false;
+            document.body.style.userSelect = '';
+            document.body.style.webkitUserSelect = '';
+          }
+        };
+
+        handle.addEventListener('mousedown', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          onResizeStart(e.clientX, e.clientY);
+
+          const moveHandler = (ev) => onResizeMove(ev.clientX, ev.clientY);
+          const upHandler = () => {
+            onResizeEnd();
+            window.removeEventListener('mousemove', moveHandler);
+            window.removeEventListener('mouseup', upHandler);
+          };
+          window.addEventListener('mousemove', moveHandler);
+          window.addEventListener('mouseup', upHandler);
+        });
+
+        handle.addEventListener('touchstart', (e) => {
+          e.stopPropagation();
+          const touch = e.touches[0];
+          onResizeStart(touch.clientX, touch.clientY);
+        }, { passive: false });
+
+        window.addEventListener('touchmove', (e) => {
+          if (!isResizing) return;
+          if (e.cancelable) e.preventDefault();
+          const touch = e.touches[0];
+          onResizeMove(touch.clientX, touch.clientY);
+        }, { passive: false });
+
+        window.addEventListener('touchend', onResizeEnd);
+        window.addEventListener('touchcancel', onResizeEnd);
       });
     }
 
@@ -355,6 +485,80 @@
      * Webamp Secondary Player Integration
      * ------------------------------------------------------------------------- */
     setupWebampLauncher() {
+      // 10 local retro synthwave tracks
+      this.webampTracks = [
+        {
+          metaData: {
+            artist: "FM-84 & Ollie Wride",
+            title: "Running in the Night"
+          },
+          url: "./music/Running_in_the_Night-FM-84&Ollie_Wride.mp3"
+        },
+        {
+          metaData: {
+            artist: "The Midnight",
+            title: "Los Angeles"
+          },
+          url: "./music/The_Midnight-Los_Angeles.mp3"
+        },
+        {
+          metaData: {
+            artist: "The Midnight & Timecop1983",
+            title: "River of Darkness"
+          },
+          url: "./music/The_Midnight&Timecop1983-River_of_Darkness_(feat._Timecop1983).mp3"
+        },
+        {
+          metaData: {
+            artist: "LeBrock",
+            title: "Please Don't Cry"
+          },
+          url: "./music/LeBrock-Please_Don`t_Cry.mp3"
+        },
+        {
+          metaData: {
+            artist: "LeBrock",
+            title: "Hangin' On"
+          },
+          url: "./music/LeBrock-Hangin`_On.mp3"
+        },
+        {
+          metaData: {
+            artist: "LeBrock",
+            title: "Takes All Night"
+          },
+          url: "./music/LeBrock-Takes_All_Night.mp3"
+        },
+        {
+          metaData: {
+            artist: "Dance With The Dead",
+            title: "Dead of Night"
+          },
+          url: "./music/Dance_With_The_Dead-Dead_of_Night.mp3"
+        },
+        {
+          metaData: {
+            artist: "GUNSHIP",
+            title: "When You Grow up, Your Heart Dies"
+          },
+          url: "./music/GUNSHIP-When_You_Grow_up,_Your_Heart_Dies.mp3"
+        },
+        {
+          metaData: {
+            artist: "Timecop1983",
+            title: "On the Run"
+          },
+          url: "./music/Timecop1983-On_the_Run.mp3"
+        },
+        {
+          metaData: {
+            artist: "PYLOT",
+            title: "A Race Against Time"
+          },
+          url: "./music/PYLOT-A_Race_Against_Time.mp3"
+        }
+      ];
+
       // Lazy initialization of Webamp
       this.toggleWebamp = () => {
         if (!window.Webamp) {
@@ -381,29 +585,7 @@
 
         this.webampInstance = new window.Webamp({
           zIndex: initialZ,
-          initialTracks: [
-            {
-              metaData: {
-                artist: "FM-84 & Ollie Wride",
-                title: "Running in the Night"
-              },
-              url: "./music/Running_in_the_Night-FM-84&Ollie_Wride.mp3"
-            },
-            {
-              metaData: {
-                artist: "The Midnight",
-                title: "Los Angeles"
-              },
-              url: "./music/The_Midnight-Los_Angeles.mp3"
-            },
-            {
-              metaData: {
-                artist: "LeBrock",
-                title: "Please Don't Cry"
-              },
-              url: "./music/LeBrock-Please_Don`t_Cry.mp3"
-            }
-          ]
+          initialTracks: this.webampTracks
         });
 
         // Handle close button inside Webamp
@@ -449,6 +631,20 @@
           el.style.zIndex = this.highestZIndex;
         }
       }, { passive: true });
+
+      // 在 Winamp 中添加并直接播放指定音频
+      this.playTrackInWebamp = (trackUrl, trackTitle) => {
+        return this.toggleWebamp().then(() => {
+          if (this.webampInstance) {
+            this.webampInstance.appendTracks([{
+              url: trackUrl,
+              defaultName: trackTitle || 'Classic Track',
+              metaData: { title: trackTitle || 'Classic Track', artist: '原站经典曲库' }
+            }]);
+            this.webampInstance.play();
+          }
+        });
+      };
     }
 
     /* -------------------------------------------------------------------------
