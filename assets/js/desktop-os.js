@@ -485,8 +485,14 @@
      * Webamp Secondary Player Integration
      * ------------------------------------------------------------------------- */
     setupWebampLauncher() {
-      // 10 local retro synthwave tracks
       this.webampTracks = [
+        {
+          metaData: {
+            artist: "Velkommen",
+            title: "title.wma"
+          },
+          url: "./assets/music/title.wma"
+        },
         {
           metaData: {
             artist: "FM-84 & Ollie Wride",
@@ -611,6 +617,9 @@
               const posY = Math.max(40, Math.min(window.innerHeight - 300, 90));
               mainWin.parentElement.style.transform = `translate(${posX}px, ${posY}px)`;
             }
+          }
+          if (this.webampInstance && this.webampInstance.store) {
+            this.webampInstance.store.dispatch({ type: "CLICKED_TRACK", index: 0 });
           }
           console.log('Webamp rendered onto desktop successfully.');
         });
