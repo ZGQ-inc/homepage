@@ -108,11 +108,11 @@
         el.addEventListener('mousedown', () => this.bringToFront(id));
         el.addEventListener('touchstart', () => this.bringToFront(id), { passive: true });
 
-        // Stagger initial open windows
+        // Keep explicit inline positioning if present, otherwise stagger
         if (!el.classList.contains('hidden') && !el.classList.contains('maximized')) {
-          const offsetX = 90 + (index % 4) * 35;
-          const offsetY = 30 + (index % 4) * 30;
-          if (window.innerWidth > 768) {
+          if ((!el.style.left || !el.style.top) && window.innerWidth > 768) {
+            const offsetX = 90 + (index % 4) * 35;
+            const offsetY = 30 + (index % 4) * 30;
             el.style.left = `${offsetX}px`;
             el.style.top = `${offsetY}px`;
           }
@@ -335,6 +335,18 @@
      * Webamp Secondary Player Integration
      * ------------------------------------------------------------------------- */
     setupWebampLauncher() {
+      const container = document.getElementById('webamp-root');
+      if (container) {
+        container.addEventListener('mousedown', () => {
+          this.highestZIndex += 1;
+          container.style.zIndex = this.highestZIndex;
+        });
+        container.addEventListener('touchstart', () => {
+          this.highestZIndex += 1;
+          container.style.zIndex = this.highestZIndex;
+        }, { passive: true });
+      }
+
       // Lazy initialization of Webamp
       this.toggleWebamp = () => {
         if (!window.Webamp) {
@@ -342,8 +354,13 @@
           return;
         }
 
+        const container = document.getElementById('webamp-root');
         if (!this.webampInstance) {
-          const container = document.getElementById('webamp-root');
+          this.highestZIndex += 1;
+          if (container) {
+            container.style.zIndex = this.highestZIndex;
+          }
+
           this.webampInstance = new window.Webamp({
             initialTracks: [
               {
@@ -377,9 +394,14 @@
           });
         } else {
           // Toggle visibility
-          const container = document.getElementById('webamp-root');
           if (container) {
-            container.style.display = container.style.display === 'none' ? 'block' : 'none';
+            if (container.style.display === 'none') {
+              this.highestZIndex += 1;
+              container.style.zIndex = this.highestZIndex;
+              container.style.display = 'block';
+            } else {
+              container.style.display = 'none';
+            }
           }
         }
       };

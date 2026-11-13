@@ -30,10 +30,11 @@
     }
 
     async init() {
-      this.createFallbackDOM();
-      this.bindEvents();
+      // Remove any pre-existing fallback widgets
+      const existing = document.getElementById('retro-clippy');
+      if (existing) existing.remove();
 
-      // Attempt to load modern clippyjs if available
+      // Attempt to load official clippyjs agent first
       try {
         const clippyModule = await import('https://unpkg.com/clippyjs/dist/index.mjs');
         const agentsModule = await import('https://unpkg.com/clippyjs/dist/agents/index.mjs');
@@ -41,19 +42,18 @@
           this.agent = await clippyModule.initAgent(agentsModule.Clippy);
           this.agent.show();
           this.isAgentLoaded = true;
-          // Hide fallback DOM if real agent loaded
-          if (this.domContainer) {
-            this.domContainer.style.display = 'none';
-          }
+          this.bindEvents();
           this.speak("Hi! I'm Clippy. Welcome to ZGQ Inc.'s retro portal!");
           console.log('Official Clippy agent loaded successfully!');
           return;
         }
       } catch (e) {
-        console.log('Using native interactive Clippy widget:', e.message);
+        console.log('Official Clippy unavailable, using native interactive fallback:', e.message);
       }
 
-      // Fallback native widget is ready
+      // ONLY create fallback DOM if official Clippy failed to load
+      this.createFallbackDOM();
+      this.bindEvents();
       setTimeout(() => {
         this.speak("Hi! I'm Clippy. Welcome to ZGQ Inc.'s retro portal! 📎");
       }, 1000);

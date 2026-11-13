@@ -56,8 +56,9 @@
     init(audioEngine) {
       if (!this.canvas) return;
 
-      if (!window.butterchurn) {
-        console.warn('Butterchurn library not loaded.');
+      const bc = (window.butterchurn && window.butterchurn.default) ? window.butterchurn.default : window.butterchurn;
+      if (!bc || typeof bc.createVisualizer !== 'function') {
+        console.warn('Butterchurn library not loaded or createVisualizer unavailable.');
         return;
       }
 
@@ -78,7 +79,7 @@
 
       try {
         if (!this.visualizer) {
-          this.visualizer = window.butterchurn.createVisualizer(this.audioContext, this.canvas, {
+          this.visualizer = bc.createVisualizer(this.audioContext, this.canvas, {
             width: w,
             height: h,
             pixelRatio: Math.min(window.devicePixelRatio || 1, 1.5)
@@ -231,11 +232,60 @@
       if (this.isRendering) return;
       this.isRendering = true;
 
+      const fftSize = 1024;
+      const synthArr = new Uint8Array(fftSize);
+      const synthArrL = new Uint8Array(fftSize);
+      const synthArrR = new Uint8Array(fftSize);
+      let frameCount = 0;
+
       const loop = () => {
         if (this.visualizer) {
           try {
-            this.visualizer.render();
-          } catch (e) {}
+            const radio = window.radioEngine;
+            let hasRealAudio = false;
+
+            if (radio && radio.isPlaying && radio.analyser && radio.audioData) {
+              for (let k = 0; k < 12; k++) {
+                if (radio.audioData[k] > 0) {
+                  hasRealAudio = true;
+                  break;
+                }
+              }
+            }
+
+            if (hasRealAudio) {
+              this.visualizer.render();
+            } else {
+              // Synthetic rhythmic synthwave pulses so visualizer is never dark
+              frameCount++;
+              const t = frameCount * 0.03;
+              const bassBeat = Math.pow(Math.max(0, Math.sin(t * 3.14)), 3) * 80;
+              const midMelody = Math.sin(t * 5.2) * 35;
+              const trebleSparks = (Math.random() - 0.5) * 20;
+
+              for (let i = 0; i < fftSize; i++) {
+                const phase = (i / fftSize) * Math.PI * 4;
+                const wave = Math.sin(phase + t * 3.5) * (20 + bassBeat * 0.5)
+                           + Math.cos(phase * 2.2 - t * 1.8) * (15 + midMelody * 0.4)
+                           + Math.sin(phase * 7) * 8
+                           + trebleSparks;
+                const val = Math.min(255, Math.max(0, Math.floor(128 + wave)));
+                synthArr[i] = val;
+                synthArrL[i] = val;
+                synthArrR[i] = Math.min(255, Math.max(0, Math.floor(128 + wave * 0.92)));
+              }
+
+              this.visualizer.render({
+                audioLevels: {
+                  timeByteArray: synthArr,
+                  timeByteArrayL: synthArrL,
+                  timeByteArrayR: synthArrR
+                }
+              });
+            }
+          } catch (e) {
+            console.warn('Butterchurn render error:', e);
+          }
         }
         if (this.isRendering) {
           requestAnimationFrame(loop);

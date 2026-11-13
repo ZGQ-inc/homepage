@@ -35,9 +35,9 @@
         <span class="icon-label">我的电脑</span>
       </div>
 
-      <div class="desktop-icon" data-target="win-navigation" title="双击打开 网址导航">
-        <img class="icon-img" src="./assets/icons/network-32x32.png" alt="网址导航">
-        <span class="icon-label">网址导航</span>
+      <div class="desktop-icon" data-target="win-navigation" title="双击打开 个人项目与网址导航">
+        <img class="icon-img" src="./assets/icons/network-32x32.png" alt="个人项目导航">
+        <span class="icon-label">项目与导航</span>
       </div>
 
       <div class="desktop-icon" data-target="win-github" title="双击打开 GitHub 个人主页">
@@ -81,12 +81,12 @@
       </div>
     </div>
 
-    <!-- ==================== 窗口 1: 网址导航 (Navigation Hub) ==================== -->
-    <div class="window" id="win-navigation" data-window-id="win-navigation" style="left: 100px; top: 25px; width: 560px;">
+    <!-- ==================== 窗口 1: 个人项目与网址导航 (Project Hub & Navigation) ==================== -->
+    <div class="window" id="win-navigation" data-window-id="win-navigation" style="left: 70px; top: 25px; width: 660px;">
       <div class="title-bar">
         <div class="title-bar-text">
           <img src="./assets/icons/network-16x16.png" alt="">
-          <span>网址导航 - Navigation Hub</span>
+          <span>个人项目与网址导航 - Project Hub</span>
         </div>
         <div class="title-bar-controls">
           <button aria-label="Minimize"></button>
@@ -94,21 +94,43 @@
           <button aria-label="Close"></button>
         </div>
       </div>
-      <div class="window-body">
-        <div class="nav-search-bar">
-          <input type="text" id="nav-search-input" placeholder="🔍 搜索书签名称或分类..." style="flex: 1;">
-          <button id="nav-reset-btn">重置</button>
-          <button id="nav-add-custom-btn">➕ 添加书签</button>
+      <div class="window-body" style="padding: 4px;">
+        <!-- 仿 IE 经典地址栏 -->
+        <div class="nav-address-bar" style="display: flex; align-items: center; gap: 4px; padding: 4px 6px; background: #c0c0c0; border: 1px solid #808080; margin-bottom: 6px;">
+          <span style="font-weight: bold; font-size: 11px;">地址(D):</span>
+          <input type="text" id="nav-address-input" value="https://blog.zgqinc.gq/posts/projects/" readonly style="flex: 1; font-family: monospace; font-size: 11px; background: #fff; padding: 2px 5px; border: 2px inset #fff;">
+          <a href="https://blog.zgqinc.gq/posts/projects/" target="_blank" rel="noopener noreferrer" style="text-decoration: none;">
+            <button style="min-width: 60px; font-weight: bold;">转到 ➡</button>
+          </a>
+          <a href="https://blog.zgqinc.gq/posts/projects/" target="_blank" rel="noopener noreferrer" style="text-decoration: none;">
+            <button style="min-width: 75px;">🔗 博客原文</button>
+          </a>
         </div>
 
-        <div class="nav-categories" id="nav-bookmarks-container">
-          <!-- 动态分类书签 -->
+        <!-- 分类筛选选项卡 -->
+        <div class="nav-tab-bar" style="display: flex; gap: 3px; margin-bottom: 6px; flex-wrap: wrap;">
+          <button class="nav-tab-btn active" data-cat="all">🌟 全部 (41)</button>
+          <button class="nav-tab-btn" data-cat="web-projects">🌐 网页项目 (21)</button>
+          <button class="nav-tab-btn" data-cat="github-repos">📦 GitHub 开源 (10)</button>
+          <button class="nav-tab-btn" data-cat="tampermonkey">📜 油猴脚本 (3)</button>
+          <button class="nav-tab-btn" data-cat="old-resources">🧭 导航与历史归档 (7)</button>
+        </div>
+
+        <!-- 实时搜索条 -->
+        <div class="nav-search-bar" style="display: flex; gap: 6px; margin-bottom: 6px;">
+          <input type="text" id="nav-search-input" placeholder="🔍 实时搜索项目名称、功能描述或关键字..." style="flex: 1; font-size: 11px;">
+          <button id="nav-reset-btn">清空</button>
+        </div>
+
+        <!-- 项目卡片聚合容器 -->
+        <div class="nav-categories" id="nav-bookmarks-container" style="max-height: 400px; overflow-y: auto; padding-right: 4px;">
+          <!-- 动态分类项目 -->
         </div>
       </div>
       <div class="status-bar">
-        <p class="status-bar-field">按类别分类聚合</p>
-        <p class="status-bar-field" id="nav-status-count">共收录 28 个站点</p>
-        <p class="status-bar-field">支持自定义添加</p>
+        <p class="status-bar-field" id="nav-status-cat">当前分类: 全部</p>
+        <p class="status-bar-field" id="nav-status-count">共收录 41 个项目与站点</p>
+        <p class="status-bar-field">来源: blog.zgqinc.gq</p>
       </div>
     </div>
 
@@ -257,7 +279,7 @@
     </div>
 
     <!-- ==================== 窗口 5: NRW 音乐播放器 (Music Player) ==================== -->
-    <div class="window" id="win-player" data-window-id="win-player" style="left: 310px; top: 40px; width: 450px;">
+    <div class="window" id="win-player" data-window-id="win-player" style="left: 760px; top: 15px; width: 480px;">
       <div class="title-bar">
         <div class="title-bar-text">
           <img src="./assets/icons/media-player-16x16.png" alt="">
@@ -311,7 +333,7 @@
     </div>
 
     <!-- ==================== 窗口 6: Butterchurn Milkdrop 视觉器 ==================== -->
-    <div class="window" id="win-visualizer" data-window-id="win-visualizer" style="left: 240px; top: 110px; width: 560px;">
+    <div class="window" id="win-visualizer" data-window-id="win-visualizer" style="left: 760px; top: 290px; width: 480px;">
       <div class="title-bar">
         <div class="title-bar-text">
           <img src="./assets/icons/3d-mode-32x32.png" alt="">
@@ -462,7 +484,7 @@
     <img src="./assets/images/start-menu-side-98.png" class="start-sidebar-img" alt="Windows 98">
     <div class="start-items">
       <div class="start-item" data-open-window="win-navigation">
-        <img src="./assets/icons/network-16x16.png" alt=""> 网址导航
+        <img src="./assets/icons/network-16x16.png" alt=""> 个人项目与网址导航
       </div>
       <div class="start-item" data-open-window="win-github">
         <img src="./assets/icons/my-documents-16x16.png" alt=""> GitHub 个人主页
@@ -649,59 +671,104 @@
       // 7. 加载 NRW 在线曲库
       radio.loadOnlineSongs();
 
-      // 8. 网址导航书签数据与搜索
-      const BOOKMARKS = [
+      // 8. 个人项目与网址导航数据（精选自 https://blog.zgqinc.gq/posts/projects/ 及历史归档）
+      const PROJECT_CATEGORIES = [
         {
-          category: '🛠️ 研发与极客工具',
+          id: 'web-projects',
+          category: '🌐 个人网页项目 (21个在线应用)',
           items: [
-            { name: 'GitHub', url: 'https://github.com', desc: '代码托管与开源世界', icon: './assets/icons/my-documents-16x16.png' },
-            { name: 'VS Code Web', url: 'https://vscode.dev', desc: '在线代码编辑器', icon: './assets/icons/notepad-16x16.png' },
-            { name: 'Hugging Face', url: 'https://huggingface.co', desc: 'AI 模型与开源权重中心', icon: './assets/icons/my-computer-16x16.png' },
-            { name: 'Vercel', url: 'https://vercel.com', desc: '前端全栈部署平台', icon: './assets/icons/network-16x16.png' },
-            { name: 'Cloudflare', url: 'https://cloudflare.com', desc: '网络安全与边缘计算', icon: './assets/icons/network-16x16.png' }
+            { name: '互联网宾果游戏个人收集', url: 'https://bingo.zgqinc.gq/', desc: '精选自制与收集的互动式在线宾果游戏', icon: './assets/icons/html-16x16-higher-color.png' },
+            { name: 'Resource Boy 80s Gradients', url: 'https://80s-gradients.zgqinc.gq', desc: '80 年代复古合成波霓虹渐变配色速查表', icon: './assets/icons/image-gif-16x16.png' },
+            { name: 'Cyberpunk 2077 Mods List', url: 'https://cp2077.zgqinc.gq', desc: '赛博朋克 2077 精选实战 MOD 与前置配置清单', icon: './assets/icons/desktop-16x16.png' },
+            { name: 'The Classrooms Save Editor', url: 'https://the-classrooms.zgqinc.gq', desc: '《The Classrooms》后室生存游戏在线存档修改器', icon: './assets/icons/settings-16x16.png' },
+            { name: 'E-Hentai Gallery Viewer', url: 'https://eh.zgqinc.gq', desc: '已下载漫画画廊本地与在线双模离线阅读器', icon: './assets/icons/image-kodak-16x16.png' },
+            { name: 'T-Rex Runner 小恐龙跑酷', url: 'https://dg-lab-dino.zgqinc.gq', desc: 'Chrome 经典离线小恐龙重制与功能增强版', icon: './assets/icons/solitaire-16x16.png' },
+            { name: 'Github Skyline STL 3D Loader', url: 'https://skyline.zgqinc.gq', desc: '三维实时渲染个人 GitHub 年度贡献天际线模型', icon: './assets/icons/3d-mode-32x32.png' },
+            { name: '各种源大型整合', url: 'https://source.zgqinc.gq', desc: '开发者、镜像站、各类常用软件与数据源全汇总', icon: './assets/icons/network-16x16.png' },
+            { name: 'ZGQ Inc. 站点状态监控', url: 'https://status.zgqinc.gq', desc: '个人全部云端服务与边缘节点 SLA 实时大屏', icon: './assets/icons/task-16x16.png' },
+            { name: '百万英镑同款支票生成器', url: 'https://tmpn.zgqinc.gq', desc: '电影《百万英镑》复古支票在线排版与打印', icon: './assets/icons/printer-16x16.png' },
+            { name: 'Ruffle Flash 在线模拟器', url: 'https://ruffle.zgqinc.gq', desc: '纯 WebAssembly 经典 Flash 游戏/动画播放器', icon: './assets/icons/media-player-16x16.png' },
+            { name: 'US Student ID Generator', url: 'https://sheerid.zgqinc.gq', desc: '美国学生身份规范格式数据生成与排版测试', icon: './assets/icons/doc-16x16.png' },
+            { name: '抽象话转换器', url: 'https://nmsl.zgqinc.gq', desc: '趣味汉字转换 Emoji 拼音抽象话工具', icon: './assets/icons/notepad-16x16.png' },
+            { name: '原神网页启动器', url: 'https://genshin-impact.zgqinc.gq', desc: '极简原神主题 Web 快捷仪表盘与启动台', icon: './assets/icons/run-16x16.png' },
+            { name: '节点订阅 β By ZGQ Inc.', url: 'https://overthefirewall.zgqinc.gq', desc: '网络穿透与多节点跨平台订阅整合中心', icon: './assets/icons/network-16x16.png' },
+            { name: 'FBI WARNING 警示页', url: 'https://rickroll.zgqinc.gq', desc: '经典电影片头警示与彩蛋跳转', icon: './assets/icons/warning-16x16-8bpp.png' },
+            { name: '互联网的尽头', url: 'https://end.zgqinc.gq', desc: '当你浏览完整个网络之后最终停靠的港湾', icon: './assets/icons/internet-explorer-16x16.png' },
+            { name: '版权主张与归属测试', url: 'https://copyxxx.zgqinc.gq', desc: '网络数字版权、CC协议与免责声明验证页', icon: './assets/icons/document-16x16.png' },
+            { name: 'readme.zgqinc.gq', url: 'https://readme.zgqinc.gq', desc: 'ZGQ Inc. 个人开发者档案与主页入口', icon: './assets/icons/my-documents-16x16.png' },
+            { name: 'vsbm.zgqinc.gq', url: 'https://vsbm.zgqinc.gq', desc: 'VSBM 架构在线接口与状态端点', icon: './assets/icons/hard-disk-drive-16x16.png' },
+            { name: '安全与反欺诈提示', url: 'https://fbi.zgqinc.gq', desc: '网络钓鱼防范与趣味联合提醒页', icon: './assets/icons/info-16x16-8bpp.png' }
           ]
         },
         {
-          category: '🤖 AI 与大模型探索',
+          id: 'github-repos',
+          category: '📦 GitHub 开源项目仓库',
           items: [
-            { name: 'ChatGPT', url: 'https://chat.openai.com', desc: 'OpenAI 对话模型', icon: './assets/icons/my-computer-16x16.png' },
-            { name: 'Claude', url: 'https://claude.ai', desc: 'Anthropic 深度思考助手', icon: './assets/icons/my-computer-16x16.png' },
-            { name: 'Google Gemini', url: 'https://gemini.google.com', desc: '谷歌多模态大模型', icon: './assets/icons/my-computer-16x16.png' },
-            { name: 'DeepSeek', url: 'https://chat.deepseek.com', desc: '深度求索推理与代码模型', icon: './assets/icons/my-computer-16x16.png' }
+            { name: 'appx-resigner', url: 'https://github.com/ZGQ-inc/appx-resigner', desc: 'Windows 应用 APPX/MSIX 软件包一键重签名工具', icon: './assets/icons/settings-16x16.png' },
+            { name: 'the-classrooms-save-editor', url: 'https://github.com/ZGQ-inc/the-classrooms-save-editor', desc: '《The Classrooms》游戏存档逆向工程与修改器', icon: './assets/icons/tools-folder-16x16.png' },
+            { name: 'DepotDownloader', url: 'https://github.com/ZGQ-inc/DepotDownloader', desc: 'Steam 分支/清单旧版本文件指定历史节点下载', icon: './assets/icons/hard-disk-drive-16x16.png' },
+            { name: 'DG-LAB-OPENSOURCE', url: 'https://github.com/ZGQ-inc/DG-LAB-OPENSOURCE', desc: '郊狼脉冲发生器开源蓝牙与WebSocket通信协议', icon: './assets/icons/audio-okay-16x16.png' },
+            { name: 'pixiv-comic-downloader', url: 'https://github.com/ZGQ-inc/pixiv-comic-downloader', desc: 'Pixiv 漫画高清切片自动拼接与批量打包', icon: './assets/icons/paint-16x16.png' },
+            { name: 'SpotHomeLight', url: 'https://github.com/ZGQ-inc/SpotHomeLight', desc: 'Spotify 歌曲节奏与智能家用 RGB 彩灯律动联动', icon: './assets/icons/media-player-16x16.png' },
+            { name: 'SteamManifestGrabber', url: 'https://github.com/ZGQ-inc/SteamManifestGrabber', desc: 'Steam 游戏清单 Manifest 提取、解析与历史比对', icon: './assets/icons/find-file-16x16.png' },
+            { name: 'trackers', url: 'https://github.com/ZGQ-inc/trackers', desc: '每日自动测速筛选的全球高质量 BT/PT Tracker 列表', icon: './assets/icons/network-16x16.png' },
+            { name: 'bilibilivideos-database', url: 'https://github.com/ZGQ-inc/bilibilivideos-database', desc: 'Bilibili 精选优质视频与UP主数据快照检索库', icon: './assets/icons/video-16x16.png' },
+            { name: 'BMI-Android', url: 'https://github.com/ZGQ-inc/BMI-Android', desc: '遵循 Material 规范的轻量无广告 Android BMI 计算器', icon: './assets/icons/calculator-16x16.png' }
           ]
         },
         {
-          category: '🎵 音乐与合成波文化',
+          id: 'tampermonkey',
+          category: '📜 油猴脚本与专属工具',
           items: [
-            { name: 'NewRetroWave Radio', url: 'https://nrwradio.com', desc: '官方合成波 80s 音乐电台', icon: './assets/icons/media-player-16x16.png' },
-            { name: 'Bandcamp', url: 'https://bandcamp.com', desc: '独立音乐人聚集地', icon: './assets/icons/media-player-16x16.png' },
-            { name: 'SoundCloud', url: 'https://soundcloud.com', desc: '原创音频流媒体', icon: './assets/icons/media-player-16x16.png' }
+            { name: 'Mail.ru 网盘直链与 Aria2 推送', url: 'https://greasyfork.org/zh-CN/scripts/601779-mail-ru-%E7%BD%91%E7%9B%98%E7%9B%B4%E9%93%BE%E4%B8%8E-aria2-%E6%8E%A8%E9%80%81%E5%8A%A9%E6%89%8B', desc: '解除 Mail.ru 限速提取直链并一键推送到 Aria2', icon: './assets/icons/network-16x16.png' },
+            { name: 'SkidRowReloaded 自动翻页与指数器', url: 'https://greasyfork.org/zh-CN/scripts/601780-skidrowreloaded-%E8%87%AA%E5%8A%A8%E7%BF%BB%E9%A1%B5%E6%8B%BC%E6%8E%A5%E4%B8%8E%E9%A1%B5%E9%9D%A2%E6%8C%87%E6%95%B0%E5%99%A8', desc: '游戏更新日志无限滚动加载与历史页快速直达', icon: './assets/icons/find-folder-16x16.png' },
+            { name: 'ZGQInc. 的 UP 资源列表', url: 'http://a.ruansky.com/myup/449647/', desc: '软天空开发者空间专属应用、修改版及工具全收录', icon: './assets/icons/favorites-folder-16x16.png' }
           ]
         },
         {
-          category: '🕹️ 怀旧与复古计算',
+          id: 'old-resources',
+          category: '🧭 导航页与历史资源合集 (原站精选)',
           items: [
-            { name: 'Internet Archive', url: 'https://archive.org', desc: '全球数字互联网档案馆', icon: './assets/icons/network-16x16.png' },
-            { name: 'WinWorld', url: 'https://winworldpc.com', desc: '复古操作系统博物馆', icon: './assets/icons/my-computer-16x16.png' },
-            { name: 'The Cyberpunk Wiki', url: 'https://cyberpunk.fandom.com', desc: '赛博朋克百科全书', icon: './assets/icons/notepad-16x16.png' }
+            { name: '博文原文: 个人项目合集', url: 'https://blog.zgqinc.gq/posts/projects/', desc: '《个人项目合集 | ZGQ Inc.’s Blog》全文阅读', icon: './assets/icons/internet-explorer-16x16.png' },
+            { name: '软天空精选与历史发布 (本地归档)', url: './old/rtk_up.html', desc: '原站软天空作品清单与下载地址完整历史备份', icon: './assets/icons/html-16x16-higher-color.png' },
+            { name: '综合资源大收录 (本地归档)', url: './old/resources.html', desc: '涵盖设计工具、AI绘图、画师图集、网盘资源等', icon: './assets/icons/favorites-16x16.png' },
+            { name: '个人主页 2021 原版 (本地归档)', url: './old/index.html', desc: '改版前的 HTML5 UP 经典深色主页与原音乐存档', icon: './assets/icons/desktop-16x16.png' },
+            { name: '科学上网与节点订阅', url: 'https://overthefirewall.zgqinc.gq', desc: '网络穿透、节点订阅与网络代理设置教程', icon: './assets/icons/network-16x16.png' },
+            { name: 'Telegram 个人频道', url: 'https://t.me/CopyRightZGQInc', desc: '@CopyRightZGQInc 官方技术干货、资讯与资源发布', icon: './assets/icons/news-16x16.png' },
+            { name: 'Telegram 个人私聊', url: 'https://t.me/ZGQInc', desc: '联系作者 @ZGQinc 进行交流与反馈', icon: './assets/icons/mail-16x16.png' }
           ]
         }
       ];
 
-      function renderBookmarks(filter = '') {
-        const container = document.getElementById('nav-bookmarks-container');
-        container.innerHTML = '';
-        const lower = filter.toLowerCase().trim();
-        let totalCount = 0;
+      let currentNavCat = 'all';
+      let currentNavSearch = '';
 
-        BOOKMARKS.forEach(cat => {
-          const matched = cat.items.filter(it => it.name.toLowerCase().includes(lower) || it.desc.toLowerCase().includes(lower));
+      function renderBookmarks() {
+        const container = document.getElementById('nav-bookmarks-container');
+        if (!container) return;
+        container.innerHTML = '';
+
+        const lower = currentNavSearch.toLowerCase().trim();
+        let totalMatched = 0;
+
+        const catsToRender = currentNavCat === 'all'
+          ? PROJECT_CATEGORIES
+          : PROJECT_CATEGORIES.filter(c => c.id === currentNavCat);
+
+        catsToRender.forEach(cat => {
+          const matched = cat.items.filter(it =>
+            it.name.toLowerCase().includes(lower) ||
+            it.desc.toLowerCase().includes(lower) ||
+            it.url.toLowerCase().includes(lower)
+          );
           if (matched.length === 0) return;
-          totalCount += matched.length;
+          totalMatched += matched.length;
 
           const fieldset = document.createElement('fieldset');
+          fieldset.style.marginBottom = '8px';
           const legend = document.createElement('legend');
-          legend.textContent = cat.category;
+          legend.style.fontWeight = 'bold';
+          legend.textContent = `${cat.category} (${matched.length})`;
           fieldset.appendChild(legend);
 
           const grid = document.createElement('div');
@@ -713,12 +780,12 @@
             card.href = item.url;
             card.target = '_blank';
             card.rel = 'noopener noreferrer';
-            card.title = `${item.name}: ${item.desc}`;
+            card.title = `${item.name}\n${item.desc}\n链接: ${item.url}`;
             card.innerHTML = `
               <img src="${item.icon}" alt="">
-              <div style="overflow: hidden;">
+              <div style="overflow: hidden; flex: 1;">
                 <div style="font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${item.name}</div>
-                <div style="font-size: 10px; color: #666; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${item.desc}</div>
+                <div class="nav-card-desc" style="font-size: 10px; color: #555; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${item.desc}</div>
               </div>
             `;
             grid.appendChild(card);
@@ -728,17 +795,44 @@
           container.appendChild(fieldset);
         });
 
-        document.getElementById('nav-status-count').textContent = `共匹配到 ${totalCount} 个站点`;
+        const statusCat = document.getElementById('nav-status-cat');
+        if (statusCat) {
+          const catName = currentNavCat === 'all' ? '全部' : (PROJECT_CATEGORIES.find(c => c.id === currentNavCat)?.category.split(' ')[0] || currentNavCat);
+          statusCat.textContent = `当前分类: ${catName}`;
+        }
+        const statusCount = document.getElementById('nav-status-count');
+        if (statusCount) {
+          statusCount.textContent = `共收录/匹配到 ${totalMatched} 个项目`;
+        }
       }
 
       renderBookmarks();
 
-      const navSearch = document.getElementById('nav-search-input');
-      navSearch.addEventListener('input', (e) => renderBookmarks(e.target.value));
-      document.getElementById('nav-reset-btn').addEventListener('click', () => {
-        navSearch.value = '';
-        renderBookmarks();
+      // 绑定选项卡点击
+      document.querySelectorAll('.nav-tab-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          document.querySelectorAll('.nav-tab-btn').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+          currentNavCat = btn.dataset.cat || 'all';
+          renderBookmarks();
+        });
       });
+
+      const navSearch = document.getElementById('nav-search-input');
+      if (navSearch) {
+        navSearch.addEventListener('input', (e) => {
+          currentNavSearch = e.target.value;
+          renderBookmarks();
+        });
+      }
+      const navReset = document.getElementById('nav-reset-btn');
+      if (navReset) {
+        navReset.addEventListener('click', () => {
+          if (navSearch) navSearch.value = '';
+          currentNavSearch = '';
+          renderBookmarks();
+        });
+      }
 
       // 添加自定义书签功能
       document.getElementById('nav-add-custom-btn').addEventListener('click', () => {

@@ -412,7 +412,7 @@ body.crt-active .crt-overlay {
 
 .nav-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
   gap: 6px;
   margin-top: 4px;
 }
@@ -420,8 +420,8 @@ body.crt-active .crt-overlay {
 .nav-card {
   display: flex;
   align-items: center;
-  gap: 6px;
-  padding: 4px 6px;
+  gap: 8px;
+  padding: 5px 8px;
   background: #ffffff;
   border: 1px inset #808080;
   text-decoration: none;
@@ -435,10 +435,27 @@ body.crt-active .crt-overlay {
   color: #ffffff;
 }
 
+.nav-card:hover .nav-card-desc {
+  color: #d8e5ff !important;
+}
+
 .nav-card img {
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
   image-rendering: pixelated;
+}
+
+.nav-tab-btn {
+  font-size: 11px;
+  padding: 2px 8px;
+  cursor: pointer;
+}
+
+.nav-tab-btn.active {
+  font-weight: bold;
+  background: #e0ded8;
+  box-shadow: inset 1px 1px 0px #000, inset -1px -1px 0px #fff;
 }
 
 /* GitHub Profile Window */
@@ -680,7 +697,7 @@ body.crt-active .crt-overlay {
   position: fixed;
   top: 40px;
   right: 40px;
-  z-index: 10500;
+  z-index: 120;
 }
 
 /* -------------------------------------------------------------------------
