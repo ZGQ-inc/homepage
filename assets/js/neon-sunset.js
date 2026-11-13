@@ -1,10 +1,12 @@
 /**
- * Neon Sunset Canvas Engine (Wallpaper Engine Retro Style)
- * & Multi-Mode Retro Background Renderer
+ * Wallpaper Engine Neon Sunset & Multi-Mode Retro Background Renderer
  * Modes:
- *  1. 'neon-sunset': 80s Retrowave Neon Sun, Moving 3D Perspective Mountain Wireframe Grid, Starfield, Audio-Reactivity
- *  2. 'starfield': Classic Windows 98 Flying Stars Screensaver
- *  3. 'matrix': Matrix Digital Rain
+ *  1. 'wallpaper-engine': Authentic Wallpaper Engine 4K Neon Sunset with audio-reactive live 3D perspective grid
+ *  2. 'neon-sunset': Pure procedural WebGL/Canvas retrowave sunset
+ *  3. 'win98-clouds': Classic Windows 98 Clouds wallpaper
+ *  4. 'win98-teal': Classic Windows 98 solid teal background (#008080)
+ *  5. 'starfield': Classic Windows 98 Flying Stars screensaver
+ *  6. 'matrix': Matrix digital code rain
  */
 
 (function (window) {
@@ -19,12 +21,18 @@
         document.body.prepend(this.canvas);
       }
       this.ctx = this.canvas.getContext('2d');
-      this.mode = 'neon-sunset'; // 'neon-sunset' | 'starfield' | 'matrix'
+      this.mode = 'wallpaper-engine'; // default to Wallpaper Engine Neon Sunset
       this.animationFrameId = null;
       this.lastTime = 0;
       this.elapsed = 0;
-      this.audioEnergy = 0; // 0.0 ~ 1.0 for beat pulse
+      this.audioEnergy = 0;
       this.targetEnergy = 0;
+
+      // Assets
+      this.weImage = new Image();
+      this.weImage.src = './assets/images/neon-sunset-wallpaper-engine.jpg';
+      this.cloudsImage = new Image();
+      this.cloudsImage.src = './assets/images/clouds.jpg';
 
       // Stars configuration
       this.stars = [];
@@ -65,8 +73,12 @@
     }
 
     setMode(mode) {
-      if (['neon-sunset', 'starfield', 'matrix'].includes(mode)) {
-        this.mode = mode;
+      this.mode = mode;
+      // If win98-teal, update document body background color directly
+      if (mode === 'win98-teal') {
+        document.body.style.backgroundColor = '#008080';
+      } else {
+        document.body.style.backgroundColor = '#000000';
       }
     }
 
@@ -76,11 +88,10 @@
 
     initStars() {
       this.stars = [];
-      const count = 120;
-      for (let i = 0; i < count; i++) {
+      for (let i = 0; i < 120; i++) {
         this.stars.push({
           x: Math.random(),
-          y: Math.random() * 0.6, // only in upper 60% of sky
+          y: Math.random() * 0.6,
           size: Math.random() * 1.8 + 0.5,
           alpha: Math.random() * 0.8 + 0.2,
           pulseSpeed: Math.random() * 0.03 + 0.01,
@@ -91,8 +102,7 @@
 
     initStarfield() {
       this.starfieldStars = [];
-      const count = 350;
-      for (let i = 0; i < count; i++) {
+      for (let i = 0; i < 350; i++) {
         this.starfieldStars.push({
           x: (Math.random() - 0.5) * 2000,
           y: (Math.random() - 0.5) * 2000,
@@ -138,7 +148,6 @@
 
     update(delta) {
       this.elapsed += delta;
-      // Smooth decay audio energy
       this.audioEnergy += (this.targetEnergy - this.audioEnergy) * 0.15;
       this.targetEnergy = Math.max(0, this.targetEnergy - delta * 1.2);
     }
@@ -150,8 +159,15 @@
 
       ctx.clearRect(0, 0, w, h);
 
-      if (this.mode === 'neon-sunset') {
-        this.renderNeonSunset(ctx, w, h);
+      if (this.mode === 'wallpaper-engine') {
+        this.renderWallpaperEngine(ctx, w, h);
+      } else if (this.mode === 'neon-sunset') {
+        this.renderProceduralSunset(ctx, w, h);
+      } else if (this.mode === 'win98-clouds') {
+        this.renderClouds(ctx, w, h);
+      } else if (this.mode === 'win98-teal') {
+        ctx.fillStyle = '#008080';
+        ctx.fillRect(0, 0, w, h);
       } else if (this.mode === 'starfield') {
         this.renderStarfield(ctx, w, h);
       } else if (this.mode === 'matrix') {
@@ -159,15 +175,143 @@
       }
     }
 
-    /* ----------------------------------------------------
-     * Mode 1: Wallpaper Engine Iconic Neon Sunset
-     * ---------------------------------------------------- */
-    renderNeonSunset(ctx, w, h) {
+    /* -------------------------------------------------------------------------
+     * Mode 1: Wallpaper Engine Authentic Neon Sunset
+     * ------------------------------------------------------------------------- */
+    renderWallpaperEngine(ctx, w, h) {
+      // 1. Draw 4K Backdrop Image (Cover fit)
+      if (this.weImage.complete && this.weImage.naturalWidth > 0) {
+        const img = this.weImage;
+        const imgRatio = img.naturalWidth / img.naturalHeight;
+        const winRatio = w / h;
+        let dw, dh, dx, dy;
+        if (winRatio > imgRatio) {
+          dw = w;
+          dh = w / imgRatio;
+          dx = 0;
+          dy = (h - dh) * 0.5;
+        } else {
+          dh = h;
+          dw = h * imgRatio;
+          dx = (w - dw) * 0.5;
+          dy = 0;
+        }
+        ctx.drawImage(img, dx, dy, dw, dh);
+      } else {
+        this.renderProceduralSunset(ctx, w, h);
+        return;
+      }
+
+      // 2. Layer Live Animated Perspective Grid Over Lower Half
+      const horizonY = h * 0.65;
+      this.drawTerrainGridOverlay(ctx, w, h, horizonY, this.elapsed, this.audioEnergy);
+
+      // 3. Audio-Reactive Sun Glow Pulse
+      if (this.audioEnergy > 0.05) {
+        const sunCenterX = w * 0.5;
+        const sunCenterY = horizonY - 110;
+        const pulse = this.audioEnergy;
+        const glow = ctx.createRadialGradient(sunCenterX, sunCenterY, 30, sunCenterX, sunCenterY, 200 + pulse * 80);
+        glow.addColorStop(0, `rgba(255, 0, 128, ${pulse * 0.35})`);
+        glow.addColorStop(0.6, `rgba(255, 120, 0, ${pulse * 0.18})`);
+        glow.addColorStop(1, 'rgba(0,0,0,0)');
+        ctx.fillStyle = glow;
+        ctx.beginPath();
+        ctx.arc(sunCenterX, sunCenterY, 280, 0, Math.PI * 2);
+        ctx.fill();
+      }
+    }
+
+    drawTerrainGridOverlay(ctx, w, h, horizonY, t, pulse) {
+      const groundH = h - horizonY;
+      if (groundH <= 0) return;
+
+      const fov = 350;
+      const cameraHeight = 150;
+      const gridSpeed = 80;
+      const zOffset = (t * gridSpeed) % 40;
+      const maxZ = 500;
+      const stepZ = 30;
+
+      // Transverse horizontal grid lines
+      ctx.lineWidth = 1.4;
+      for (let z = maxZ; z >= 30; z -= stepZ) {
+        const actualZ = z - zOffset;
+        if (actualZ <= 5) continue;
+
+        const screenY = horizonY + (cameraHeight / actualZ) * fov;
+        if (screenY > h) continue;
+
+        const depth = 1 - (actualZ / maxZ);
+        const alpha = Math.max(0.1, depth * 0.7);
+
+        ctx.strokeStyle = `rgba(255, 0, 140, ${alpha})`;
+        if (depth > 0.6) {
+          ctx.strokeStyle = `rgba(0, 240, 255, ${alpha})`;
+        }
+
+        ctx.beginPath();
+        ctx.moveTo(0, screenY);
+        ctx.lineTo(w, screenY);
+        ctx.stroke();
+      }
+
+      // Longitudinal lines
+      const centerX = w * 0.5;
+      const cols = 26;
+      const spacingX = 40;
+      ctx.lineWidth = 1.2;
+
+      for (let col = -cols; col <= cols; col++) {
+        const worldX = col * spacingX;
+        const isRoad = Math.abs(col) < 3;
+
+        ctx.beginPath();
+        let first = true;
+
+        for (let z = maxZ; z >= 25; z -= 25) {
+          const actualZ = z - zOffset;
+          if (actualZ <= 5) continue;
+
+          const lateral = Math.max(0, (Math.abs(col) - 2) / 8);
+          const wave = Math.sin(col * 0.45 + actualZ * 0.02 - t * 2);
+          const hill = lateral * (50 + pulse * 40) * Math.abs(wave);
+
+          const px = centerX + (worldX / actualZ) * fov;
+          const py = horizonY + ((cameraHeight - hill) / actualZ) * fov;
+
+          if (first) {
+            ctx.moveTo(px, py);
+            first = false;
+          } else {
+            ctx.lineTo(px, py);
+          }
+        }
+
+        const depthColAlpha = Math.max(0.15, 1 - Math.abs(col) / cols);
+        ctx.strokeStyle = isRoad ? `rgba(0, 245, 255, ${depthColAlpha * 0.7})` : `rgba(255, 0, 160, ${depthColAlpha * 0.6})`;
+        ctx.stroke();
+      }
+    }
+
+    renderClouds(ctx, w, h) {
+      if (this.cloudsImage.complete && this.cloudsImage.naturalWidth > 0) {
+        ctx.drawImage(this.cloudsImage, 0, 0, w, h);
+      } else {
+        ctx.fillStyle = '#008080';
+        ctx.fillRect(0, 0, w, h);
+      }
+    }
+
+    /* -------------------------------------------------------------------------
+     * Mode 2: Procedural Neon Sunset
+     * ------------------------------------------------------------------------- */
+    renderProceduralSunset(ctx, w, h) {
       const horizonY = h * 0.58;
       const t = this.elapsed;
       const pulse = this.audioEnergy;
 
-      // 1. Sky Gradient
+      // Sky
       const skyGrad = ctx.createLinearGradient(0, 0, 0, horizonY);
       skyGrad.addColorStop(0.0, '#070210');
       skyGrad.addColorStop(0.4, '#1c052d');
@@ -177,7 +321,7 @@
       ctx.fillStyle = skyGrad;
       ctx.fillRect(0, 0, w, horizonY);
 
-      // 2. Stars
+      // Stars
       for (const s of this.stars) {
         const sx = s.x * w;
         const sy = s.y * h;
@@ -188,13 +332,12 @@
         ctx.fill();
       }
 
-      // 3. Glowing Retrowave Sun
+      // Sun
       const sunCenterX = w * 0.5;
       const baseSunRadius = Math.min(w, h) * 0.22;
       const sunRadius = baseSunRadius + pulse * 14;
       const sunCenterY = horizonY - sunRadius * 0.45;
 
-      // Outer Sun Radial Bloom / Halo
       const haloGrad = ctx.createRadialGradient(
         sunCenterX, sunCenterY, sunRadius * 0.6,
         sunCenterX, sunCenterY, sunRadius * 1.9 + pulse * 40
@@ -207,13 +350,11 @@
       ctx.arc(sunCenterX, sunCenterY, sunRadius * 2.0, 0, Math.PI * 2);
       ctx.fill();
 
-      // Sun Body Clip & Stripes
       ctx.save();
       ctx.beginPath();
       ctx.arc(sunCenterX, sunCenterY, sunRadius, 0, Math.PI * 2);
       ctx.clip();
 
-      // Sun Vertical Gradient
       const sunGrad = ctx.createLinearGradient(0, sunCenterY - sunRadius, 0, sunCenterY + sunRadius);
       sunGrad.addColorStop(0.0, '#fff477');
       sunGrad.addColorStop(0.3, '#ffaa00');
@@ -222,147 +363,24 @@
       ctx.fillStyle = sunGrad;
       ctx.fillRect(sunCenterX - sunRadius, sunCenterY - sunRadius, sunRadius * 2, sunRadius * 2);
 
-      // Sun Venetian Blind Stripes (Moving slightly or static with depth)
       const numStripes = 11;
       const stripeStartY = sunCenterY - sunRadius * 0.1;
       const stripeHeightTotal = sunRadius * 1.1;
 
       for (let i = 0; i < numStripes; i++) {
         const factor = i / (numStripes - 1);
-        // Exponential distribution: stripes get thicker & further apart towards bottom
         const yRel = Math.pow(factor, 1.45) * stripeHeightTotal;
         const stripeY = stripeStartY + yRel;
         const stripeThickness = 2.5 + factor * (12 + pulse * 4);
 
-        ctx.fillStyle = '#0f041a'; // matches backdrop/horizon
+        ctx.fillStyle = '#0f041a';
         ctx.fillRect(sunCenterX - sunRadius, stripeY, sunRadius * 2, stripeThickness);
       }
       ctx.restore();
 
-      // 4. Distant Horizon Mountain Silhouettes
-      this.drawHorizonMountains(ctx, w, horizonY);
-
-      // 5. 3D Terrain Grid & Synthwave Highway
-      this.drawTerrainGrid(ctx, w, h, horizonY, t, pulse);
-
-      // 6. Horizon Glow Line
-      const horizonGrad = ctx.createLinearGradient(0, horizonY - 2, 0, horizonY + 3);
-      horizonGrad.addColorStop(0, 'rgba(255, 60, 160, 0.9)');
-      horizonGrad.addColorStop(0.5, 'rgba(0, 240, 255, 0.8)');
-      horizonGrad.addColorStop(1, 'rgba(10, 2, 20, 0)');
-      ctx.fillStyle = horizonGrad;
-      ctx.fillRect(0, horizonY - 2, w, 5);
+      this.drawTerrainGridOverlay(ctx, w, h, horizonY, t, pulse);
     }
 
-    drawHorizonMountains(ctx, w, horizonY) {
-      ctx.fillStyle = '#110321';
-      ctx.beginPath();
-      ctx.moveTo(0, horizonY);
-      const segments = 24;
-      const segWidth = w / segments;
-      for (let i = 0; i <= segments; i++) {
-        const x = i * segWidth;
-        // Pseudo-random deterministic mountain heights
-        const seed = Math.sin(i * 1.8) * 15 + Math.cos(i * 4.3) * 12 + Math.sin(i * 0.9) * 20;
-        const y = horizonY - Math.abs(seed) - 6;
-        ctx.lineTo(x, y);
-      }
-      ctx.lineTo(w, horizonY);
-      ctx.closePath();
-      ctx.fill();
-    }
-
-    drawTerrainGrid(ctx, w, h, horizonY, t, pulse) {
-      const groundH = h - horizonY;
-      if (groundH <= 0) return;
-
-      // Ground Dark Base
-      const groundGrad = ctx.createLinearGradient(0, horizonY, 0, h);
-      groundGrad.addColorStop(0, '#0a0217');
-      groundGrad.addColorStop(0.5, '#120427');
-      groundGrad.addColorStop(1.0, '#05010b');
-      ctx.fillStyle = groundGrad;
-      ctx.fillRect(0, horizonY, w, groundH);
-
-      // Grid Parameters
-      const fov = 350;
-      const cameraHeight = 160;
-      const gridSpeed = 90; // units per second
-      const zOffset = (t * gridSpeed) % 40;
-      const maxZ = 600;
-      const stepZ = 30;
-
-      // 1. Horizontal Lines (Transverse)
-      ctx.lineWidth = 1.5;
-      for (let z = maxZ; z >= 30; z -= stepZ) {
-        const actualZ = z - zOffset;
-        if (actualZ <= 5) continue;
-
-        const screenY = horizonY + (cameraHeight / actualZ) * fov;
-        if (screenY > h) continue;
-
-        const depthRatio = 1 - (actualZ / maxZ);
-        const alpha = Math.max(0.1, depthRatio * 0.9);
-
-        // Color shifts from hot magenta at horizon to cyan at bottom
-        ctx.strokeStyle = `rgba(255, 0, 140, ${alpha})`;
-        if (depthRatio > 0.6) {
-          ctx.strokeStyle = `rgba(0, 240, 255, ${alpha})`;
-        }
-
-        ctx.beginPath();
-        ctx.moveTo(0, screenY);
-        ctx.lineTo(w, screenY);
-        ctx.stroke();
-      }
-
-      // 2. Perspective Longitudinal Lines + Undulating Mountain Peaks
-      const centerX = w * 0.5;
-      const cols = 28;
-      const spacingX = 40;
-
-      ctx.lineWidth = 1.2;
-      for (let col = -cols; col <= cols; col++) {
-        const worldX = col * spacingX;
-        const isCenterRoad = Math.abs(col) < 3;
-
-        ctx.beginPath();
-        let first = true;
-
-        for (let z = maxZ; z >= 25; z -= 25) {
-          const actualZ = z - zOffset;
-          if (actualZ <= 5) continue;
-
-          // Lateral factor: hills rise only outside center highway
-          const lateral = Math.max(0, (Math.abs(col) - 2.5) / 8);
-          // Elevation waves
-          const wave = Math.sin(col * 0.45 + actualZ * 0.02 - t * 2) * Math.cos(col * 0.3);
-          const hillHeight = lateral * (65 + pulse * 45) * Math.abs(wave);
-
-          const projX = centerX + (worldX / actualZ) * fov;
-          const projY = horizonY + ((cameraHeight - hillHeight) / actualZ) * fov;
-
-          if (first) {
-            ctx.moveTo(projX, projY);
-            first = false;
-          } else {
-            ctx.lineTo(projX, projY);
-          }
-        }
-
-        const depthColAlpha = Math.max(0.15, 1 - Math.abs(col) / cols);
-        if (isCenterRoad) {
-          ctx.strokeStyle = `rgba(0, 245, 255, ${depthColAlpha * 0.85})`;
-        } else {
-          ctx.strokeStyle = `rgba(255, 0, 160, ${depthColAlpha * 0.75})`;
-        }
-        ctx.stroke();
-      }
-    }
-
-    /* ----------------------------------------------------
-     * Mode 2: Classic Windows 98 Flying Stars
-     * ---------------------------------------------------- */
     renderStarfield(ctx, w, h) {
       ctx.fillStyle = '#000000';
       ctx.fillRect(0, 0, w, h);
@@ -410,9 +428,6 @@
       }
     }
 
-    /* ----------------------------------------------------
-     * Mode 3: Matrix Digital Rain
-     * ---------------------------------------------------- */
     renderMatrix(ctx, w, h) {
       ctx.fillStyle = 'rgba(0, 0, 0, 0.12)';
       ctx.fillRect(0, 0, w, h);
@@ -426,11 +441,9 @@
         const x = i * fontSize;
         const y = col.y;
 
-        // Bright green head
         ctx.fillStyle = '#a6ffb2';
         ctx.fillText(char, x, y);
 
-        // Body trails
         ctx.fillStyle = '#00ff41';
         ctx.fillText(char, x, y - fontSize);
 
@@ -443,7 +456,6 @@
     }
   }
 
-  // Export to window
   window.RetroBackground = RetroBackground;
 
 })(window);

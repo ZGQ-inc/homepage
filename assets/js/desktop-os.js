@@ -1,6 +1,11 @@
 /**
- * Windows 98 Web OS Desktop Manager
- * Implements full window lifecycle, taskbar, start menu, icons, sound synthesis, and touch adaptation
+ * Windows 98 1:1 Authentic Desktop Operating System Manager
+ * Features:
+ *  - Authentic Windows 98 startup and event sounds (The Microsoft Sound, Ding, Chord, Recycle)
+ *  - Full window lifecycle (Drag, Focus, Minimize, Maximize, Close)
+ *  - Start menu, Taskbar, Context Menu, Tray Clock
+ *  - Webamp (Winamp 2.9) secondary player integration
+ *  - Immediate initialization & sizing for Butterchurn Milkdrop
  */
 
 (function (window) {
@@ -11,14 +16,21 @@
       this.windows = {};
       this.highestZIndex = 100;
       this.activeWindowId = null;
-      this.audioSynth = null;
-      this.isSoundEnabled = true;
+      this.webampInstance = null;
+      this.isWebampRendered = false;
+
+      // Authentic Sound Audio Objects
+      this.sounds = {
+        startup: new Audio('./assets/audio/The Microsoft Sound.wav'),
+        ding: new Audio('./assets/audio/DING.WAV'),
+        chord: new Audio('./assets/audio/CHORD.WAV'),
+        recycle: new Audio('./assets/audio/RECYCLE.WAV')
+      };
 
       this.init();
     }
 
     init() {
-      this.initAudioSynth();
       this.setupWindows();
       this.setupDesktopIcons();
       this.setupTaskbar();
@@ -26,6 +38,7 @@
       this.setupContextMenu();
       this.setupClock();
       this.setupFoldableAdaptation();
+      this.setupWebampLauncher();
 
       // Keyboard shortcuts
       window.addEventListener('keydown', (e) => {
@@ -38,58 +51,18 @@
       console.log('Desktop OS initialized successfully.');
     }
 
-    /* -------------------------------------------------------------------------
-     * Pure Web Audio Retro Sound Synthesizer (Zero asset dependency)
-     * ------------------------------------------------------------------------- */
-    initAudioSynth() {
-      const AudioCtx = window.AudioContext || window.webkitAudioContext;
-      if (!AudioCtx) return;
-
-      this.playChime = () => {
-        if (!this.isSoundEnabled) return;
-        try {
-          const ctx = new AudioCtx();
-          const notes = [261.63, 329.63, 392.00, 523.25, 659.25]; // C E G C E
-          notes.forEach((freq, idx) => {
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
-            osc.type = 'triangle';
-            osc.frequency.setValueAtTime(freq, ctx.currentTime + idx * 0.08);
-
-            gain.gain.setValueAtTime(0.001, ctx.currentTime + idx * 0.08);
-            gain.gain.exponentialRampToValueAtTime(0.12, ctx.currentTime + idx * 0.08 + 0.05);
-            gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + idx * 0.08 + 1.2);
-
-            osc.connect(gain);
-            gain.connect(ctx.destination);
-
-            osc.start(ctx.currentTime + idx * 0.08);
-            osc.stop(ctx.currentTime + idx * 0.08 + 1.3);
-          });
-        } catch (e) {}
-      };
-
-      this.playClick = () => {
-        if (!this.isSoundEnabled) return;
-        try {
-          const ctx = new AudioCtx();
-          const osc = ctx.createOscillator();
-          const gain = ctx.createGain();
-          osc.type = 'sine';
-          osc.frequency.setValueAtTime(800, ctx.currentTime);
-          osc.frequency.exponentialRampToValueAtTime(300, ctx.currentTime + 0.04);
-          gain.gain.setValueAtTime(0.08, ctx.currentTime);
-          gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.04);
-          osc.connect(gain);
-          gain.connect(ctx.destination);
-          osc.start();
-          osc.stop(ctx.currentTime + 0.05);
-        } catch (e) {}
-      };
+    playSound(name) {
+      try {
+        const s = this.sounds[name];
+        if (s) {
+          s.currentTime = 0;
+          s.play().catch(() => {});
+        }
+      } catch (e) {}
     }
 
     /* -------------------------------------------------------------------------
-     * Window Management: Drag, Resize, Focus, Minimize, Maximize
+     * Window Management
      * ------------------------------------------------------------------------- */
     setupWindows() {
       const windowElements = document.querySelectorAll('.window[data-window-id]');
@@ -97,19 +70,17 @@
         const id = el.dataset.windowId;
         this.windows[id] = {
           element: el,
-          title: el.querySelector('.title-bar-text') ? el.querySelector('.title-bar-text').textContent.trim() : id,
+          title: el.querySelector('.title-bar-text span') ? el.querySelector('.title-bar-text span').textContent.trim() : id,
           isMinimized: el.classList.contains('minimized'),
           isMaximized: el.classList.contains('maximized'),
           prevRect: null
         };
 
-        // Window Title Bar Dragging (Desktop & Touch)
         const titleBar = el.querySelector('.title-bar');
         if (titleBar) {
           this.makeDraggable(el, titleBar);
         }
 
-        // Window Controls (Min, Max, Close)
         const closeBtn = el.querySelector('button[aria-label="Close"]');
         if (closeBtn) {
           closeBtn.addEventListener('click', (e) => {
@@ -134,14 +105,13 @@
           });
         }
 
-        // Bring to front on click
         el.addEventListener('mousedown', () => this.bringToFront(id));
         el.addEventListener('touchstart', () => this.bringToFront(id), { passive: true });
 
-        // Stagger initial positions for open windows
+        // Stagger initial open windows
         if (!el.classList.contains('hidden') && !el.classList.contains('maximized')) {
-          const offsetX = 40 + (index % 5) * 30;
-          const offsetY = 35 + (index % 5) * 30;
+          const offsetX = 90 + (index % 4) * 35;
+          const offsetY = 30 + (index % 4) * 30;
           if (window.innerWidth > 768) {
             el.style.left = `${offsetX}px`;
             el.style.top = `${offsetY}px`;
@@ -174,9 +144,8 @@
         let newLeft = initLeft + dx;
         let newTop = initTop + dy;
 
-        // Viewport bounds constraint
         const maxLeft = window.innerWidth - 80;
-        const maxTop = window.innerHeight - 60;
+        const maxTop = window.innerHeight - 50;
         newLeft = Math.max(0, Math.min(maxLeft, newLeft));
         newTop = Math.max(0, Math.min(maxTop, newTop));
 
@@ -227,7 +196,6 @@
       win.element.style.zIndex = this.highestZIndex;
       this.activeWindowId = id;
 
-      // Update active title bar classes
       Object.keys(this.windows).forEach((key) => {
         const otherEl = this.windows[key].element;
         if (key === id) {
@@ -251,17 +219,23 @@
       win.isMinimized = false;
       this.bringToFront(id);
 
-      // On mobile viewports, auto maximize or center window
+      // On mobile viewports
       if (window.innerWidth <= 768) {
-        win.element.style.left = '0px';
-        win.element.style.top = '0px';
-        win.element.style.width = '100vw';
+        win.element.style.left = '2px';
+        win.element.style.top = '2px';
+        win.element.style.width = 'calc(100vw - 4px)';
         win.element.style.height = 'calc(100dvh - 36px)';
-        win.element.classList.add('mobile-fullscreen');
       }
 
-      if (this.playClick) this.playClick();
+      this.playSound('ding');
       this.updateTaskbar();
+
+      // If opening Milkdrop visualizer, ensure it initializes and sizes immediately
+      if (id === 'win-visualizer' && window.visualizerManager) {
+        setTimeout(() => {
+          window.visualizerManager.init(window.radioEngine);
+        }, 50);
+      }
     }
 
     closeWindow(id) {
@@ -291,7 +265,6 @@
       if (!win) return;
 
       if (win.isMaximized) {
-        // Restore
         win.element.classList.remove('maximized');
         win.isMaximized = false;
         if (win.prevRect) {
@@ -301,7 +274,6 @@
           win.element.style.height = win.prevRect.height;
         }
       } else {
-        // Maximize
         win.prevRect = {
           left: win.element.style.left,
           top: win.element.style.top,
@@ -313,7 +285,16 @@
         win.element.style.left = '0px';
         win.element.style.top = '0px';
         win.element.style.width = '100vw';
-        win.element.style.height = 'calc(100vh - 34px)';
+        win.element.style.height = 'calc(100vh - 28px)';
+      }
+
+      if (id === 'win-visualizer' && window.visualizerManager) {
+        setTimeout(() => {
+          const wrapper = win.element.querySelector('.visualizer-wrapper');
+          if (wrapper) {
+            window.visualizerManager.resize(wrapper.clientWidth, wrapper.clientHeight);
+          }
+        }, 100);
       }
     }
 
@@ -331,21 +312,77 @@
           icons.forEach((ic) => ic.classList.remove('selected'));
           icon.classList.add('selected');
 
-          // Double click or single click on touch
           const now = Date.now();
           if (now - lastClick < 350 || window.innerWidth <= 768) {
-            this.openWindow(targetId);
+            if (targetId === 'winamp') {
+              this.toggleWebamp();
+            } else {
+              this.openWindow(targetId);
+            }
           }
           lastClick = now;
         });
       });
 
-      // Clear icon selection on background click
       document.addEventListener('click', (e) => {
         if (!e.target.closest('.desktop-icon')) {
           icons.forEach((ic) => ic.classList.remove('selected'));
         }
       });
+    }
+
+    /* -------------------------------------------------------------------------
+     * Webamp Secondary Player Integration
+     * ------------------------------------------------------------------------- */
+    setupWebampLauncher() {
+      // Lazy initialization of Webamp
+      this.toggleWebamp = () => {
+        if (!window.Webamp) {
+          alert('Webamp 正在加载组件，请稍候...');
+          return;
+        }
+
+        if (!this.webampInstance) {
+          const container = document.getElementById('webamp-root');
+          this.webampInstance = new window.Webamp({
+            initialTracks: [
+              {
+                metaData: {
+                  artist: "FM-84 & Ollie Wride",
+                  title: "Running in the Night"
+                },
+                url: "./old/music/Running_in_the_Night-FM-84&Ollie_Wride.mp3"
+              },
+              {
+                metaData: {
+                  artist: "The Midnight",
+                  title: "Los Angeles"
+                },
+                url: "./old/music/The_Midnight-Los_Angeles.mp3"
+              },
+              {
+                metaData: {
+                  artist: "LeBrock",
+                  title: "Please Don't Cry"
+                },
+                url: "./old/music/LeBrock-Please_Don`t_Cry.mp3"
+              }
+            ]
+          });
+
+          this.webampInstance.renderWhenReady(container).then(() => {
+            this.isWebampRendered = true;
+            this.playSound('ding');
+            console.log('Webamp rendered onto desktop successfully.');
+          });
+        } else {
+          // Toggle visibility
+          const container = document.getElementById('webamp-root');
+          if (container) {
+            container.style.display = container.style.display === 'none' ? 'block' : 'none';
+          }
+        }
+      };
     }
 
     /* -------------------------------------------------------------------------
@@ -394,7 +431,7 @@
         e.stopPropagation();
         startMenu.classList.toggle('open');
         startBtn.classList.toggle('active');
-        if (this.playClick) this.playClick();
+        this.playSound('ding');
       });
 
       document.addEventListener('click', (e) => {
@@ -403,12 +440,15 @@
         }
       });
 
-      // Start Menu Item Clicks
       const menuItems = startMenu.querySelectorAll('[data-open-window]');
       menuItems.forEach((item) => {
         item.addEventListener('click', () => {
           const winId = item.dataset.openWindow;
-          this.openWindow(winId);
+          if (winId === 'winamp') {
+            this.toggleWebamp();
+          } else {
+            this.openWindow(winId);
+          }
           this.closeStartMenu();
         });
       });
@@ -422,21 +462,20 @@
     }
 
     /* -------------------------------------------------------------------------
-     * Desktop Context Menu (Right Click)
+     * Desktop Context Menu
      * ------------------------------------------------------------------------- */
     setupContextMenu() {
       const menu = document.getElementById('desktop-context-menu');
       if (!menu) return;
 
       document.addEventListener('contextmenu', (e) => {
-        // Only trigger on desktop background or icons
         if (e.target.closest('.window') || e.target.closest('#taskbar') || e.target.closest('#start-menu')) {
           return;
         }
         e.preventDefault();
 
-        const x = Math.min(e.clientX, window.innerWidth - 180);
-        const y = Math.min(e.clientY, window.innerHeight - 200);
+        const x = Math.min(e.clientX, window.innerWidth - 190);
+        const y = Math.min(e.clientY, window.innerHeight - 220);
 
         menu.style.left = `${x}px`;
         menu.style.top = `${y}px`;
@@ -449,60 +488,41 @@
         }
       });
 
-      // Context Menu Actions
-      const actionRefresh = document.getElementById('ctx-refresh');
-      if (actionRefresh) {
-        actionRefresh.addEventListener('click', () => {
-          this.closeContextMenu();
-          window.location.reload();
-        });
-      }
+      document.getElementById('ctx-refresh').addEventListener('click', () => {
+        this.closeContextMenu();
+        window.location.reload();
+      });
 
-      const actionWallpaper = document.getElementById('ctx-wallpaper');
-      if (actionWallpaper) {
-        actionWallpaper.addEventListener('click', () => {
-          this.closeContextMenu();
-          if (window.retroBackground) {
-            const modes = ['neon-sunset', 'starfield', 'matrix'];
-            const curIdx = modes.indexOf(window.retroBackground.mode);
-            const nextMode = modes[(curIdx + 1) % modes.length];
-            window.retroBackground.setMode(nextMode);
-            if (window.clippy) window.clippy.speak(`Background switched to: ${nextMode.toUpperCase()}`);
-          }
-        });
-      }
+      document.getElementById('ctx-wallpaper').addEventListener('click', () => {
+        this.closeContextMenu();
+        if (window.retroBackground) {
+          const modes = ['wallpaper-engine', 'neon-sunset', 'win98-clouds', 'win98-teal', 'starfield', 'matrix'];
+          const curIdx = modes.indexOf(window.retroBackground.mode);
+          const nextMode = modes[(curIdx + 1) % modes.length];
+          window.retroBackground.setMode(nextMode);
+          if (window.clippy) window.clippy.speak(`壁纸已切换为: ${nextMode}`);
+        }
+      });
 
-      const actionNextSong = document.getElementById('ctx-next-song');
-      if (actionNextSong) {
-        actionNextSong.addEventListener('click', () => {
-          this.closeContextMenu();
-          if (window.radioEngine) window.radioEngine.next();
-        });
-      }
+      document.getElementById('ctx-next-song').addEventListener('click', () => {
+        this.closeContextMenu();
+        if (window.radioEngine) window.radioEngine.next();
+      });
 
-      const actionToggleClippy = document.getElementById('ctx-toggle-clippy');
-      if (actionToggleClippy) {
-        actionToggleClippy.addEventListener('click', () => {
-          this.closeContextMenu();
-          if (window.clippy) window.clippy.toggle();
-        });
-      }
+      document.getElementById('ctx-toggle-clippy').addEventListener('click', () => {
+        this.closeContextMenu();
+        if (window.clippy) window.clippy.toggle();
+      });
 
-      const actionCRT = document.getElementById('ctx-toggle-crt');
-      if (actionCRT) {
-        actionCRT.addEventListener('click', () => {
-          this.closeContextMenu();
-          document.body.classList.toggle('crt-active');
-        });
-      }
+      document.getElementById('ctx-toggle-crt').addEventListener('click', () => {
+        this.closeContextMenu();
+        document.body.classList.toggle('crt-active');
+      });
 
-      const actionAbout = document.getElementById('ctx-about');
-      if (actionAbout) {
-        actionAbout.addEventListener('click', () => {
-          this.closeContextMenu();
-          this.openWindow('win-computer');
-        });
-      }
+      document.getElementById('ctx-about').addEventListener('click', () => {
+        this.closeContextMenu();
+        this.openWindow('win-computer');
+      });
     }
 
     closeContextMenu() {
@@ -545,20 +565,19 @@
 
         if (isDualHorizontal) {
           document.body.classList.add('foldable-dual-book');
-          // Automatically tile navigation to left screen and player/visualizer to right screen
           const winNav = this.windows['win-navigation'];
           const winPlayer = this.windows['win-player'];
           if (winNav) {
             winNav.element.style.left = '0px';
             winNav.element.style.top = '0px';
             winNav.element.style.width = '50vw';
-            winNav.element.style.height = 'calc(100vh - 34px)';
+            winNav.element.style.height = 'calc(100vh - 28px)';
           }
           if (winPlayer) {
             winPlayer.element.style.left = '50vw';
             winPlayer.element.style.top = '0px';
             winPlayer.element.style.width = '50vw';
-            winPlayer.element.style.height = 'calc(100vh - 34px)';
+            winPlayer.element.style.height = 'calc(100vh - 28px)';
           }
         } else if (isDualVertical) {
           document.body.classList.add('foldable-laptop-posture');
