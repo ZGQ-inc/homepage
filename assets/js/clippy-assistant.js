@@ -58,8 +58,11 @@
           setTimeout(() => {
             if (this.agent) {
               try {
+                if (this.agent._balloon) {
+                  this.agent._balloon.CLOSE_BALLOON_DELAY = 8000;
+                }
                 this.agent.play('Greeting');
-                this.speak("Hi! 我是 Clippy 📎 欢迎来到 ZGQ Inc. 的复古视窗世界！");
+                this.speak("Hi! 我是 Clippy 📎 欢迎来到 ZGQ Inc. 的复古视窗世界！", 8000);
                 setTimeout(() => {
                   if (this.agent) this.agent.play('Wave');
                 }, 2000);
@@ -80,7 +83,7 @@
       this.createFallbackDOM();
       this.bindEvents();
       setTimeout(() => {
-        this.speak("Hi! 我是 Clippy 📎 欢迎来到 ZGQ Inc. 的复古视窗世界！");
+        this.speak("Hi! 我是 Clippy 📎 欢迎来到 ZGQ Inc. 的复古视窗世界！", 8000);
       }, 1000);
     }
 
@@ -110,7 +113,7 @@
           try {
             this.agent.stop();
             this.agent.play('Hearing_1');
-            this.speak(`🎶 正在播放: "${track.title}" - ${track.artist_name}`);
+            this.speak(`🎶 正在播放: "${track.title}" - ${track.artist_name}`, 8000);
             setTimeout(() => {
               if (this.agent) this.agent.play('Congratulate');
             }, 3000);
@@ -155,15 +158,15 @@
           this.agent.play(item.anim);
           // 40% chance to speak a humorous quote
           if (Math.random() < 0.45) {
-            this.speak(item.text, 5000);
+            this.speak(item.text, 8000);
           }
         } catch (e) {}
       };
 
-      // Periodic random animations every 16 to 28 seconds
+      // Periodic random animations every 22 seconds
       this.idleTimer = setInterval(() => {
         triggerIdleAction();
-      }, 18000);
+      }, 22000);
     }
 
     reactToClick() {
@@ -182,7 +185,7 @@
         "提示：可以双击 Winamp 启动第二款经典复古播放器，重温千禧年桌面回忆！📻"
       ];
       const q = quotes[Math.floor(Math.random() * quotes.length)];
-      this.speak(q, 4500);
+      this.speak(q, 8000);
     }
 
     reactToDoubleClick() {
@@ -191,7 +194,7 @@
         this.agent.stop();
         const trick = Math.random() > 0.5 ? 'GetWizardy' : 'Congratulate';
         this.agent.play(trick);
-        this.speak("Ta-da! 魔法时刻！你发现了 Clippy 的隐藏绝活！🎩✨", 4500);
+        this.speak("Ta-da! 魔法时刻！你发现了 Clippy 的隐藏绝活！🎩✨", 8000);
       } catch (e) {}
     }
 
@@ -200,32 +203,35 @@
       try {
         if (winId === 'win-visualizer') {
           this.agent.play('GetArtsy');
-          this.speak("Milkdrop 3D 视觉器启动！随着合成波音乐节拍震撼律动！🎨", 4000);
+          this.speak("Milkdrop 3D 视觉器启动！随着合成波音乐节拍震撼律动！🎨", 8000);
         } else if (winId === 'win-navigation') {
           this.agent.play('Explain');
-          this.speak("这里汇集了 ZGQ 的 34 个在线实用项目与 GitHub 开源仓库！🌐", 4000);
+          this.speak("这里汇集了 ZGQ 的 34 个在线实用项目与 GitHub 开源仓库！🌐", 8000);
         } else if (winId === 'win-github') {
           this.agent.play('GetTechy');
-          this.speak("这里展示了 ZGQ 的 GitHub 活跃数据、设备装备库与深度逆向博文！💻", 4000);
+          this.speak("这里展示了 ZGQ 的 GitHub 活跃数据、设备装备库与深度逆向博文！💻", 8000);
         } else if (winId === 'win-player') {
           this.agent.play('Wave');
-          this.speak("NewRetroWave 在线电台启动！600+ 随机合成波音乐已就绪！📻", 4000);
+          this.speak("NewRetroWave 在线电台启动！600+ 随机合成波音乐已就绪！📻", 8000);
         } else if (winId === 'win-channel') {
           this.agent.play('SendMail');
-          this.speak("打开了频道和博客！欢迎查阅最新博文与 Telegram 技术动态！📢✍️", 4000);
+          this.speak("打开了频道和博客！欢迎查阅最新博文与 Telegram 技术动态！📢✍️", 8000);
         } else if (winId === 'win-spotify') {
           this.agent.play('Hearing_1');
-          this.speak("Spotify 音乐空间启动！正在加载 ZGQ 的年度 Top Songs 和精选歌单！🎧", 4000);
+          this.speak("Spotify 音乐空间启动！正在加载 ZGQ 的年度 Top Songs 和精选歌单！🎧", 8000);
         } else if (winId === 'win-contact') {
           this.agent.play('Writing');
-          this.speak("打开了通讯簿与留言板！支持直接提交到 Cloudflare D1 数据库哦！💬", 4000);
+          this.speak("打开了通讯簿与留言板！支持直接提交到 Cloudflare D1 数据库哦！💬", 8000);
         }
       } catch (e) {}
     }
 
-    speak(text, duration = 6000) {
+    speak(text, duration = 8000) {
       if (this.isAgentLoaded && this.agent) {
         try {
+          if (this.agent._balloon) {
+            this.agent._balloon.CLOSE_BALLOON_DELAY = duration;
+          }
           this.agent.speak(text);
           return;
         } catch (e) {}
