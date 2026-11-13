@@ -212,7 +212,7 @@
           this.speak("NewRetroWave 在线电台启动！600+ 随机合成波音乐已就绪！📻", 4000);
         } else if (winId === 'win-channel') {
           this.agent.play('SendMail');
-          this.speak("欢迎订阅 ZGQ Inc. 的 Telegram 官方技术频道！📢", 4000);
+          this.speak("打开了频道和博客！欢迎查阅最新博文与 Telegram 技术动态！📢✍️", 4000);
         } else if (winId === 'win-spotify') {
           this.agent.play('Hearing_1');
           this.speak("Spotify 音乐空间启动！正在加载 ZGQ 的年度 Top Songs 和精选歌单！🎧", 4000);

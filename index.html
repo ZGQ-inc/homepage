@@ -45,9 +45,9 @@
         <span class="icon-label">GitHub主页</span>
       </div>
 
-      <div class="desktop-icon" data-target="win-channel" title="双击打开 个人频道">
-        <img class="icon-img" src="./assets/icons/news-32x32.png" alt="个人频道">
-        <span class="icon-label">个人频道</span>
+      <div class="desktop-icon" data-target="win-channel" title="双击打开 频道和博客">
+        <img class="icon-img" src="./assets/icons/news-32x32.png" alt="频道和博客">
+        <span class="icon-label">频道和博客</span>
       </div>
 
       <div class="desktop-icon" data-target="win-contact" title="双击打开 联系方式">
@@ -452,12 +452,12 @@
       </div>
     </div>
 
-    <!-- ==================== 窗口 3: 个人频道 (Personal Channel) ==================== -->
-    <div class="window hidden" id="win-channel" data-window-id="win-channel" style="left: 170px; top: 75px; width: 480px;">
+    <!-- ==================== 窗口 3: 频道和博客 (Channel & Blog) ==================== -->
+    <div class="window hidden" id="win-channel" data-window-id="win-channel" style="left: 140px; top: 45px; width: 620px; max-width: 95vw;">
       <div class="title-bar">
         <div class="title-bar-text">
           <img src="./assets/icons/news-16x16.png" alt="">
-          <span>个人频道 - @CopyRightZGQInc</span>
+          <span>频道和博客 - @CopyRightZGQInc · blog.zgqinc.gq</span>
         </div>
         <div class="title-bar-controls">
           <button aria-label="Minimize"></button>
@@ -465,21 +465,125 @@
           <button aria-label="Close"></button>
         </div>
       </div>
-      <div class="window-body">
-        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; padding: 6px; background: #fff; border: 1px inset #808080;">
-          <div>
-            <strong>Telegram 官方频道:</strong> <a href="https://t.me/CopyRightZGQInc" target="_blank">@CopyRightZGQInc</a>
+      <div class="window-body" style="padding: 6px; display: flex; flex-direction: column; gap: 8px; max-height: 520px; overflow-y: auto;">
+        
+        <!-- 头部双卡片: Telegram 频道 + 独立博客入口 -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
+          <!-- Telegram 频道卡片 -->
+          <div style="background: #fff; border: 1px inset #808080; padding: 8px; display: flex; flex-direction: column; justify-content: space-between; gap: 6px;">
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <img src="./assets/icons/news-16x16.png" alt="" style="width: 16px; height: 16px;">
+                <strong style="font-size: 12px;">Telegram 官方频道</strong>
+              </div>
+              <a href="https://t.me/CopyRightZGQInc" target="_blank">
+                <img src="https://img.shields.io/badge/Telegram-@CopyRightZGQInc-666666?style=for-the-badge&logo=Telegram&logoColor=&labelColor=000000" alt="Telegram Badge" style="height: 18px;">
+              </a>
+            </div>
+            <div style="font-size: 11px; color: #555;">
+              最新自制脚本、逆向笔记、开源发布与极客日常动态。
+            </div>
+            <div style="display: flex; justify-content: flex-end;">
+              <a href="https://t.me/CopyRightZGQInc" target="_blank">
+                <button style="font-weight: bold; font-size: 11px;">⚡ 立即订阅 ↗</button>
+              </a>
+            </div>
           </div>
-          <a href="https://t.me/CopyRightZGQInc" target="_blank">
-            <button style="font-weight: bold;">⚡ 立即订阅</button>
-          </a>
+
+          <!-- 个人博客卡片 -->
+          <div style="background: #fff; border: 1px inset #808080; padding: 8px; display: flex; flex-direction: column; justify-content: space-between; gap: 6px;">
+            <div style="display: flex; align-items: center; justify-content: space-between;">
+              <div style="display: flex; align-items: center; gap: 6px;">
+                <img src="./assets/icons/network-16x16.png" alt="" style="width: 16px; height: 16px;">
+                <strong style="font-size: 12px;">个人独立博客</strong>
+              </div>
+              <a href="https://blog.zgqinc.gq/" target="_blank">
+                <img src="https://img.shields.io/badge/Blog-blog.zgqinc.gq-666666?style=for-the-badge&logo=rss&logoColor=&labelColor=000000" alt="Blog Badge" style="height: 18px;">
+              </a>
+            </div>
+            <div style="font-size: 11px; color: #555;">
+              长文深挖、本地化实录、协议取证与全套技术白皮书。
+            </div>
+            <div style="display: flex; gap: 4px; justify-content: flex-end;">
+              <a href="https://blog.zgqinc.gq/" target="_blank">
+                <button style="font-weight: bold; font-size: 11px;">🌐 访问博客 ↗</button>
+              </a>
+              <a href="https://blog.zgqinc.gq/feed.xml" target="_blank">
+                <button style="font-size: 11px;" title="RSS Feed XML 订阅">📡 RSS</button>
+              </a>
+            </div>
+          </div>
         </div>
 
-        <fieldset>
-          <legend>频道动态与精选随笔</legend>
-          <ul class="tree-view" style="height: 180px; overflow-y: auto;">
+        <!-- 个人独立博客最新文章 (Live RSS Sync) -->
+        <fieldset style="margin: 0;">
+          <legend>✍️ 个人独立博客最新文章 (Live RSS Sync)</legend>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; font-size: 11px;">
+            <span style="color: #666;">自动同步自 <a href="https://blog.zgqinc.gq/feed.xml" target="_blank" style="color: #000080;">blog.zgqinc.gq/feed.xml</a></span>
+            <button id="channel-blog-refresh-btn" style="font-size: 11px; padding: 1px 6px;">🔄 刷新博文</button>
+          </div>
+          <div id="channel-blog-container" style="max-height: 220px; overflow-y: auto; background: #fff; border: 1px inset #808080; padding: 6px; display: flex; flex-direction: column; gap: 6px;">
+            <!-- 预置精选博文（RSS 现场拉取成功后会自动更新） -->
+            <div class="article-card" style="padding: 6px; border: 1px solid #d0d0d0; border-radius: 3px; background: #fafafa;">
+              <div style="display: flex; justify-content: space-between; font-size: 10px; color: #888;">
+                <span>🗓️ 2026-11-10</span>
+                <span style="background: #000080; color: #fff; padding: 0 4px; border-radius: 2px;">汉化逆向</span>
+              </div>
+              <a href="https://blog.zgqinc.gq/posts/giggle/" target="_blank" style="font-weight: bold; font-size: 12px; color: #000080; text-decoration: none; display: block; margin: 2px 0;">
+                《危笑乐园》（Giggleland）全文本深度汉化补丁发布与底层本地化缺陷逆向实录
+              </a>
+              <div style="font-size: 11px; color: #555;">
+                从底层逆向挖掘到全流程实机通关，详尽复盘汉化全景历程：曝光官方代码隐藏开关、思源黑体/CJK减速算法底层修复与全笔记存档。
+              </div>
+            </div>
+
+            <div class="article-card" style="padding: 6px; border: 1px solid #d0d0d0; border-radius: 3px; background: #fafafa;">
+              <div style="display: flex; justify-content: space-between; font-size: 10px; color: #888;">
+                <span>🗓️ 2026-11-05</span>
+                <span style="background: #000080; color: #fff; padding: 0 4px; border-radius: 2px;">系统安全</span>
+              </div>
+              <a href="https://blog.zgqinc.gq/posts/syshlp/" target="_blank" style="font-weight: bold; font-size: 12px; color: #000080; text-decoration: none; display: block; margin: 2px 0;">
+                移动终端预装系统级组件 SystemHelper 深度逆向分析与时空行为监控技术取证白皮书
+              </a>
+              <div style="font-size: 11px; color: #555;">
+                运营商级预装系统组件 SystemHelper 深度逆向技术取证白皮书：横跨 4 年 5 代全量样本，深剖时空行为监控机制与通信协议。
+              </div>
+            </div>
+
+            <div class="article-card" style="padding: 6px; border: 1px solid #d0d0d0; border-radius: 3px; background: #fafafa;">
+              <div style="display: flex; justify-content: space-between; font-size: 10px; color: #888;">
+                <span>🗓️ 2026-11-05</span>
+                <span style="background: #000080; color: #fff; padding: 0 4px; border-radius: 2px;">逆向实战</span>
+              </div>
+              <a href="https://blog.zgqinc.gq/posts/c8k3m9/" target="_blank" style="font-weight: bold; font-size: 12px; color: #000080; text-decoration: none; display: block; margin: 2px 0;">
+                教程：翻车与神级反转！以《The Classrooms》实战起底 Steam 物品强校验与资产层“后门”
+              </a>
+              <div style="font-size: 11px; color: #555;">
+                硬核避坑与绝妙反转：解析 Steam 物品校验机制、网络层与资产层“后门”逆向技巧实战全纪录。
+              </div>
+            </div>
+
+            <div class="article-card" style="padding: 6px; border: 1px solid #d0d0d0; border-radius: 3px; background: #fafafa;">
+              <div style="display: flex; justify-content: space-between; font-size: 10px; color: #888;">
+                <span>📌 项目索引</span>
+                <span style="background: #008000; color: #fff; padding: 0 4px; border-radius: 2px;">个人合集</span>
+              </div>
+              <a href="https://blog.zgqinc.gq/posts/projects/" target="_blank" style="font-weight: bold; font-size: 12px; color: #000080; text-decoration: none; display: block; margin: 2px 0;">
+                我在做的项目汇总清单 (Project Index)
+              </a>
+              <div style="font-size: 11px; color: #555;">
+                汇集 ZGQ 近年开源工具、自制服务、前端应用与逆向研究全景合辑。
+              </div>
+            </div>
+          </div>
+        </fieldset>
+
+        <!-- 频道精选广播随笔 -->
+        <fieldset style="margin: 0;">
+          <legend>📢 Telegram 频道广播与精选随笔</legend>
+          <ul class="tree-view" style="max-height: 130px; overflow-y: auto;">
             <li>
-              <strong>📢 [置顶] 欢迎关注 ZGQ Inc. 官方频道</strong>
+              <strong>📢 [置顶] 欢迎关注 ZGQ Inc. 官方频道 (@CopyRightZGQInc)</strong>
               <ul>
                 <li>第一时间获取最新技术开源项目、自制脚本、极客工具以及折腾经验分享。</li>
               </ul>
@@ -495,11 +599,17 @@
             <li>
               <strong>💡 极客探讨 & 交流社区</strong>
               <ul>
-                <li>欢迎各位同好加入频道评论区交流互动！</li>
+                <li>欢迎各位同好加入频道评论区交流互动！支持 Telegram 实时互动与私信联络。</li>
               </ul>
             </li>
           </ul>
         </fieldset>
+
+      </div>
+      <div class="status-bar">
+        <p class="status-bar-field">状态: 已连线 Telegram & 博客 RSS</p>
+        <p class="status-bar-field">blog.zgqinc.gq</p>
+        <p class="status-bar-field">@CopyRightZGQInc</p>
       </div>
     </div>
 
@@ -910,7 +1020,7 @@
         <img src="./assets/icons/my-documents-16x16.png" alt=""> GitHub 个人主页
       </div>
       <div class="start-item" data-open-window="win-channel">
-        <img src="./assets/icons/news-16x16.png" alt=""> 个人 Telegram 频道
+        <img src="./assets/icons/news-16x16.png" alt=""> 频道和博客 (Channel & Blog)
       </div>
       <div class="start-item" data-open-window="win-contact">
         <img src="./assets/icons/outlook-express-16x16.png" alt=""> 联系方式 / 通讯簿
@@ -1401,6 +1511,44 @@
             container.appendChild(card);
           });
 
+          // 同步渲染到“频道和博客”窗口中的实时博文列表
+          const channelBlogContainer = document.getElementById('channel-blog-container');
+          if (channelBlogContainer) {
+            channelBlogContainer.innerHTML = '';
+            entries.forEach((entry, idx) => {
+              if (idx >= 10) return;
+              const titleEl = entry.querySelector('title');
+              const linkEl = entry.querySelector('link');
+              const updatedEl = entry.querySelector('published') || entry.querySelector('updated');
+              const summaryEl = entry.querySelector('summary') || entry.querySelector('content');
+              const catEl = entry.querySelector('category');
+
+              const title = titleEl ? titleEl.textContent.trim() : '无标题';
+              const link = linkEl ? (linkEl.getAttribute('href') || linkEl.textContent.trim()) : '#';
+              const pubDate = updatedEl ? updatedEl.textContent.trim().substring(0, 10) : '';
+              let summary = summaryEl ? summaryEl.textContent.replace(/<[^>]+>/g, '').trim() : '';
+              if (summary.length > 120) summary = summary.substring(0, 120) + '...';
+              const category = catEl ? (catEl.getAttribute('term') || catEl.textContent.trim()) : '博文实录';
+
+              const card = document.createElement('div');
+              card.className = 'article-card';
+              card.style.cssText = 'padding: 6px; border: 1px solid #d0d0d0; border-radius: 3px; background: #fafafa;';
+              card.innerHTML = `
+                <div style="display: flex; justify-content: space-between; font-size: 10px; color: #888;">
+                  <span>🗓️ ${pubDate}</span>
+                  <span style="background: #000080; color: #fff; padding: 0 4px; border-radius: 2px;">${category}</span>
+                </div>
+                <a href="${link}" target="_blank" rel="noopener noreferrer" style="font-weight: bold; font-size: 12px; color: #000080; text-decoration: none; display: block; margin: 2px 0;">
+                  ${title}
+                </a>
+                <div style="font-size: 11px; color: #555; line-height: 1.4;">
+                  ${summary}
+                </div>
+              `;
+              channelBlogContainer.appendChild(card);
+            });
+          }
+
           if (dot) dot.style.background = '#008000';
           const nowStr = new Date().toLocaleTimeString();
           if (text) text.textContent = `RSS: 现场拉取成功 (${entries.length} 篇最新博文) · ${nowStr}`;
@@ -1412,6 +1560,14 @@
       const rssRefreshBtn = document.getElementById('rss-refresh-btn');
       if (rssRefreshBtn) {
         rssRefreshBtn.addEventListener('click', () => {
+          desktop.playSound('ding');
+          fetchBlogRss();
+        });
+      }
+
+      const channelBlogRefreshBtn = document.getElementById('channel-blog-refresh-btn');
+      if (channelBlogRefreshBtn) {
+        channelBlogRefreshBtn.addEventListener('click', () => {
           desktop.playSound('ding');
           fetchBlogRss();
         });
