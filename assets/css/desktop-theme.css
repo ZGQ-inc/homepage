@@ -118,8 +118,8 @@ html, body {
   border-radius: 1px;
 }
 
-/* Windows Base Styles */
-.window {
+/* Windows Base Styles (Scoped to desktop OS windows with data-window-id, avoiding conflicts with Webamp) */
+.window[data-window-id] {
   position: absolute;
   min-width: 280px;
   min-height: 160px;
@@ -131,15 +131,15 @@ html, body {
   z-index: 100;
 }
 
-.window.hidden {
+.window[data-window-id].hidden {
   display: none !important;
 }
 
-.window.minimized {
+.window[data-window-id].minimized {
   display: none !important;
 }
 
-.window.maximized {
+.window[data-window-id].maximized {
   left: 0 !important;
   top: 0 !important;
   width: 100vw !important;
@@ -149,7 +149,7 @@ html, body {
   box-shadow: none;
 }
 
-.window .title-bar {
+.window[data-window-id] .title-bar {
   cursor: move;
   padding: 3px 4px 3px 6px;
   display: flex;
@@ -158,7 +158,7 @@ html, body {
   background: linear-gradient(90deg, var(--win-title-active-start), var(--win-title-active-end));
 }
 
-.window.inactive .title-bar {
+.window[data-window-id].inactive .title-bar {
   background: linear-gradient(90deg, var(--win-title-inactive-start), var(--win-title-inactive-end));
 }
 
@@ -177,7 +177,7 @@ html, body {
   image-rendering: pixelated;
 }
 
-.window .window-body {
+.window[data-window-id] .window-body {
   flex: 1;
   overflow-y: auto;
   overflow-x: hidden;
@@ -491,12 +491,6 @@ body.crt-active .crt-overlay {
 #webamp {
   position: absolute !important;
   z-index: 10005 !important;
-}
-
-#webamp .window {
-  border: none !important;
-  box-shadow: none !important;
-  background: transparent !important;
 }
 
 .nav-card img {
@@ -898,7 +892,7 @@ body.crt-active .crt-overlay {
     width: 64px;
   }
 
-  .window:not(.hidden) {
+  .window[data-window-id]:not(.hidden) {
     left: 2px !important;
     top: 2px !important;
     width: calc(100vw - 4px) !important;
@@ -907,7 +901,7 @@ body.crt-active .crt-overlay {
     max-height: 100vh !important;
   }
 
-  .window .window-body {
+  .window[data-window-id] .window-body {
     max-height: calc(100dvh - var(--taskbar-height) - 60px);
   }
 

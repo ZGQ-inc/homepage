@@ -89,9 +89,9 @@
 
       // Audio Elements & Web Audio
       this.audio = new Audio();
-      this.audio.crossOrigin = 'anonymous';
       this.audio.preload = 'metadata';
       this.audio.volume = this.volume;
+      this.errorTimer = null;
 
       this.audioContext = null;
       this.analyser = null;
@@ -113,11 +113,14 @@
 
       this.audio.addEventListener('pause', () => {
         this.isPlaying = false;
+        clearTimeout(this.errorTimer);
         this.emit('playstatechanged', { isPlaying: false });
       });
 
       this.audio.addEventListener('ended', () => {
-        this.next();
+        if (this.isPlaying) {
+          this.next();
+        }
       });
 
       this.audio.addEventListener('timeupdate', () => {
@@ -128,8 +131,18 @@
       });
 
       this.audio.addEventListener('error', (e) => {
+        // Do not auto-next if the audio was intentionally paused or stopped
+        if (!this.isPlaying || this.audio.paused) return;
+        // Code 1 is MEDIA_ERR_ABORTED: fetching process aborted by user
+        if (this.audio.error && this.audio.error.code === 1) return;
+
         console.warn('RadioEngine audio error, trying next track:', e);
-        setTimeout(() => this.next(), 1000);
+        clearTimeout(this.errorTimer);
+        this.errorTimer = setTimeout(() => {
+          if (this.isPlaying) {
+            this.next();
+          }
+        }, 1500);
       });
     }
 
@@ -265,31 +278,43 @@
       const track = this.getCurrentTrack();
       if (!track) return;
 
+      clearTimeout(this.errorTimer);
+      this.isPlaying = true;
       this.audio.src = track.urlsong;
       const playPromise = this.audio.play();
       if (playPromise !== undefined) {
         playPromise.catch(err => {
-          console.log('Autoplay prevented or audio loading:', err);
+          console.log('Audio loading or waiting for user gesture:', err.name);
         });
       }
 
       this.emit('songchanged', { track: track, index: this.currentIndex });
+      this.emit('playstatechanged', { isPlaying: true });
     }
 
     play() {
+      clearTimeout(this.errorTimer);
+      this.isPlaying = true;
       if (!this.audio.src && this.playlist.length > 0) {
         this.playTrack(this.currentIndex);
       } else {
-        this.audio.play().catch(e => console.log('Play paused or blocked:', e));
+        const playPromise = this.audio.play();
+        if (playPromise !== undefined) {
+          playPromise.catch(e => console.log('Play paused or blocked:', e.name));
+        }
       }
+      this.emit('playstatechanged', { isPlaying: true });
     }
 
     pause() {
+      this.isPlaying = false;
+      clearTimeout(this.errorTimer);
       this.audio.pause();
+      this.emit('playstatechanged', { isPlaying: false });
     }
 
     toggle() {
-      if (this.isPlaying) {
+      if (this.isPlaying && !this.audio.paused) {
         this.pause();
       } else {
         this.play();
