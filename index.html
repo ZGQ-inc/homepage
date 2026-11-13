@@ -60,6 +60,11 @@
         <span class="icon-label">NRW电台</span>
       </div>
 
+      <div class="desktop-icon" data-target="win-spotify" title="双击打开 Spotify 音乐空间">
+        <img class="icon-img" src="./assets/icons/media-player-32x32.png" alt="Spotify">
+        <span class="icon-label">Spotify音乐</span>
+      </div>
+
       <div class="desktop-icon" data-target="winamp" title="双击打开 Winamp 经典播放器">
         <img class="icon-img" src="./assets/icons/winamp2-32x32.png" alt="Winamp">
         <span class="icon-label">Winamp</span>
@@ -151,6 +156,7 @@
         <div class="gh-tab-bar">
           <button class="gh-tab-btn active" data-ghtab="overview">📊 概览与成就 (Overview)</button>
           <button class="gh-tab-btn" data-ghtab="articles">📰 逆向与实战博文 (Articles)</button>
+          <button class="gh-tab-btn" data-ghtab="spotify">🎧 Spotify 档案 (Spotify)</button>
           <button class="gh-tab-btn" data-ghtab="rig">💻 极客装备库 (Rig & Devices)</button>
           <button class="gh-tab-btn" data-ghtab="skills">🛠️ 技术栈与生态 (Tech Stack)</button>
         </div>
@@ -210,82 +216,132 @@
           </fieldset>
         </div>
 
-        <!-- 标签页 2: 最新逆向与博客文章 -->
+        <!-- 标签页 2: 最新逆向与博客文章 (支持现场 RSS 自动拉取) -->
         <div class="gh-tab-content" id="ghtab-articles" style="max-height: 420px; overflow-y: auto;">
-          <div class="gh-article-card">
-            <div style="flex: 1;">
-              <div style="display: flex; justify-content: space-between; margin-bottom: 2px;">
-                <span class="gh-article-badge">逆向实录</span>
-                <span style="font-size: 11px; color: #666;">🗓️ 2026-11-10</span>
-              </div>
-              <a href="https://blog.zgqinc.gq/posts/giggle/" target="_blank" style="font-weight: bold; font-size: 12px; color: #000080; text-decoration: none;">
-                《危笑乐园》（Giggleland）全文本深度汉化补丁发布与底层本地化缺陷逆向实录
-              </a>
-              <p style="margin: 4px 0 0 0; font-size: 11px; color: #444; line-height: 1.4;">
-                从底层逆向挖掘到全流程实机通关，详尽复盘《危笑乐园》汉化全景历程：曝光官方代码隐藏开关、思源黑体/CJK减速算法底层修复与全笔记存档。
-              </p>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; padding: 4px 6px; background: #e0ded8; border: 1px inset #808080; flex-wrap: wrap; gap: 4px;">
+            <div style="display: flex; align-items: center; gap: 6px; font-size: 11px;">
+              <span id="rss-status-dot" style="display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #008000;"></span>
+              <span id="rss-status-text" style="font-weight: bold;">RSS 源: blog.zgqinc.gq/feed.xml</span>
+            </div>
+            <div style="display: flex; gap: 4px;">
+              <button id="rss-refresh-btn" style="font-size: 11px; font-weight: bold;">🔄 现场拉取最新博文 (RSS)</button>
+              <a href="https://blog.zgqinc.gq/posts/" target="_blank"><button style="font-size: 11px;">博客专栏 ↗</button></a>
             </div>
           </div>
 
-          <div class="gh-article-card">
-            <div style="flex: 1;">
-              <div style="display: flex; justify-content: space-between; margin-bottom: 2px;">
-                <span class="gh-article-badge">安全取证</span>
-                <span style="font-size: 11px; color: #666;">🗓️ 2026-11-05</span>
+          <div id="articles-container">
+            <div class="gh-article-card">
+              <div style="flex: 1;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 2px;">
+                  <span class="gh-article-badge">逆向实录</span>
+                  <span style="font-size: 11px; color: #666;">🗓️ 2026-11-10</span>
+                </div>
+                <a href="https://blog.zgqinc.gq/posts/giggle/" target="_blank" style="font-weight: bold; font-size: 12px; color: #000080; text-decoration: none;">
+                  《危笑乐园》（Giggleland）全文本深度汉化补丁发布与底层本地化缺陷逆向实录
+                </a>
+                <p style="margin: 4px 0 0 0; font-size: 11px; color: #444; line-height: 1.4;">
+                  从底层逆向挖掘到全流程实机通关，详尽复盘《危笑乐园》汉化全景历程：曝光官方代码隐藏开关、思源黑体/CJK减速算法底层修复与全笔记存档。
+                </p>
               </div>
-              <a href="https://blog.zgqinc.gq/posts/syshlp/" target="_blank" style="font-weight: bold; font-size: 12px; color: #000080; text-decoration: none;">
-                移动终端预装系统级组件 SystemHelper 深度逆向分析与时空行为监控技术取证白皮书
-              </a>
-              <p style="margin: 4px 0 0 0; font-size: 11px; color: #444; line-height: 1.4;">
-                国家级/运营商级预装系统组件 SystemHelper (com.mobiletools.systemhelper) 深度逆向技术取证白皮书：横跨 4 年 5 代全量样本时空行为分析。
-              </p>
+            </div>
+
+            <div class="gh-article-card">
+              <div style="flex: 1;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 2px;">
+                  <span class="gh-article-badge">安全取证</span>
+                  <span style="font-size: 11px; color: #666;">🗓️ 2026-11-05</span>
+                </div>
+                <a href="https://blog.zgqinc.gq/posts/syshlp/" target="_blank" style="font-weight: bold; font-size: 12px; color: #000080; text-decoration: none;">
+                  移动终端预装系统级组件 SystemHelper 深度逆向分析与时空行为监控技术取证白皮书
+                </a>
+                <p style="margin: 4px 0 0 0; font-size: 11px; color: #444; line-height: 1.4;">
+                  国家级/运营商级预装系统组件 SystemHelper (com.mobiletools.systemhelper) 深度逆向技术取证白皮书：横跨 4 年 5 代全量样本时空行为分析。
+                </p>
+              </div>
+            </div>
+
+            <div class="gh-article-card">
+              <div style="flex: 1;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 2px;">
+                  <span class="gh-article-badge">Steam逆向</span>
+                  <span style="font-size: 11px; color: #666;">🗓️ 2026-11-05</span>
+                </div>
+                <a href="https://blog.zgqinc.gq/posts/c8k3m9/" target="_blank" style="font-weight: bold; font-size: 12px; color: #000080; text-decoration: none;">
+                  教程：翻车与神级反转！以《The Classrooms》实战起底 Steam 物品强校验与资产层“后门”拦截
+                </a>
+                <p style="margin: 4px 0 0 0; font-size: 11px; color: #444; line-height: 1.4;">
+                  解析为什么常规 SmokeAPI 会在强校验游戏中折戟？深度追踪《The Classrooms》内部 SteamInventory 签名序列化拦截链与 DepotDownloader 清单提取。
+                </p>
+              </div>
+            </div>
+
+            <div class="gh-article-card">
+              <div style="flex: 1;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 2px;">
+                  <span class="gh-article-badge">3D打印DIY</span>
+                  <span style="font-size: 11px; color: #666;">🗓️ 2026-11-04</span>
+                </div>
+                <a href="https://blog.zgqinc.gq/posts/ag140s/" target="_blank" style="font-weight: bold; font-size: 12px; color: #000080; text-decoration: none;">
+                  86 元官方支架平替！MINIWARE AirGo 140 3D 打印“双模自动休眠支架”开源实测
+                </a>
+                <p style="margin: 4px 0 0 0; font-size: 11px; color: #444; line-height: 1.4;">
+                  面对原厂高达 86 元且存在结构缺陷的钣金支架，基于拓竹 A1 mini 打造 3D 打印双模自动休眠支架并开源。
+                </p>
+              </div>
+            </div>
+
+            <div class="gh-article-card">
+              <div style="flex: 1;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 2px;">
+                  <span class="gh-article-badge">硬件拆解</span>
+                  <span style="font-size: 11px; color: #666;">🗓️ 2026-11-02</span>
+                </div>
+                <a href="https://blog.zgqinc.gq/posts/ag140d/" target="_blank" style="font-weight: bold; font-size: 12px; color: #000080; text-decoration: none;">
+                  全网首拆！MINIWARE AirGo 140 便携热风枪深度拆解与硬件架构全景分析
+                </a>
+                <p style="margin: 4px 0 0 0; font-size: 11px; color: #444; line-height: 1.4;">
+                  全网首个 AirGo 140 便携热风枪深度硬核拆解，全面剖析 140W 微型涡轮与发热芯驱动拓扑。
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 标签页: Spotify 音乐档案 -->
+        <div class="gh-tab-content" id="ghtab-spotify" style="max-height: 420px; overflow-y: auto;">
+          <div class="spotify-card" style="background: #121212; color: #fff; padding: 10px; border-radius: 4px; margin-bottom: 10px; border: 2px inset #000;">
+            <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+              <div style="display: flex; align-items: center; gap: 12px;">
+                <img src="https://i.scdn.co/image/ab6775700000ee85fd9d1f9dd6082c443c4b6237" alt="Spotify Avatar" style="width: 52px; height: 52px; border-radius: 50%; border: 2px solid #1DB954; object-fit: cover;">
+                <div>
+                  <div style="display: flex; align-items: center; gap: 6px;">
+                    <span style="font-weight: 900; font-size: 15px; color: #fff;">ZGQ</span>
+                    <span style="background: #1DB954; color: #000; font-size: 9px; font-weight: bold; padding: 1px 4px; border-radius: 2px;">SPOTIFY VERIFIED</span>
+                  </div>
+                  <div style="font-size: 11px; color: #b3b3b3; margin-top: 2px;">用户 ID: a54fe2pnapk5pbzbh0on5gczd</div>
+                  <div style="font-size: 11px; color: #1DB954; margin-top: 2px;">🟢 实时曲库已联通 · 30 首 Top 歌曲持续循环</div>
+                </div>
+              </div>
+              <div style="display: flex; gap: 6px;">
+                <a href="spotify:user:a54fe2pnapk5pbzbh0on5gczd" target="_blank"><button style="background: #1DB954; color: #000; font-weight: bold; border-color: #1ed760; font-size: 11px;">在客户端打开 ↗</button></a>
+                <a href="https://open.spotify.com/user/a54fe2pnapk5pbzbh0on5gczd" target="_blank"><button style="font-size: 11px;">网页主页 ↗</button></a>
+              </div>
             </div>
           </div>
 
-          <div class="gh-article-card">
-            <div style="flex: 1;">
-              <div style="display: flex; justify-content: space-between; margin-bottom: 2px;">
-                <span class="gh-article-badge">Steam逆向</span>
-                <span style="font-size: 11px; color: #666;">🗓️ 2026-11-05</span>
-              </div>
-              <a href="https://blog.zgqinc.gq/posts/c8k3m9/" target="_blank" style="font-weight: bold; font-size: 12px; color: #000080; text-decoration: none;">
-                教程：翻车与神级反转！以《The Classrooms》实战起底 Steam 物品强校验与资产层“后门”拦截
-              </a>
-              <p style="margin: 4px 0 0 0; font-size: 11px; color: #444; line-height: 1.4;">
-                解析为什么常规 SmokeAPI 会在强校验游戏中折戟？深度追踪《The Classrooms》内部 SteamInventory 签名序列化拦截链与 DepotDownloader 清单提取。
-              </p>
+          <fieldset style="margin-bottom: 8px;">
+            <legend>🎵 精选公开歌单切换 (Select Playlist)</legend>
+            <div style="display: flex; gap: 6px; flex-wrap: wrap;" id="spotify-gh-playlist-btns">
+              <button class="active" data-spotify-id="4HkfwQljRfanSJ594U3HuQ" style="font-weight: bold;">🏆 Top Songs - All Time</button>
+              <button data-spotify-id="2XVgr6bpTDOlhKkaYeADld">💿 SRD Remaster</button>
+              <button data-spotify-id="5Gw8WjDXfZ3ggARpw1ciA8">⏳ My 2024 Playlist in a Bottle</button>
             </div>
-          </div>
+          </fieldset>
 
-          <div class="gh-article-card">
-            <div style="flex: 1;">
-              <div style="display: flex; justify-content: space-between; margin-bottom: 2px;">
-                <span class="gh-article-badge">3D打印DIY</span>
-                <span style="font-size: 11px; color: #666;">🗓️ 2026-11-04</span>
-              </div>
-              <a href="https://blog.zgqinc.gq/posts/ag140s/" target="_blank" style="font-weight: bold; font-size: 12px; color: #000080; text-decoration: none;">
-                86 元官方支架平替！MINIWARE AirGo 140 3D 打印“双模自动休眠支架”开源实测
-              </a>
-              <p style="margin: 4px 0 0 0; font-size: 11px; color: #444; line-height: 1.4;">
-                面对原厂高达 86 元且存在结构缺陷的钣金支架，基于拓竹 A1 mini 打造 3D 打印双模自动休眠支架并开源。
-              </p>
-            </div>
-          </div>
-
-          <div class="gh-article-card">
-            <div style="flex: 1;">
-              <div style="display: flex; justify-content: space-between; margin-bottom: 2px;">
-                <span class="gh-article-badge">硬件拆解</span>
-                <span style="font-size: 11px; color: #666;">🗓️ 2026-11-02</span>
-              </div>
-              <a href="https://blog.zgqinc.gq/posts/ag140d/" target="_blank" style="font-weight: bold; font-size: 12px; color: #000080; text-decoration: none;">
-                全网首拆！MINIWARE AirGo 140 便携热风枪深度拆解与硬件架构全景分析
-              </a>
-              <p style="margin: 4px 0 0 0; font-size: 11px; color: #444; line-height: 1.4;">
-                全网首个 AirGo 140 便携热风枪深度硬核拆解，全面剖析 140W 微型涡轮与发热芯驱动拓扑。
-              </p>
-            </div>
-          </div>
+          <fieldset>
+            <legend>🎧 Spotify 官方播放器 (Interactive Player)</legend>
+            <iframe id="spotify-gh-embed-frame" style="border-radius:8px; width: 100%; height: 352px; border: 1px inset #808080;" src="https://open.spotify.com/embed/playlist/4HkfwQljRfanSJ594U3HuQ?utm_source=generator&theme=0" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+          </fieldset>
         </div>
 
         <!-- 标签页 3: 极客装备库 -->
@@ -422,7 +478,7 @@
     </div>
 
     <!-- ==================== 窗口 4: 联系方式 (Contact Info) ==================== -->
-    <div class="window hidden" id="win-contact" data-window-id="win-contact" style="left: 200px; top: 100px; width: 440px;">
+    <div class="window hidden" id="win-contact" data-window-id="win-contact" style="left: 200px; top: 100px; width: 460px;">
       <div class="title-bar">
         <div class="title-bar-text">
           <img src="./assets/icons/outlook-express-16x16.png" alt="">
@@ -454,14 +510,84 @@
         </fieldset>
 
         <fieldset>
-          <legend>离线便签留言板</legend>
-          <textarea id="guestbook-input" placeholder="在本地留下您的足迹或随笔想法..." style="width: 100%; height: 70px; resize: none; margin-bottom: 6px;"></textarea>
-          <div style="display: flex; justify-content: flex-end; gap: 6px;">
-            <button id="guestbook-clear-btn">清空</button>
-            <button id="guestbook-save-btn">保存留言</button>
+          <legend>💬 Cloudflare D1 留言板 (Guestbook)</legend>
+          <div style="display: flex; gap: 6px; margin-bottom: 6px;">
+            <input type="text" id="gb-nickname" placeholder="您的昵称 (选填，默认神秘访客)" maxlength="32" style="flex: 1; font-size: 11px;">
+            <input type="text" id="gb-contact" placeholder="联系方式/主页 (选填)" maxlength="64" style="flex: 1; font-size: 11px;">
           </div>
-          <div id="guestbook-msg" style="margin-top: 4px; color: #008000; font-size: 11px;"></div>
+          <textarea id="gb-content" placeholder="写下您的留言或寄语 (支持2~500字，安全防注入)..." maxlength="500" style="width: 100%; height: 56px; resize: none; margin-bottom: 6px; font-size: 11px;"></textarea>
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; flex-wrap: wrap; gap: 4px;">
+            <span id="gb-status" style="font-size: 11px; color: #444;">● 正在连接 Cloudflare D1 数据库...</span>
+            <div style="display: flex; gap: 4px;">
+              <button id="gb-refresh-btn" style="font-size: 11px;">🔄 刷新</button>
+              <button id="gb-clear-btn" style="font-size: 11px;">清空</button>
+              <button id="gb-submit-btn" style="font-weight: bold; font-size: 11px;">🚀 提交留言</button>
+            </div>
+          </div>
+          <div id="gb-messages-container" style="background: #fff; border: 2px inset #808080; height: 160px; overflow-y: auto; padding: 4px; font-size: 11px;">
+            <div style="text-align: center; color: #888; padding: 20px;">正在加载最新留言列表...</div>
+          </div>
         </fieldset>
+      </div>
+      <div class="status-bar">
+        <p class="status-bar-field" id="gb-footer-status">后端: Cloudflare Python Worker + D1</p>
+        <p class="status-bar-field" id="gb-footer-count">留言: 0 条</p>
+        <p class="status-bar-field">参数化防注入保护</p>
+      </div>
+    </div>
+
+    <!-- ==================== 窗口: Spotify 音乐空间 (Spotify Music Space) ==================== -->
+    <div class="window hidden" id="win-spotify" data-window-id="win-spotify" style="left: 210px; top: 80px; width: 520px;">
+      <div class="title-bar">
+        <div class="title-bar-text">
+          <img src="./assets/icons/media-player-16x16.png" alt="">
+          <span>Spotify 音乐空间 - ZGQ (@a54fe2pnapk5pbzbh0on5gczd)</span>
+        </div>
+        <div class="title-bar-controls">
+          <button aria-label="Minimize"></button>
+          <button aria-label="Maximize"></button>
+          <button aria-label="Close"></button>
+        </div>
+      </div>
+      <div class="window-body" style="padding: 6px;">
+        <div class="spotify-card" style="background: #121212; color: #fff; padding: 10px; border-radius: 4px; margin-bottom: 10px; border: 2px inset #000;">
+          <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <img src="https://i.scdn.co/image/ab6775700000ee85fd9d1f9dd6082c443c4b6237" alt="Spotify Avatar" style="width: 52px; height: 52px; border-radius: 50%; border: 2px solid #1DB954; object-fit: cover;">
+              <div>
+                <div style="display: flex; align-items: center; gap: 6px;">
+                  <span style="font-weight: 900; font-size: 15px; color: #fff;">ZGQ</span>
+                  <span style="background: #1DB954; color: #000; font-size: 9px; font-weight: bold; padding: 1px 4px; border-radius: 2px;">SPOTIFY VERIFIED</span>
+                </div>
+                <div style="font-size: 11px; color: #b3b3b3; margin-top: 2px;">用户 ID: a54fe2pnapk5pbzbh0on5gczd</div>
+                <div style="font-size: 11px; color: #1DB954; margin-top: 2px;">🟢 实时曲库已联通 · 30 首 Top 歌曲持续循环</div>
+              </div>
+            </div>
+            <div style="display: flex; gap: 6px;">
+              <a href="spotify:user:a54fe2pnapk5pbzbh0on5gczd" target="_blank"><button style="background: #1DB954; color: #000; font-weight: bold; border-color: #1ed760; font-size: 11px;">在客户端打开 ↗</button></a>
+              <a href="https://open.spotify.com/user/a54fe2pnapk5pbzbh0on5gczd" target="_blank"><button style="font-size: 11px;">网页主页 ↗</button></a>
+            </div>
+          </div>
+        </div>
+
+        <fieldset style="margin-bottom: 8px;">
+          <legend>🎵 精选公开歌单切换 (Select Playlist)</legend>
+          <div style="display: flex; gap: 6px; flex-wrap: wrap;" id="spotify-win-playlist-btns">
+            <button class="active" data-spotify-id="4HkfwQljRfanSJ594U3HuQ" style="font-weight: bold;">🏆 Top Songs - All Time</button>
+            <button data-spotify-id="2XVgr6bpTDOlhKkaYeADld">💿 SRD Remaster</button>
+            <button data-spotify-id="5Gw8WjDXfZ3ggARpw1ciA8">⏳ My 2024 Playlist in a Bottle</button>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>🎧 Spotify 官方播放器 (Interactive Player)</legend>
+          <iframe id="spotify-win-embed-frame" style="border-radius:8px; width: 100%; height: 352px; border: 1px inset #808080;" src="https://open.spotify.com/embed/playlist/4HkfwQljRfanSJ594U3HuQ?utm_source=generator&theme=0" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        </fieldset>
+      </div>
+      <div class="status-bar">
+        <p class="status-bar-field">服务: Spotify Official Web API</p>
+        <p class="status-bar-field">状态: 已连线</p>
+        <p class="status-bar-field">30 首 Top 歌曲</p>
       </div>
     </div>
 
@@ -666,8 +792,11 @@
   <!-- Windows 98 1:1 开始菜单 -->
   <div id="start-menu">
     <div class="start-sidebar-custom">
-      <span class="start-sidebar-brand">𝐙𝐆𝐐 ɪɴᴄ.</span>
-      <span class="start-sidebar-sub">© 2026 COPYRIGHT</span>
+      <div class="start-sidebar-text">
+        <span class="brand-text">𝐙𝐆𝐐 ɪɴᴄ.</span>
+        <span class="sep-dot">·</span>
+        <span class="cr-text">© 2026 COPYRIGHT</span>
+      </div>
     </div>
     <div class="start-items">
       <div class="start-item" data-open-window="win-navigation">
@@ -685,6 +814,9 @@
       <div class="start-divider"></div>
       <div class="start-item" data-open-window="win-player">
         <img src="./assets/icons/media-player-16x16.png" alt=""> NRW 音乐电台
+      </div>
+      <div class="start-item" data-open-window="win-spotify">
+        <img src="./assets/icons/media-player-16x16.png" alt=""> Spotify 音乐空间
       </div>
       <div class="start-item" data-open-window="winamp">
         <img src="./assets/icons/winamp2-16x16.png" alt=""> Winamp 经典播放器
@@ -1045,6 +1177,7 @@
       const ghTabLabels = {
         'overview': '当前视图: 概览与成就',
         'articles': '当前视图: 逆向与实战博文',
+        'spotify': '当前视图: Spotify 音乐档案',
         'rig': '当前视图: 极客装备库',
         'skills': '当前视图: 技术栈与生态'
       };
@@ -1062,8 +1195,124 @@
             ghStatusView.textContent = ghTabLabels[tabKey];
           }
           desktop.playSound('ding');
+
+          if (tabKey === 'articles') {
+            fetchBlogRss();
+          }
         });
       });
+
+      // 8.6. RSS 现场拉取最新博文
+      async function fetchBlogRss() {
+        const dot = document.getElementById('rss-status-dot');
+        const text = document.getElementById('rss-status-text');
+        const container = document.getElementById('articles-container');
+        if (!container) return;
+
+        if (dot) dot.style.background = '#e69500';
+        if (text) text.textContent = 'RSS: 正在现场连接 blog.zgqinc.gq...';
+
+        let xmlText = '';
+        try {
+          const resp = await fetch('https://blog.zgqinc.gq/feed.xml', { cache: 'no-cache' });
+          if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
+          xmlText = await resp.text();
+        } catch (e) {
+          try {
+            const fallbackResp = await fetch('https://api.allorigins.win/raw?url=' + encodeURIComponent('https://blog.zgqinc.gq/feed.xml'));
+            if (!fallbackResp.ok) throw new Error('Proxy failed');
+            xmlText = await fallbackResp.text();
+          } catch (err) {
+            console.warn('RSS fetch failed, keeping offline cache', err);
+            if (dot) dot.style.background = '#808080';
+            if (text) text.textContent = 'RSS: 离线缓存模式 (已加载本地精选)';
+            return;
+          }
+        }
+
+        try {
+          const parser = new DOMParser();
+          const xmlDoc = parser.parseFromString(xmlText, 'application/xml');
+          const entries = xmlDoc.querySelectorAll('entry');
+          if (!entries || entries.length === 0) return;
+
+          container.innerHTML = '';
+          entries.forEach((entry, idx) => {
+            if (idx >= 15) return;
+            const titleEl = entry.querySelector('title');
+            const linkEl = entry.querySelector('link');
+            const updatedEl = entry.querySelector('published') || entry.querySelector('updated');
+            const summaryEl = entry.querySelector('summary') || entry.querySelector('content');
+            const catEl = entry.querySelector('category');
+
+            const title = titleEl ? titleEl.textContent.trim() : '无标题';
+            const link = linkEl ? (linkEl.getAttribute('href') || linkEl.textContent.trim()) : '#';
+            const pubDate = updatedEl ? updatedEl.textContent.trim().substring(0, 10) : '';
+            let summary = summaryEl ? summaryEl.textContent.replace(/<[^>]+>/g, '').trim() : '';
+            if (summary.length > 140) summary = summary.substring(0, 140) + '...';
+            const category = catEl ? (catEl.getAttribute('term') || catEl.textContent.trim()) : '博文实录';
+
+            const card = document.createElement('div');
+            card.className = 'gh-article-card';
+            card.innerHTML = `
+              <div style="flex: 1;">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 2px;">
+                  <span class="gh-article-badge">${category}</span>
+                  <span style="font-size: 11px; color: #666;">🗓️ ${pubDate}</span>
+                </div>
+                <a href="${link}" target="_blank" rel="noopener noreferrer" style="font-weight: bold; font-size: 12px; color: #000080; text-decoration: none;">
+                  ${title}
+                </a>
+                <p style="margin: 4px 0 0 0; font-size: 11px; color: #444; line-height: 1.4;">
+                  ${summary}
+                </p>
+              </div>
+            `;
+            container.appendChild(card);
+          });
+
+          if (dot) dot.style.background = '#008000';
+          const nowStr = new Date().toLocaleTimeString();
+          if (text) text.textContent = `RSS: 现场拉取成功 (${entries.length} 篇最新博文) · ${nowStr}`;
+        } catch (parseErr) {
+          console.error('Failed to parse RSS XML', parseErr);
+        }
+      }
+
+      const rssRefreshBtn = document.getElementById('rss-refresh-btn');
+      if (rssRefreshBtn) {
+        rssRefreshBtn.addEventListener('click', () => {
+          desktop.playSound('ding');
+          fetchBlogRss();
+        });
+      }
+
+      // 8.7. Spotify 歌单切换与交互
+      function setupSpotifyEmbeds() {
+        const ghBtns = document.querySelectorAll('#spotify-gh-playlist-btns button');
+        const ghIframe = document.getElementById('spotify-gh-embed-frame');
+
+        const winBtns = document.querySelectorAll('#spotify-win-playlist-btns button');
+        const winIframe = document.getElementById('spotify-win-embed-frame');
+
+        const bindBtns = (btns, iframe) => {
+          btns.forEach(btn => {
+            btn.addEventListener('click', () => {
+              btns.forEach(b => b.classList.remove('active'));
+              btn.classList.add('active');
+              const pid = btn.dataset.spotifyId;
+              if (iframe && pid) {
+                iframe.src = `https://open.spotify.com/embed/playlist/${pid}?utm_source=generator&theme=0`;
+              }
+              desktop.playSound('ding');
+            });
+          });
+        };
+
+        if (ghBtns.length && ghIframe) bindBtns(ghBtns, ghIframe);
+        if (winBtns.length && winIframe) bindBtns(winBtns, winIframe);
+      }
+      setupSpotifyEmbeds();
 
       // 9. 记事本自动保存与字符数统计
       const notepad = document.getElementById('notepad-textarea');
@@ -1078,24 +1327,199 @@
         notepadCount.textContent = `字符数: ${notepad.value.length}`;
       });
 
-      // 10. 留言板本地保存
-      const guestbookInput = document.getElementById('guestbook-input');
-      const guestbookMsg = document.getElementById('guestbook-msg');
-      const savedGuestbook = localStorage.getItem('zgq_win98_guestbook');
-      if (savedGuestbook) {
-        guestbookInput.value = savedGuestbook;
+      // 10. Cloudflare Workers + D1 留言板
+      const CF_WORKER_URL = window.CF_WORKER_URL || 'https://homepage-guestbook.zgqinc.workers.dev';
+
+      const gbNickname = document.getElementById('gb-nickname');
+      const gbContact = document.getElementById('gb-contact');
+      const gbContent = document.getElementById('gb-content');
+      const gbStatus = document.getElementById('gb-status');
+      const gbFooterStatus = document.getElementById('gb-footer-status');
+      const gbFooterCount = document.getElementById('gb-footer-count');
+      const gbMessagesContainer = document.getElementById('gb-messages-container');
+      const gbSubmitBtn = document.getElementById('gb-submit-btn');
+      const gbRefreshBtn = document.getElementById('gb-refresh-btn');
+      const gbClearBtn = document.getElementById('gb-clear-btn');
+
+      function formatGbTime(dtStr) {
+        if (!dtStr) return '';
+        try {
+          const d = new Date(dtStr);
+          if (isNaN(d.getTime())) return dtStr;
+          return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')} ${String(d.getHours()).padStart(2, '0')}:${String(d.getMinutes()).padStart(2, '0')}`;
+        } catch (e) {
+          return dtStr;
+        }
       }
-      document.getElementById('guestbook-save-btn').addEventListener('click', () => {
-        localStorage.setItem('zgq_win98_guestbook', guestbookInput.value);
-        guestbookMsg.textContent = '✔ 留言已保存在您的本地浏览器中！';
-        setTimeout(() => guestbookMsg.textContent = '', 3000);
+
+      function renderGbMessages(messages) {
+        if (!gbMessagesContainer) return;
+        gbMessagesContainer.innerHTML = '';
+
+        if (!messages || messages.length === 0) {
+          gbMessagesContainer.innerHTML = '<div style="text-align: center; color: #888; padding: 25px;">暂无留言，快来成为第一个留下足迹的访客吧！</div>';
+          if (gbFooterCount) gbFooterCount.textContent = '留言: 0 条';
+          return;
+        }
+
+        if (gbFooterCount) gbFooterCount.textContent = `留言: ${messages.length} 条`;
+
+        messages.forEach(msg => {
+          const card = document.createElement('div');
+          card.className = 'gb-message-card';
+
+          const header = document.createElement('div');
+          header.className = 'gb-message-header';
+
+          const authorWrap = document.createElement('div');
+          authorWrap.style.display = 'flex';
+          authorWrap.style.alignItems = 'center';
+
+          const author = document.createElement('span');
+          author.className = 'gb-message-author';
+          author.textContent = msg.nickname || '神秘访客';
+          authorWrap.appendChild(author);
+
+          if (msg.contact) {
+            const contact = document.createElement('span');
+            contact.className = 'gb-message-contact';
+            contact.textContent = msg.contact;
+            authorWrap.appendChild(contact);
+          }
+
+          const time = document.createElement('span');
+          time.className = 'gb-message-time';
+          time.textContent = formatGbTime(msg.created_at);
+
+          header.appendChild(authorWrap);
+          header.appendChild(time);
+
+          const body = document.createElement('div');
+          body.className = 'gb-message-body';
+          body.textContent = msg.content || '';
+
+          card.appendChild(header);
+          card.appendChild(body);
+          gbMessagesContainer.appendChild(card);
+        });
+      }
+
+      async function fetchGbMessages() {
+        if (gbStatus) gbStatus.textContent = '● 正在读取 Cloudflare D1 数据库...';
+        try {
+          const res = await fetch(`${CF_WORKER_URL}/api/messages`, {
+            method: 'GET',
+            headers: { 'Accept': 'application/json' }
+          });
+          if (!res.ok) throw new Error(`HTTP ${res.status}`);
+          const data = await res.json();
+          if (data && data.success && Array.isArray(data.messages)) {
+            renderGbMessages(data.messages);
+            localStorage.setItem('zgq_cached_messages', JSON.stringify(data.messages));
+            if (gbStatus) gbStatus.textContent = `● D1 已连接 (${data.messages.length} 条留言)`;
+            if (gbFooterStatus) gbFooterStatus.textContent = 'D1 状态: 已连线 (Live)';
+            return;
+          }
+          throw new Error(data.error || '返回数据格式不正确');
+        } catch (err) {
+          console.warn('Worker offline or deploying, using local fallback:', err);
+          const cached = localStorage.getItem('zgq_cached_messages');
+          if (cached) {
+            try {
+              const msgs = JSON.parse(cached);
+              renderGbMessages(msgs);
+              if (gbStatus) gbStatus.textContent = '● 离线缓存模式 (待 Worker 首次部署)';
+              if (gbFooterStatus) gbFooterStatus.textContent = 'D1 状态: 本地缓存';
+              return;
+            } catch (e) {}
+          }
+          const defaultMsgs = [
+            { nickname: 'ZGQ Inc.', contact: '站长', content: '欢迎访问全新重构的 Windows 98 个人主页！留言板基于 Cloudflare Python Worker + D1 强力驱动，留言支持持久化保存。', created_at: new Date().toISOString() }
+          ];
+          renderGbMessages(defaultMsgs);
+          if (gbStatus) gbStatus.textContent = '● 离线演示模式 (待 Worker 部署生效)';
+        }
+      }
+
+      async function submitGbMessage() {
+        const nickname = (gbNickname.value || '').trim() || '神秘访客';
+        const contact = (gbContact.value || '').trim();
+        const content = (gbContent.value || '').trim();
+
+        if (!content) {
+          alert('请输入留言内容！');
+          gbContent.focus();
+          return;
+        }
+        if (content.length < 2) {
+          alert('留言内容太短啦，至少输入 2 个字哦！');
+          return;
+        }
+        if (content.length > 500) {
+          alert('留言内容过长，请精简至 500 字以内！');
+          return;
+        }
+
+        if (gbSubmitBtn) {
+          gbSubmitBtn.disabled = true;
+          gbSubmitBtn.textContent = '⏳ 发送中...';
+        }
+
+        try {
+          const res = await fetch(`${CF_WORKER_URL}/api/messages`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ nickname, contact, content })
+          });
+
+          const resData = await res.json();
+          if (res.ok && resData.success) {
+            desktop.playSound('ding');
+            alert('🎉 留言成功！感谢您的寄语与支持！');
+            gbContent.value = '';
+            fetchGbMessages();
+          } else {
+            alert(resData.error || '提交失败，请稍后重试！');
+          }
+        } catch (e) {
+          console.warn('Worker unreachable, saving to local cache:', e);
+          const cached = JSON.parse(localStorage.getItem('zgq_cached_messages') || '[]');
+          const newMsg = {
+            nickname: nickname,
+            contact: contact,
+            content: content,
+            created_at: new Date().toISOString()
+          };
+          cached.unshift(newMsg);
+          localStorage.setItem('zgq_cached_messages', JSON.stringify(cached));
+          renderGbMessages(cached);
+          desktop.playSound('ding');
+          alert('✔ 留言已成功保存！(当前处于离线暂存模式，待 Worker 部署完成后将直接写入云端 D1)');
+          gbContent.value = '';
+        } finally {
+          if (gbSubmitBtn) {
+            gbSubmitBtn.disabled = false;
+            gbSubmitBtn.textContent = '🚀 提交留言';
+          }
+        }
+      }
+
+      if (gbSubmitBtn) gbSubmitBtn.addEventListener('click', submitGbMessage);
+      if (gbRefreshBtn) gbRefreshBtn.addEventListener('click', () => {
+        desktop.playSound('ding');
+        fetchGbMessages();
       });
-      document.getElementById('guestbook-clear-btn').addEventListener('click', () => {
-        guestbookInput.value = '';
-        localStorage.removeItem('zgq_win98_guestbook');
-        guestbookMsg.textContent = '已清空留言。';
-        setTimeout(() => guestbookMsg.textContent = '', 2000);
+      if (gbClearBtn) gbClearBtn.addEventListener('click', () => {
+        gbNickname.value = '';
+        gbContact.value = '';
+        gbContent.value = '';
       });
+
+      // 初始化拉取留言和 RSS
+      fetchGbMessages();
+      setTimeout(fetchBlogRss, 800);
 
       // 11. 复制邮箱按钮
       document.getElementById('copy-email-btn').addEventListener('click', () => {

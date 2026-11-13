@@ -213,6 +213,12 @@
         } else if (winId === 'win-channel') {
           this.agent.play('SendMail');
           this.speak("欢迎订阅 ZGQ Inc. 的 Telegram 官方技术频道！📢", 4000);
+        } else if (winId === 'win-spotify') {
+          this.agent.play('Hearing_1');
+          this.speak("Spotify 音乐空间启动！正在加载 ZGQ 的年度 Top Songs 和精选歌单！🎧", 4000);
+        } else if (winId === 'win-contact') {
+          this.agent.play('Writing');
+          this.speak("打开了通讯簿与留言板！支持直接提交到 Cloudflare D1 数据库哦！💬", 4000);
         }
       } catch (e) {}
     }

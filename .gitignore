@@ -1,0 +1,7 @@
+node_modules/
+.wrangler/
+__pycache__/
+*.py[cod]
+*$py.class
+.DS_Store
+Thumbs.db

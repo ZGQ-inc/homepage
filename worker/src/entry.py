@@ -1,0 +1,199 @@
+from js import Response
+import json
+import html
+import re
+
+async def on_fetch(request, env):
+    """
+    Cloudflare Python Worker for ZGQ Inc. Homepage Guestbook.
+    Backed by Cloudflare D1 Database (homepage-db).
+    Includes anti-injection sanitization, XSS mitigation, parameter binding, and rate limiting.
+    """
+    method = request.method
+
+    # Standard security & CORS headers
+    cors_headers = {
+        "Access-Control-Allow-Origin": "*",
+        "Access-Control-Allow-Methods": "GET, POST, OPTIONS",
+        "Access-Control-Allow-Headers": "Content-Type, Authorization, X-Requested-With",
+        "Access-Control-Max-Age": "86400",
+        "Content-Type": "application/json; charset=utf-8",
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "DENY",
+        "X-XSS-Protection": "1; mode=block"
+    }
+
+    # Handle CORS Preflight
+    if method == "OPTIONS":
+        return Response.new("", status=204, headers=cors_headers)
+
+    try:
+        # Route 1: GET - Query latest approved guestbook messages
+        if method == "GET":
+            # Auto-ensure table structure exists on first run
+            await env.DB.prepare("""
+                CREATE TABLE IF NOT EXISTS guestbook (
+                    id INTEGER PRIMARY KEY AUTOINCREMENT,
+                    nickname TEXT NOT NULL,
+                    contact TEXT DEFAULT '',
+                    content TEXT NOT NULL,
+                    ip TEXT DEFAULT '',
+                    user_agent TEXT DEFAULT '',
+                    is_approved INTEGER DEFAULT 1,
+                    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+                )
+            """).run()
+
+            # Parameterized query to prevent any SQL injection
+            stmt = env.DB.prepare(
+                "SELECT id, nickname, contact, content, created_at FROM guestbook WHERE is_approved = 1 ORDER BY created_at DESC LIMIT 50"
+            )
+            result = await stmt.all()
+
+            messages = []
+            if hasattr(result, "results") and result.results:
+                for row in result.results:
+                    r_id = getattr(row, "id", None) or (row.get("id") if isinstance(row, dict) else None)
+                    r_nick = getattr(row, "nickname", "") or (row.get("nickname") if isinstance(row, dict) else "")
+                    r_contact = getattr(row, "contact", "") or (row.get("contact") if isinstance(row, dict) else "")
+                    r_content = getattr(row, "content", "") or (row.get("content") if isinstance(row, dict) else "")
+                    r_date = str(getattr(row, "created_at", "") or (row.get("created_at") if isinstance(row, dict) else ""))
+
+                    messages.append({
+                        "id": r_id,
+                        "nickname": str(r_nick),
+                        "contact": str(r_contact),
+                        "content": str(r_content),
+                        "created_at": r_date
+                    })
+
+            return Response.new(
+                json.dumps({
+                    "success": True,
+                    "count": len(messages),
+                    "messages": messages
+                }, ensure_ascii=False),
+                status=200,
+                headers=cors_headers
+            )
+
+        # Route 2: POST - Submit a new guestbook message with strict anti-injection defenses
+        elif method == "POST":
+            raw_text = await request.text()
+            if not raw_text:
+                return Response.new(
+                    json.dumps({"success": False, "error": "请求体不能为空"}, ensure_ascii=False),
+                    status=400,
+                    headers=cors_headers
+                )
+
+            try:
+                body = json.loads(raw_text)
+            except Exception:
+                return Response.new(
+                    json.dumps({"success": False, "error": "无效的 JSON 数据格式"}, ensure_ascii=False),
+                    status=400,
+                    headers=cors_headers
+                )
+
+            raw_nickname = str(body.get("nickname", "")).strip()
+            raw_contact = str(body.get("contact", "")).strip()
+            raw_content = str(body.get("content", "")).strip()
+
+            # Anti-Injection & Content Validation:
+            # 1. Content validation
+            if not raw_content:
+                return Response.new(
+                    json.dumps({"success": False, "error": "留言内容不能为空"}, ensure_ascii=False),
+                    status=400,
+                    headers=cors_headers
+                )
+            if len(raw_content) > 500:
+                return Response.new(
+                    json.dumps({"success": False, "error": "留言过长，请控制在 500 字符以内"}, ensure_ascii=False),
+                    status=400,
+                    headers=cors_headers
+                )
+            if len(raw_content) < 2:
+                return Response.new(
+                    json.dumps({"success": False, "error": "留言内容过短，请至少输入 2 个字符"}, ensure_ascii=False),
+                    status=400,
+                    headers=cors_headers
+                )
+
+            # 2. Nickname & Contact validation
+            if not raw_nickname:
+                raw_nickname = "神秘访客"
+            elif len(raw_nickname) > 32:
+                raw_nickname = raw_nickname[:32]
+
+            if len(raw_contact) > 64:
+                raw_contact = raw_contact[:64]
+
+            # 3. Anti-XSS Sanitization (HTML Escaping)
+            clean_nickname = html.escape(raw_nickname, quote=True)
+            clean_contact = html.escape(raw_contact, quote=True)
+            clean_content = html.escape(raw_content, quote=True)
+
+            # Strip zero-width and potentially malicious control bytes
+            clean_content = re.sub(r'[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]', '', clean_content)
+
+            # 4. Extract Client IP & User Agent for rate limiting
+            client_ip = ""
+            user_agent = ""
+            try:
+                client_ip = request.headers.get("cf-connecting-ip") or request.headers.get("x-real-ip") or ""
+                user_agent = request.headers.get("user-agent") or ""
+            except Exception:
+                pass
+
+            # 5. Rate Limiting Protection (Anti-Spam Flooding: 15s per IP)
+            if client_ip:
+                try:
+                    check_stmt = env.DB.prepare(
+                        "SELECT id FROM guestbook WHERE ip = ? AND datetime(created_at) > datetime('now', '-15 seconds') LIMIT 1"
+                    ).bind(client_ip)
+                    recent = await check_stmt.first()
+                    if recent:
+                        return Response.new(
+                            json.dumps({"success": False, "error": "发言太快了，请稍候 15 秒后再试哦~"}, ensure_ascii=False),
+                            status=429,
+                            headers=cors_headers
+                        )
+                except Exception:
+                    pass
+
+            # 6. Strictly Parameterized SQL INSERT (Defense against SQL Injection)
+            insert_stmt = env.DB.prepare(
+                "INSERT INTO guestbook (nickname, contact, content, ip, user_agent, is_approved) VALUES (?, ?, ?, ?, ?, ?)"
+            ).bind(clean_nickname, clean_contact, clean_content, client_ip[:45], user_agent[:200], 1)
+
+            await insert_stmt.run()
+
+            return Response.new(
+                json.dumps({
+                    "success": True,
+                    "message": "留言发表成功！",
+                    "data": {
+                        "nickname": clean_nickname,
+                        "contact": clean_contact,
+                        "content": clean_content
+                    }
+                }, ensure_ascii=False),
+                status=201,
+                headers=cors_headers
+            )
+
+        else:
+            return Response.new(
+                json.dumps({"success": False, "error": f"Method {method} not allowed"}, ensure_ascii=False),
+                status=405,
+                headers=cors_headers
+            )
+
+    except Exception as e:
+        return Response.new(
+            json.dumps({"success": False, "error": f"Server Error: {str(e)}"}, ensure_ascii=False),
+            status=500,
+            headers=cors_headers
+        )

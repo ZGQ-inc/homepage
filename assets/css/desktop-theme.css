@@ -303,41 +303,50 @@ html, body {
 
 /* Custom Start Menu Sidebar with Vertical Gradient & Copyright */
 .start-sidebar-custom {
-  width: 30px;
-  min-width: 30px;
+  width: 26px;
+  min-width: 26px;
   background: linear-gradient(180deg, #1084d0 0%, #000080 50%, #050528 100%);
   display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  align-items: center;
-  padding: 12px 2px;
+  justify-content: center;
+  align-items: flex-end;
+  padding: 10px 0;
   box-sizing: border-box;
-  writing-mode: vertical-rl;
-  transform: rotate(180deg);
   user-select: none;
   border-right: 1px solid #808080;
   box-shadow: inset 1px 0 0 rgba(255, 255, 255, 0.4);
+  overflow: hidden;
 }
 
-.start-sidebar-custom .start-sidebar-brand {
-  font-family: 'MS Sans Serif', 'Segoe UI', Tahoma, sans-serif;
-  font-weight: 900;
-  font-size: 13px;
-  letter-spacing: 2px;
-  color: #ffffff;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.9);
+.start-sidebar-text {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
   white-space: nowrap;
-  margin-bottom: 6px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: 'MS Sans Serif', 'Segoe UI', Tahoma, sans-serif;
+  color: #ffffff;
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.9);
 }
 
-.start-sidebar-custom .start-sidebar-sub {
-  font-family: 'MS Sans Serif', 'Segoe UI', Tahoma, sans-serif;
-  font-size: 9px;
-  letter-spacing: 1.5px;
+.start-sidebar-text .brand-text {
+  font-weight: 900;
+  color: #ffffff;
+  letter-spacing: 2px;
+}
+
+.start-sidebar-text .sep-dot {
   color: #ffd700;
   font-weight: bold;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.9);
-  white-space: nowrap;
+}
+
+.start-sidebar-text .cr-text {
+  font-size: 9px;
+  color: #ffd700;
+  letter-spacing: 1px;
+  font-weight: bold;
 }
 
 .start-sidebar-img {
@@ -589,6 +598,68 @@ body.crt-active .crt-overlay {
   display: inline-block;
   font-size: 10px;
   font-weight: bold;
+  background: #000080;
+  color: #fff;
+  padding: 1px 5px;
+  border-radius: 2px;
+}
+
+/* Guestbook & Message Cards */
+.gb-message-card {
+  background: #fdfdfd;
+  border: 1px solid #d4d0c8;
+  padding: 6px 8px;
+  margin-bottom: 6px;
+}
+
+.gb-message-card:hover {
+  background: #f0f7ff;
+}
+
+.gb-message-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 3px;
+  font-size: 11px;
+}
+
+.gb-message-author {
+  font-weight: bold;
+  color: #000080;
+}
+
+.gb-message-contact {
+  color: #555;
+  font-size: 10px;
+  margin-left: 6px;
+  background: #e8e8e8;
+  padding: 1px 4px;
+  border-radius: 2px;
+}
+
+.gb-message-time {
+  color: #888;
+  font-size: 10px;
+}
+
+.gb-message-body {
+  font-size: 11px;
+  line-height: 1.4;
+  color: #222;
+  word-break: break-word;
+  white-space: pre-wrap;
+}
+
+/* Spotify Button Active State */
+#spotify-gh-playlist-btns button.active,
+#spotify-win-playlist-btns button.active {
+  font-weight: bold;
+  background: #1DB954;
+  color: #000;
+  border-color: #1ed760;
+  box-shadow: inset 1px 1px 0px #000;
+}
   padding: 1px 5px;
   background: #000080;
   color: #fff;

@@ -1,0 +1,13 @@
+{
+  "name": "homepage-guestbook-worker",
+  "version": "1.0.0",
+  "description": "Cloudflare Python Worker for ZGQ Inc. Homepage Guestbook backed by Cloudflare D1",
+  "main": "src/entry.py",
+  "scripts": {
+    "deploy": "wrangler deploy",
+    "dev": "wrangler dev"
+  },
+  "devDependencies": {
+    "wrangler": "^3.114.17"
+  }
+}

@@ -1,0 +1,17 @@
+name = "homepage-guestbook"
+main = "src/entry.py"
+compatibility_date = "2026-01-01"
+compatibility_flags = ["python_workers"]
+
+# Cloudflare D1 Database Binding
+[[d1_databases]]
+binding       = "DB"
+database_name = "homepage-db"
+database_id   = "homepage-db"
+
+# Public environment variables
+[vars]
+CORS_ORIGIN         = "*"
+MAX_CONTENT_LENGTH  = 500
+MAX_NICKNAME_LENGTH = 32
+RATE_LIMIT_SECONDS  = 15
