@@ -1013,11 +1013,11 @@
     </div>
 
     <!-- ==================== 窗口 7: 我的电脑 (My Computer) ==================== -->
-    <div class="window hidden" id="win-computer" data-window-id="win-computer" style="left: 80px; top: 60px; width: 440px;">
+    <div class="window hidden" id="win-computer" data-window-id="win-computer" style="left: 80px; top: 60px; width: 480px; max-width: 95vw;">
       <div class="title-bar">
         <div class="title-bar-text">
           <img src="./assets/icons/my-computer-16x16.png" alt="">
-          <span>系统属性 - ZGQ Inc. Workstation</span>
+          <span>系统属性 (关于) - ZGQ Inc. Workstation</span>
         </div>
         <div class="title-bar-controls">
           <button aria-label="Minimize"></button>
@@ -1025,25 +1025,44 @@
           <button aria-label="Close"></button>
         </div>
       </div>
-      <div class="window-body">
-        <div style="display: flex; gap: 12px; align-items: center; margin-bottom: 12px;">
+      <div class="window-body" style="padding: 8px;">
+        <div style="display: flex; gap: 12px; align-items: center; margin-bottom: 10px;">
           <img src="./assets/icons/my-computer-32x32.png" alt="" style="width: 48px; height: 48px; image-rendering: pixelated;">
           <div>
-            <h4 style="margin: 0 0 4px 0;">Microsoft Windows 98</h4>
-            <p style="margin: 0; color: #555;">Second Edition (Synthwave Cyber Release 2026)</p>
+            <h4 style="margin: 0 0 4px 0; font-size: 14px;">Microsoft Windows 98 SE</h4>
+            <p style="margin: 0; color: #555; font-size: 11px;">Synthwave Cyber Release 2026 · ZGQ Inc. Edition</p>
           </div>
         </div>
 
         <fieldset style="margin-bottom: 8px;">
-          <legend>系统环境与配置</legend>
-          <p><strong>注册组织:</strong> ZGQ Inc. (zgqinc@gmail.com)</p>
-          <p><strong>桌面架构:</strong> 1:1 Windows 98 (98.css & 1j01/98 真实像素资产)</p>
-          <p><strong>视效引擎:</strong> Butterchurn Milkdrop & Wallpaper Engine 4K 画布</p>
-          <p><strong>音乐源:</strong> NewRetroWave (NRW) Official 600+ 在线电台</p>
-          <p><strong>历史代码存档:</strong> 所有旧项目已安全转移至 <code>/old/</code> 目录</p>
+          <legend>系统环境与开源仓库</legend>
+          <p style="margin: 3px 0; font-size: 11px;"><strong>注册组织:</strong> ZGQ Inc. (<a href="mailto:zgqinc@gmail.com" style="color: #000080;">zgqinc@gmail.com</a>)</p>
+          <p style="margin: 3px 0; font-size: 11px;"><strong>开源许可证:</strong> <span style="background: #ffffcc; border: 1px solid #808080; padding: 1px 4px; font-weight: bold;">MIT License</span></p>
+          <p style="margin: 3px 0; font-size: 11px;"><strong>项目开源仓库:</strong> <a href="https://github.com/ZGQ-inc/homepage" target="_blank" rel="noopener noreferrer" style="font-weight: bold; color: #000080; text-decoration: underline;">https://github.com/ZGQ-inc/homepage</a></p>
+          <p style="margin: 3px 0; font-size: 11px;"><strong>桌面核心架构:</strong> Windows 98 1:1 像素复刻 + 现代边缘计算</p>
+          <p style="margin: 3px 0; font-size: 11px;"><strong>历史版本归档:</strong> 旧版网站与原始资源完整归档在 <code>/old/</code></p>
         </fieldset>
 
-        <div style="display: flex; justify-content: flex-end;">
+        <fieldset style="margin-bottom: 10px;">
+          <legend>致敬与鸣谢开源项目 (Open Source Credits)</legend>
+          <div style="background: #ffffff; border: 2px inset #dfdfdf; box-shadow: inset 1px 1px 0 #808080; max-height: 140px; overflow-y: auto; padding: 6px; font-size: 11px; line-height: 1.6;">
+            <div>🔹 <strong>98.css</strong> — <a href="https://github.com/jdan/98.css" target="_blank" rel="noopener noreferrer" style="color: #000080; font-weight: bold;">jdan/98.css</a> (Jordan Scales) · 纯 CSS 复刻 Win98 控件系统</div>
+            <div>🔹 <strong>98.js.org</strong> — <a href="https://github.com/1j01/98" target="_blank" rel="noopener noreferrer" style="color: #000080; font-weight: bold;">1j01/98</a> (Isaiah Odhner) · Web 版 Windows 98 核心桌面与像素资产</div>
+            <div>🔹 <strong>Webamp</strong> — <a href="https://github.com/captbaritone/webamp" target="_blank" rel="noopener noreferrer" style="color: #000080; font-weight: bold;">captbaritone/webamp</a> (Jordan Eldredge) · 纯前端 Winamp 2.9</div>
+            <div>🔹 <strong>Butterchurn</strong> — <a href="https://github.com/jberg/butterchurn" target="_blank" rel="noopener noreferrer" style="color: #000080; font-weight: bold;">jberg/butterchurn</a> (Jordan Berg) · WebGL 版 Milkdrop 2 音乐律动引擎</div>
+            <div>🔹 <strong>clippy.js</strong> — <a href="https://github.com/clippyjs/clippy.js" target="_blank" rel="noopener noreferrer" style="color: #000080; font-weight: bold;">clippyjs/clippy.js</a> (Smarterer & jsmorse) · 浏览器回形针桌面助理</div>
+            <div>🔹 <strong>Devicon</strong> — <a href="https://github.com/devicons/devicon" target="_blank" rel="noopener noreferrer" style="color: #000080; font-weight: bold;">devicons/devicon</a> · 开发者语言与工具原生矢量图标库</div>
+            <div>🔹 <strong>Dashboard Icons</strong> — <a href="https://github.com/homarr-labs/dashboard-icons" target="_blank" rel="noopener noreferrer" style="color: #000080; font-weight: bold;">homarr-labs/dashboard-icons</a> · 高清 Homelab / 服务 Dashboard 图标</div>
+            <div>🔹 <strong>Shields.io</strong> — <a href="https://github.com/badges/shields" target="_blank" rel="noopener noreferrer" style="color: #000080; font-weight: bold;">badges/shields</a> · 规范化徽章生成平台</div>
+            <div>🔹 <strong>Nightride FM</strong> — <a href="https://nightride.fm/" target="_blank" rel="noopener noreferrer" style="color: #000080; font-weight: bold;">nightride.fm</a> · 优质 80s 合成波 / 赛博朋克流媒体电台</div>
+            <div>🔹 <strong>Cloudflare D1 & Workers</strong> — <a href="https://developers.cloudflare.com/d1/" target="_blank" rel="noopener noreferrer" style="color: #000080; font-weight: bold;">Cloudflare Platform</a> · 边缘 Serverless 数据库与 Python API</div>
+          </div>
+        </fieldset>
+
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <a href="https://github.com/ZGQ-inc/homepage" target="_blank" rel="noopener noreferrer">
+            <button style="font-weight: bold; font-size: 11px;">⭐ 打开 GitHub 仓库</button>
+          </a>
           <button onclick="document.getElementById('win-computer').classList.add('hidden')">确定</button>
         </div>
       </div>
