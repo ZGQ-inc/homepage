@@ -75,16 +75,6 @@
         <span class="icon-label">记事本</span>
       </div>
 
-      <div class="desktop-icon" data-target="win-mywords" title="双击打开 站长心声《我想说的话》">
-        <img class="icon-img" src="./assets/icons/notepad-file-32x32.png" alt="我想说的话">
-        <span class="icon-label">我想说的话</span>
-      </div>
-
-      <div class="desktop-icon" data-target="win-fbi" title="双击打开 经典高能彩蛋 FBI WARNING">
-        <img class="icon-img" src="./assets/icons/warning-32x32-8bpp.png" alt="FBI WARNING">
-        <span class="icon-label">FBI WARNING</span>
-      </div>
-
       <div class="desktop-icon" data-target="win-recycle" title="双击打开 回收站">
         <img class="icon-img" src="./assets/icons/recycle-bin-32x32.png" alt="回收站">
         <span class="icon-label">回收站</span>
@@ -119,11 +109,10 @@
 
         <!-- 分类筛选选项卡 -->
         <div class="nav-tab-bar" style="display: flex; gap: 3px; margin-bottom: 6px; flex-wrap: wrap;">
-          <button class="nav-tab-btn active" data-cat="all">🌟 全部 (41)</button>
+          <button class="nav-tab-btn active" data-cat="all">🌟 全部 (34)</button>
           <button class="nav-tab-btn" data-cat="web-projects">🌐 网页项目 (21)</button>
           <button class="nav-tab-btn" data-cat="github-repos">📦 GitHub 开源 (10)</button>
           <button class="nav-tab-btn" data-cat="tampermonkey">📜 油猴脚本 (3)</button>
-          <button class="nav-tab-btn" data-cat="old-resources">🧭 导航与历史归档 (7)</button>
         </div>
 
         <!-- 实时搜索条 -->
@@ -139,7 +128,7 @@
       </div>
       <div class="status-bar">
         <p class="status-bar-field" id="nav-status-cat">当前分类: 全部</p>
-        <p class="status-bar-field" id="nav-status-count">共收录 41 个项目与站点</p>
+        <p class="status-bar-field" id="nav-status-count">共收录 34 个在线项目与开源仓库</p>
         <p class="status-bar-field">来源: blog.zgqinc.gq</p>
       </div>
     </div>
@@ -650,120 +639,13 @@
         </div>
       </div>
       <div class="window-body">
-        <p>历史项目与旧版音乐文件已全部完好保存至 <code>old/</code> 文件夹，点击可查看原版：</p>
-        <ul class="tree-view" style="height: 120px;">
-          <li>📁 <a href="./old/index.html" target="_blank">old/index.html (原版个人主页)</a></li>
-          <li>📁 <a href="./old/FBI_WARNING.html" target="_blank">old/FBI_WARNING.html</a></li>
-          <li>📁 <a href="./old/rtk_up.html" target="_blank">old/rtk_up.html (软天空破解分享)</a></li>
-          <li>📁 <a href="./old/music/" target="_blank">old/music/ (原版全部本地音乐与封面)</a></li>
-        </ul>
+        <p style="margin: 4px 0 8px 0;">回收站是空的 (0 个项目)。系统运行良好。</p>
+        <div style="background: #fff; border: 1px inset #808080; padding: 12px; text-align: center; color: #666; font-size: 11px;">
+          暂无已删除的文件
+        </div>
         <div style="display: flex; justify-content: flex-end; margin-top: 8px;">
-          <button onclick="window.desktopOS.playSound('recycle'); alert('回收站已整理完毕！')">清空回收站</button>
+          <button onclick="window.desktopOS.playSound('recycle'); alert('回收站已清理！')">清空回收站</button>
         </div>
-      </div>
-    </div>
-
-    <!-- ==================== 窗口 10: 站长心声《我想说的话》 (Author Manifesto) ==================== -->
-    <div class="window hidden" id="win-mywords" data-window-id="win-mywords" style="left: 160px; top: 75px; width: 620px;">
-      <div class="title-bar">
-        <div class="title-bar-text">
-          <img src="./assets/icons/notepad-file-16x16.png" alt="">
-          <span>我想说的话 - 站长心声 (2022-02-06 历史原稿)</span>
-        </div>
-        <div class="title-bar-controls">
-          <button aria-label="Minimize"></button>
-          <button aria-label="Maximize"></button>
-          <button aria-label="Close"></button>
-        </div>
-      </div>
-      <div class="window-body" style="padding: 6px;">
-        <div class="mywords-paper" style="background: #ffffff; border: 2px inset #808080; padding: 16px; max-height: 420px; overflow-y: auto; font-family: 'SimSun', 'MS Sans Serif', serif; font-size: 13px; line-height: 1.8; color: #111;">
-          <div style="border-bottom: 2px solid #000080; padding-bottom: 8px; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: flex-end; flex-wrap: wrap;">
-            <div>
-              <h2 style="margin: 0; font-size: 16px; color: #000080;">📜 《我想说的话》</h2>
-              <span style="font-size: 11px; color: #666;">原作者: ZGQ Inc. | 发布日期: 2022年2月6日</span>
-            </div>
-            <span style="background: #000080; color: #ffd700; font-size: 11px; font-weight: bold; padding: 2px 8px; border: 1px outset #fff;">原站历史原件</span>
-          </div>
-
-          <p><strong>致所有来到我的个人主页的访客：</strong></p>
-          <p style="text-indent: 2em;">首先非常感谢各位来到我的主页。</p>
-          <p style="text-indent: 2em; font-weight: bold; color: #a00;">开门见山，我将会在2022年4月份的时候停更。明年回来。空闲时间还是会上线的。</p>
-          
-          <h4 style="margin: 14px 0 6px 0; color: #000080; font-size: 14px; border-left: 3px solid #000080; padding-left: 6px;">先说说我为什么要做资源分享</h4>
-          <p style="text-indent: 2em;">我做资源分享一做就是2年，在此期间有很多人支持我，对支持我的人表示真诚的感谢，谢谢你们一直以来对我的支持。</p>
-          <p style="text-indent: 2em;">相信很多人都注意到我的个人主页上面写着<strong>承诺永久免费资源分享</strong>，说一下我为什么要这么做：2年前我还是白嫖党，但是某天我突然意识到我应该做些什么，我的初衷很简单：<strong>一是为了报答资源这个广阔天地，二是我想建立一片“互联网的净土”</strong>（*果核剥壳站点标题），像果核剥壳的站长以及那些良心非盈利的资源分享站一样。未来的目标我暂时没有决定，但是我觉得我会开个个人博客之类的，这也是以后的事了。</p>
-          <p style="text-indent: 2em; background: #fffbdd; border-left: 3px solid #ffcc00; padding: 4px 8px; margin: 8px 0;"><strong>很多人都问我我做这些有没有盈利，其实并没有，完全出于我的业余兴趣，我做资源分享本来就不是为了钱。</strong></p>
-
-          <h4 style="margin: 14px 0 6px 0; color: #000080; font-size: 14px; border-left: 3px solid #000080; padding-left: 6px;">我为什么突然之间不干了呢？—— 不是跑路！</h4>
-          <p style="text-indent: 2em;">可能很多人并不知道我是来自上海浦东新区的高二学生，而我也就是因为学业负担而决定停更，所以不是跑路，是实在没有精力继续干下去，毕竟学业还是重要的，心有余而力不足，估计暑假还能回来摸一会儿鱼，其它时间大概都在复习冲刺，准备改变人生的一仗——高考。</p>
-          <p style="text-indent: 2em;">上海太卷，真的卷死人，我明显感受到了压力，今年6月份有一次叫做等级考的考试，也是算在高考分数里面的一门非语数英，而是小科目的考试。这也就是为什么我会在4月份退网，其实就是为了准备这场考试。</p>
-          <p style="text-indent: 2em;">明年就是我高考的那一年了，上海这边有2个高考，一个春考，一个秋考。如果春考顺利，我会在明年3月份回来，如果春考失利，那么会在6月份回来。</p>
-
-          <div style="margin-top: 16px; padding: 10px; border: 1px dashed #808080; background: #f8f9fa;">
-            <p style="font-weight: bold; font-size: 14px; text-align: center; margin: 0; color: #000080;">祝我高考取得成功，祝愿各位网上冲浪一切顺利，白嫖愉快！</p>
-            <div style="text-align: right; margin-top: 8px; color: #555;">
-              <span>&copy; ZGQ Inc.</span><br>
-              <i>22/02/06 原稿</i>
-            </div>
-          </div>
-
-          <div style="margin-top: 16px; padding: 10px; background: #e8f4fd; border: 1px solid #1084d0;">
-            <p style="margin: 0; font-size: 12px; color: #000080;"><strong>🌟 2026 年回望注记：</strong> 站长已顺利考取并建立独立博客 <code>blog.zgqinc.gq</code>，逆向工程与极客分享生生不息，不忘初心！</p>
-          </div>
-        </div>
-      </div>
-      <div class="status-bar">
-        <p class="status-bar-field">文档: /old/mywords.html</p>
-        <p class="status-bar-field">字数: 846</p>
-        <p class="status-bar-field">编码: UTF-8</p>
-      </div>
-    </div>
-
-    <!-- ==================== 窗口 11: FBI WARNING 经典彩蛋 (Memes Player) ==================== -->
-    <div class="window hidden" id="win-fbi" data-window-id="win-fbi" style="left: 130px; top: 60px; width: 560px;">
-      <div class="title-bar">
-        <div class="title-bar-text">
-          <img src="./assets/icons/warning-16x16-8bpp.png" alt="">
-          <span>⚠️ FBI WARNING - 经典高能彩蛋</span>
-        </div>
-        <div class="title-bar-controls">
-          <button aria-label="Minimize"></button>
-          <button aria-label="Maximize"></button>
-          <button aria-label="Close"></button>
-        </div>
-      </div>
-      <div class="window-body" style="padding: 2px;">
-        <div style="background: #111; color: #ffd700; text-align: center; padding: 4px; font-size: 11px; border-bottom: 1px solid #333;">
-          ⚠️ 原站经典高能整活！请适度调适音量，点击下方 ACCEPT 开启神秘体验~
-        </div>
-        <iframe src="./old/FBI_WARNING.html" style="width: 100%; height: 380px; border: 2px inset #808080; background: #000; display: block;" frameborder="0" allowfullscreen></iframe>
-      </div>
-      <div class="status-bar">
-        <p class="status-bar-field">来源: /old/FBI_WARNING.html</p>
-        <p class="status-bar-field">状态: 高能预警</p>
-      </div>
-    </div>
-
-    <!-- ==================== 窗口 12: 愚人节经典彩蛋 (RickRoll) ==================== -->
-    <div class="window hidden" id="win-fool" data-window-id="win-fool" style="left: 190px; top: 90px; width: 520px;">
-      <div class="title-bar">
-        <div class="title-bar-text">
-          <img src="./assets/icons/video-16x16.png" alt="">
-          <span>🕺 经典愚人节彩蛋 - Never Gonna Give You Up</span>
-        </div>
-        <div class="title-bar-controls">
-          <button aria-label="Minimize"></button>
-          <button aria-label="Maximize"></button>
-          <button aria-label="Close"></button>
-        </div>
-      </div>
-      <div class="window-body" style="padding: 2px;">
-        <iframe src="./old/fool.html" style="width: 100%; height: 350px; border: 2px inset #808080; display: block;" frameborder="0"></iframe>
-      </div>
-      <div class="status-bar">
-        <p class="status-bar-field">来源: /old/fool.html</p>
-        <p class="status-bar-field">状态: RickRoll 活跃中</p>
       </div>
     </div>
 
@@ -794,16 +676,6 @@
       <div class="start-item" data-open-window="win-github">
         <img src="./assets/icons/my-documents-16x16.png" alt=""> GitHub 个人主页
       </div>
-      <div class="start-item" data-open-window="win-mywords">
-        <img src="./assets/icons/notepad-file-16x16.png" alt=""> 📜 站长心声《我想说的话》
-      </div>
-      <div class="start-item" data-open-window="win-fbi">
-        <img src="./assets/icons/warning-16x16-8bpp.png" alt=""> ⚠️ FBI WARNING 经典彩蛋
-      </div>
-      <div class="start-item" data-open-window="win-fool">
-        <img src="./assets/icons/video-16x16.png" alt=""> 🕺 经典愚人节彩蛋 (RickRoll)
-      </div>
-      <div class="start-divider"></div>
       <div class="start-item" data-open-window="win-channel">
         <img src="./assets/icons/news-16x16.png" alt=""> 个人 Telegram 频道
       </div>
@@ -860,6 +732,18 @@
   <script>
     (function () {
       'use strict';
+
+      // 共享全局单例 AudioContext，解决跨模块与 Butterchurn 音频上下文不一致问题
+      window.getSharedAudioContext = function() {
+        if (!window._sharedAudioCtx) {
+          const AudioCtx = window.AudioContext || window.webkitAudioContext;
+          if (AudioCtx) window._sharedAudioCtx = new AudioCtx();
+        }
+        if (window._sharedAudioCtx && window._sharedAudioCtx.state === 'suspended') {
+          window._sharedAudioCtx.resume().catch(() => {});
+        }
+        return window._sharedAudioCtx;
+      };
 
       // 1. 初始化 Wallpaper Engine Neon Sunset 背景渲染引擎
       const retroBg = new RetroBackground('bg-canvas');
@@ -1038,19 +922,6 @@
             { name: 'Mail.ru 网盘直链与 Aria2 推送', url: 'https://greasyfork.org/zh-CN/scripts/601779-mail-ru-%E7%BD%91%E7%9B%98%E7%9B%B4%E9%93%BE%E4%B8%8E-aria2-%E6%8E%A8%E9%80%81%E5%8A%A9%E6%89%8B', desc: '解除 Mail.ru 限速提取直链并一键推送到 Aria2', icon: './assets/icons/network-16x16.png' },
             { name: 'SkidRowReloaded 自动翻页与指数器', url: 'https://greasyfork.org/zh-CN/scripts/601780-skidrowreloaded-%E8%87%AA%E5%8A%A8%E7%BF%BB%E9%A1%B5%E6%8B%BC%E6%8E%A5%E4%B8%8E%E9%A1%B5%E9%9D%A2%E6%8C%87%E6%95%B0%E5%99%A8', desc: '游戏更新日志无限滚动加载与历史页快速直达', icon: './assets/icons/find-folder-16x16.png' },
             { name: 'ZGQInc. 的 UP 资源列表', url: 'http://a.ruansky.com/myup/449647/', desc: '软天空开发者空间专属应用、修改版及工具全收录', icon: './assets/icons/favorites-folder-16x16.png' }
-          ]
-        },
-        {
-          id: 'old-resources',
-          category: '🧭 导航页与历史资源合集 (原站精选)',
-          items: [
-            { name: '博文原文: 个人项目合集', url: 'https://blog.zgqinc.gq/posts/projects/', desc: '《个人项目合集 | ZGQ Inc.’s Blog》全文阅读', icon: './assets/icons/internet-explorer-16x16.png' },
-            { name: '软天空精选与历史发布 (本地归档)', url: './old/rtk_up.html', desc: '原站软天空作品清单与下载地址完整历史备份', icon: './assets/icons/html-16x16-higher-color.png' },
-            { name: '综合资源大收录 (本地归档)', url: './old/resources.html', desc: '涵盖设计工具、AI绘图、画师图集、网盘资源等', icon: './assets/icons/favorites-16x16.png' },
-            { name: '个人主页 2021 原版 (本地归档)', url: './old/index.html', desc: '改版前的 HTML5 UP 经典深色主页与原音乐存档', icon: './assets/icons/desktop-16x16.png' },
-            { name: '科学上网与节点订阅', url: 'https://overthefirewall.zgqinc.gq', desc: '网络穿透、节点订阅与网络代理设置教程', icon: './assets/icons/network-16x16.png' },
-            { name: 'Telegram 个人频道', url: 'https://t.me/CopyRightZGQInc', desc: '@CopyRightZGQInc 官方技术干货、资讯与资源发布', icon: './assets/icons/news-16x16.png' },
-            { name: 'Telegram 个人私聊', url: 'https://t.me/ZGQInc', desc: '联系作者 @ZGQinc 进行交流与反馈', icon: './assets/icons/mail-16x16.png' }
           ]
         }
       ];

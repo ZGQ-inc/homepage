@@ -478,6 +478,18 @@ body.crt-active .crt-overlay {
   color: #d8e5ff !important;
 }
 
+/* Webamp Retro Winamp Integration */
+#webamp {
+  position: absolute !important;
+  z-index: 10005 !important;
+}
+
+#webamp .window {
+  border: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
 .nav-card img {
   width: 18px;
   height: 18px;

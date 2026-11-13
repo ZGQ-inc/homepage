@@ -89,6 +89,7 @@
 
       // Audio Elements & Web Audio
       this.audio = new Audio();
+      this.audio.crossOrigin = 'anonymous';
       this.audio.preload = 'metadata';
       this.audio.volume = this.volume;
 
@@ -97,6 +98,7 @@
       this.sourceNode = null;
       this.hasAudioContext = false;
       this.audioData = new Uint8Array(128);
+      this.timeData = new Uint8Array(1024);
 
       // Event listeners for audio
       this.setupAudioListeners();
@@ -134,13 +136,14 @@
     initAudioContext() {
       if (this.hasAudioContext) return;
       try {
-        const AudioCtx = window.AudioContext || window.webkitAudioContext;
+        const AudioCtx = (window.getSharedAudioContext ? window.getSharedAudioContext() : null) || window.AudioContext || window.webkitAudioContext;
         if (!AudioCtx) return;
-        this.audioContext = new AudioCtx();
+        this.audioContext = typeof AudioCtx === 'function' ? new AudioCtx() : AudioCtx;
         this.analyser = this.audioContext.createAnalyser();
-        this.analyser.fftSize = 256;
-        this.analyser.smoothingTimeConstant = 0.8;
+        this.analyser.fftSize = 1024;
+        this.analyser.smoothingTimeConstant = 0.5;
         this.audioData = new Uint8Array(this.analyser.frequencyBinCount);
+        this.timeData = new Uint8Array(this.analyser.fftSize);
 
         // Attempt MediaElementSource connection
         try {
@@ -148,9 +151,15 @@
           this.sourceNode.connect(this.analyser);
           this.analyser.connect(this.audioContext.destination);
           this.hasAudioContext = true;
+
+          // If Butterchurn is ready, connect to it
+          if (window.visualizerManager && window.visualizerManager.visualizer) {
+            try {
+              window.visualizerManager.visualizer.connectAudio(this.analyser);
+            } catch (e) {}
+          }
         } catch (corsErr) {
-          console.log('Audio element CORS restricted, running synthetic frequency generator for visualizer:', corsErr);
-          // Still keep analyser alive with synthetic frequency generator
+          console.log('Audio element CORS restricted, precision sync rhythm generator active:', corsErr);
           this.hasAudioContext = true;
         }
 

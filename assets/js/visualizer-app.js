@@ -62,11 +62,9 @@
         return;
       }
 
-      // Ensure AudioContext
-      if (audioEngine && !audioEngine.audioContext) {
-        audioEngine.initAudioContext();
-      }
-      this.audioContext = (audioEngine && audioEngine.audioContext) || new (window.AudioContext || window.webkitAudioContext)();
+      // Ensure shared AudioContext
+      const AudioCtx = (window.getSharedAudioContext ? window.getSharedAudioContext() : null) || (audioEngine && audioEngine.audioContext) || window.AudioContext || window.webkitAudioContext;
+      this.audioContext = typeof AudioCtx === 'function' ? new AudioCtx() : AudioCtx;
 
       // Ensure Canvas Dimensions
       let w = this.canvas.parentElement ? this.canvas.parentElement.clientWidth : 500;
@@ -233,55 +231,126 @@
       this.isRendering = true;
 
       const fftSize = 1024;
-      const synthArr = new Uint8Array(fftSize);
-      const synthArrL = new Uint8Array(fftSize);
-      const synthArrR = new Uint8Array(fftSize);
-      let frameCount = 0;
+      const wavBuffer = new Uint8Array(fftSize);
+      const wavBufferL = new Uint8Array(fftSize);
+      const wavBufferR = new Uint8Array(fftSize);
+      const realWavData = new Uint8Array(fftSize);
+      let idleFrame = 0;
 
       const loop = () => {
         if (this.visualizer) {
           try {
             const radio = window.radioEngine;
-            let hasRealAudio = false;
+            const isPlaying = radio && radio.isPlaying;
 
-            if (radio && radio.isPlaying && radio.analyser && radio.audioData) {
-              for (let k = 0; k < 12; k++) {
-                if (radio.audioData[k] > 0) {
-                  hasRealAudio = true;
-                  break;
+            // Check if real Web Audio waveform is non-silent
+            let hasRealOscillation = false;
+            if (radio && radio.analyser) {
+              try {
+                radio.analyser.getByteTimeDomainData(realWavData);
+                // Check if waveform differs from 128 (flat silence)
+                for (let k = 0; k < 64; k += 4) {
+                  if (Math.abs(realWavData[k] - 128) > 2) {
+                    hasRealOscillation = true;
+                    break;
+                  }
                 }
-              }
+              } catch (e) {}
             }
 
-            if (hasRealAudio) {
-              this.visualizer.render();
-            } else {
-              // Synthetic rhythmic synthwave pulses so visualizer is never dark
-              frameCount++;
-              const t = frameCount * 0.03;
-              const bassBeat = Math.pow(Math.max(0, Math.sin(t * 3.14)), 3) * 80;
-              const midMelody = Math.sin(t * 5.2) * 35;
-              const trebleSparks = (Math.random() - 0.5) * 20;
+            if (isPlaying && hasRealOscillation) {
+              // Option A: Use 100% Real Audio waveform from Web Audio API
+              this.visualizer.render({
+                audioLevels: {
+                  timeByteArray: realWavData,
+                  timeByteArrayL: realWavData,
+                  timeByteArrayR: realWavData
+                }
+              });
 
+              // Background pulse from real audio
+              if (window.retroBackground && radio.audioData) {
+                let sum = 0;
+                for (let i = 1; i < 14; i++) sum += (radio.audioData[i] || 0);
+                window.retroBackground.setAudioEnergy(sum / (13 * 255));
+              }
+            } else if (isPlaying) {
+              // Option B: Real Audio is playing via <audio> but CORS restricts Web Audio stream reading
+              // Synthesize dynamic, beat-locked synthwave audio waveforms synchronized with radio.audio.currentTime!
+              const curTime = (radio.audio && radio.audio.currentTime > 0) ? radio.audio.currentTime : (performance.now() / 1000);
+              const bpm = 124; // Standard Synthwave tempo
+              const beatTime = curTime * (bpm / 60);
+              const beatFraction = beatTime % 1.0;
+              const isSnareBeat = (Math.floor(beatTime) % 2 === 1);
+
+              // Kick punch: powerful low frequency drop on beat
+              const kickImpulse = Math.pow(Math.max(0, 1 - beatFraction * 3.5), 2) * 115;
+              // Snare punch: noisy mid-frequency punch on beats 2 & 4
+              const snareImpulse = isSnareBeat ? Math.pow(Math.max(0, 1 - beatFraction * 2.8), 2) * 85 : 0;
+              // 16th-note rolling synth bassline
+              const sixteenth = (beatTime * 4) % 1.0;
+              const bassArp = Math.sin(sixteenth * Math.PI * 2) * (30 + kickImpulse * 0.4);
+              // Lead melody & chord shimmer
+              const melodyPhase = curTime * 7.5;
+              const leadSynth = Math.sin(melodyPhase) * 25 + Math.cos(melodyPhase * 1.5) * 18;
+
+              // Generate stereo 1024-sample audio waveform with massive dynamic range
               for (let i = 0; i < fftSize; i++) {
                 const phase = (i / fftSize) * Math.PI * 4;
-                const wave = Math.sin(phase + t * 3.5) * (20 + bassBeat * 0.5)
-                           + Math.cos(phase * 2.2 - t * 1.8) * (15 + midMelody * 0.4)
-                           + Math.sin(phase * 7) * 8
-                           + trebleSparks;
-                const val = Math.min(255, Math.max(0, Math.floor(128 + wave)));
-                synthArr[i] = val;
-                synthArrL[i] = val;
-                synthArrR[i] = Math.min(255, Math.max(0, Math.floor(128 + wave * 0.92)));
+                // Low-frequency bass sine (60Hz equivalent)
+                const kickWave = Math.sin(phase * 1.2) * kickImpulse;
+                // Mid snare & synth wave
+                const midWave = Math.sin(phase * 4.8 + melodyPhase) * (snareImpulse + leadSynth);
+                // Treble sparkle (hi-hats & shimmer)
+                const trebNoise = (Math.random() - 0.5) * (15 + (sixteenth < 0.25 ? 25 : 5));
+
+                const sampleVal = kickWave + midWave + bassArp + trebNoise;
+                const finalL = Math.min(255, Math.max(0, Math.floor(128 + sampleVal)));
+                const finalR = Math.min(255, Math.max(0, Math.floor(128 + sampleVal * 0.94 + Math.sin(phase * 3) * 10)));
+
+                wavBuffer[i] = finalL;
+                wavBufferL[i] = finalL;
+                wavBufferR[i] = finalR;
               }
 
               this.visualizer.render({
                 audioLevels: {
-                  timeByteArray: synthArr,
-                  timeByteArrayL: synthArrL,
-                  timeByteArrayR: synthArrR
+                  timeByteArray: wavBuffer,
+                  timeByteArrayL: wavBufferL,
+                  timeByteArrayR: wavBufferR
                 }
               });
+
+              // Synchronize background neon glow with kick bass
+              if (window.retroBackground) {
+                const energy = Math.min(1.0, (kickImpulse / 115) * 0.85 + 0.1);
+                window.retroBackground.setAudioEnergy(energy);
+              }
+            } else {
+              // Option C: Music is paused or stopped -> gentle ambient wave so canvas doesn't decay to pitch black
+              idleFrame++;
+              const t = idleFrame * 0.02;
+              const ambientSway = Math.sin(t * 1.5) * 18;
+
+              for (let i = 0; i < fftSize; i++) {
+                const phase = (i / fftSize) * Math.PI * 2;
+                const val = Math.min(255, Math.max(0, Math.floor(128 + Math.sin(phase + t) * ambientSway)));
+                wavBuffer[i] = val;
+                wavBufferL[i] = val;
+                wavBufferR[i] = val;
+              }
+
+              this.visualizer.render({
+                audioLevels: {
+                  timeByteArray: wavBuffer,
+                  timeByteArrayL: wavBufferL,
+                  timeByteArrayR: wavBufferR
+                }
+              });
+
+              if (window.retroBackground) {
+                window.retroBackground.setAudioEnergy(0.05);
+              }
             }
           } catch (e) {
             console.warn('Butterchurn render error:', e);

@@ -340,76 +340,100 @@
      * Webamp Secondary Player Integration
      * ------------------------------------------------------------------------- */
     setupWebampLauncher() {
-      const container = document.getElementById('webamp-root');
-      if (container) {
-        container.addEventListener('mousedown', () => {
-          this.highestZIndex += 1;
-          container.style.zIndex = this.highestZIndex;
-        });
-        container.addEventListener('touchstart', () => {
-          this.highestZIndex += 1;
-          container.style.zIndex = this.highestZIndex;
-        }, { passive: true });
-      }
-
       // Lazy initialization of Webamp
       this.toggleWebamp = () => {
         if (!window.Webamp) {
           alert('Webamp 正在加载组件，请稍候...');
-          return;
+          return Promise.resolve();
         }
 
-        const container = document.getElementById('webamp-root');
-        if (!this.webampInstance) {
-          this.highestZIndex += 1;
-          if (container) {
-            container.style.zIndex = this.highestZIndex;
-          }
-
-          this.webampInstance = new window.Webamp({
-            initialTracks: [
-              {
-                metaData: {
-                  artist: "FM-84 & Ollie Wride",
-                  title: "Running in the Night"
-                },
-                url: "./old/music/Running_in_the_Night-FM-84&Ollie_Wride.mp3"
-              },
-              {
-                metaData: {
-                  artist: "The Midnight",
-                  title: "Los Angeles"
-                },
-                url: "./old/music/The_Midnight-Los_Angeles.mp3"
-              },
-              {
-                metaData: {
-                  artist: "LeBrock",
-                  title: "Please Don't Cry"
-                },
-                url: "./old/music/LeBrock-Please_Don`t_Cry.mp3"
-              }
-            ]
-          });
-
-          this.webampInstance.renderWhenReady(container).then(() => {
-            this.isWebampRendered = true;
+        const existingWebampEl = document.getElementById('webamp');
+        if (this.webampInstance && existingWebampEl) {
+          const isCurrentlyHidden = existingWebampEl.style.display === 'none' || window.getComputedStyle(existingWebampEl).display === 'none';
+          if (isCurrentlyHidden) {
+            this.highestZIndex += 10;
+            existingWebampEl.style.zIndex = this.highestZIndex;
+            existingWebampEl.style.display = 'block';
             this.playSound('ding');
-            console.log('Webamp rendered onto desktop successfully.');
-          });
-        } else {
-          // Toggle visibility
-          if (container) {
-            if (container.style.display === 'none') {
-              this.highestZIndex += 1;
-              container.style.zIndex = this.highestZIndex;
-              container.style.display = 'block';
-            } else {
-              container.style.display = 'none';
+          } else {
+            existingWebampEl.style.display = 'none';
+          }
+          return Promise.resolve();
+        }
+
+        this.highestZIndex += 10;
+        const initialZ = this.highestZIndex;
+
+        this.webampInstance = new window.Webamp({
+          zIndex: initialZ,
+          initialTracks: [
+            {
+              metaData: {
+                artist: "FM-84 & Ollie Wride",
+                title: "Running in the Night"
+              },
+              url: "./music/Running_in_the_Night-FM-84&Ollie_Wride.mp3"
+            },
+            {
+              metaData: {
+                artist: "The Midnight",
+                title: "Los Angeles"
+              },
+              url: "./music/The_Midnight-Los_Angeles.mp3"
+            },
+            {
+              metaData: {
+                artist: "LeBrock",
+                title: "Please Don't Cry"
+              },
+              url: "./music/LeBrock-Please_Don`t_Cry.mp3"
+            }
+          ]
+        });
+
+        // Handle close button inside Webamp
+        this.webampInstance.onClose(() => {
+          const el = document.getElementById('webamp');
+          if (el) el.style.display = 'none';
+        });
+
+        const rootContainer = document.getElementById('webamp-root') || document.body;
+        return this.webampInstance.renderWhenReady(rootContainer).then(() => {
+          this.isWebampRendered = true;
+          this.playSound('ding');
+          const el = document.getElementById('webamp');
+          if (el) {
+            this.highestZIndex += 5;
+            el.style.zIndex = this.highestZIndex;
+            el.style.display = 'block';
+
+            // Ensure window is in clear view on desktop
+            const mainWin = el.querySelector('#main-window');
+            if (mainWin && mainWin.parentElement) {
+              const posX = Math.max(30, Math.min(window.innerWidth - 300, 180));
+              const posY = Math.max(40, Math.min(window.innerHeight - 300, 90));
+              mainWin.parentElement.style.transform = `translate(${posX}px, ${posY}px)`;
             }
           }
-        }
+          console.log('Webamp rendered onto desktop successfully.');
+        });
       };
+
+      // Ensure clicking anywhere inside Webamp brings it to the top
+      document.addEventListener('mousedown', (e) => {
+        const el = document.getElementById('webamp');
+        if (el && el.contains(e.target)) {
+          this.highestZIndex += 1;
+          el.style.zIndex = this.highestZIndex;
+        }
+      });
+      document.addEventListener('touchstart', (e) => {
+        const el = document.getElementById('webamp');
+        if (el && el.contains(e.target)) {
+          this.highestZIndex += 1;
+          el.style.zIndex = this.highestZIndex;
+        }
+      }, { passive: true });
     }
 
     /* -------------------------------------------------------------------------

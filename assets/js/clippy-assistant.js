@@ -179,7 +179,7 @@
         "提示：Milkdrop 视觉器支持全屏，按 [全屏] 享受极致视效！🌌",
         "听歌提示：点击『随机下一首』探索 600+ 首合成波宝藏！🎵",
         "右键点击桌面空白处，可以切换 Wallpaper Engine 霓虹日落或 CRT 特效！🖼️",
-        "在找彩蛋吗？开始菜单里有原站经典的 FBI WARNING 和愚人节彩蛋哦！⚠️"
+        "提示：可以双击 Winamp 启动第二款经典复古播放器，重温千禧年桌面回忆！📻"
       ];
       const q = quotes[Math.floor(Math.random() * quotes.length)];
       this.speak(q, 4500);
@@ -200,19 +200,19 @@
       try {
         if (winId === 'win-visualizer') {
           this.agent.play('GetArtsy');
-          this.speak("Milkdrop 3D 视觉器启动！流光溢彩，震撼视界！🎨", 4000);
+          this.speak("Milkdrop 3D 视觉器启动！随着合成波音乐节拍震撼律动！🎨", 4000);
         } else if (winId === 'win-navigation') {
           this.agent.play('Explain');
-          this.speak("这里汇集了 ZGQ 的 41 个在线项目、GitHub仓库与历史归档！🌐", 4000);
+          this.speak("这里汇集了 ZGQ 的 34 个在线实用项目与 GitHub 开源仓库！🌐", 4000);
         } else if (winId === 'win-github') {
           this.agent.play('GetTechy');
           this.speak("这里展示了 ZGQ 的 GitHub 活跃数据、设备装备库与深度逆向博文！💻", 4000);
-        } else if (winId === 'win-fbi') {
-          this.agent.play('Alert');
-          this.speak("⚠️ 经典 FBI WARNING 高能彩蛋出没！请调大音量欣赏！", 4000);
-        } else if (winId === 'win-mywords') {
-          this.agent.play('Writing');
-          this.speak("这是站长当年写给所有访客的真情独白《我想说的话》📜", 4000);
+        } else if (winId === 'win-player') {
+          this.agent.play('Wave');
+          this.speak("NewRetroWave 在线电台启动！600+ 随机合成波音乐已就绪！📻", 4000);
+        } else if (winId === 'win-channel') {
+          this.agent.play('SendMail');
+          this.speak("欢迎订阅 ZGQ Inc. 的 Telegram 官方技术频道！📢", 4000);
         }
       } catch (e) {}
     }
