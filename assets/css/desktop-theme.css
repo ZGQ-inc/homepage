@@ -49,14 +49,9 @@ html, body, *, *::before, *::after {
   }
 }
 
-/* Standard CSS Scrollbars (Firefox & modern standards) */
-* {
-  scrollbar-color: silver transparent;
-  scrollbar-width: auto;
-}
-
-/* Windows 95/98 Scrollbar by Dakedres */
+/* Windows 95/98 Scrollbar by Dakedres (https://gist.github.com/Dakedres/0ccda599648833a1c2f65d3967aa131b) */
 ::-webkit-scrollbar,
+*::-webkit-scrollbar,
 body *::-webkit-scrollbar {
   width: 16px;
   height: 16px;

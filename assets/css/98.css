@@ -15,11 +15,6 @@ html, body, *, *::before, *::after {
   }
 }
 
-* {
-  scrollbar-color: silver transparent;
-  scrollbar-width: auto;
-}
-
 ::-webkit-scrollbar,
 body *::-webkit-scrollbar {
   width: 16px;
