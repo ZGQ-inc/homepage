@@ -110,7 +110,11 @@
 
         // Keep explicit inline positioning if present, otherwise stagger
         if (!el.classList.contains('hidden') && !el.classList.contains('maximized')) {
-          if ((!el.style.left || !el.style.top) && window.innerWidth > 768) {
+          if (window.innerWidth <= 768) {
+            el.style.left = '8px';
+            el.style.top = '10px';
+            el.style.width = 'calc(100vw - 16px)';
+          } else if (!el.style.left || !el.style.top) {
             const offsetX = 90 + (index % 4) * 35;
             const offsetY = 30 + (index % 4) * 30;
             el.style.left = `${offsetX}px`;
@@ -144,9 +148,9 @@
         let newLeft = initLeft + dx;
         let newTop = initTop + dy;
 
-        const maxLeft = window.innerWidth - 80;
-        const maxTop = window.innerHeight - 50;
-        newLeft = Math.max(0, Math.min(maxLeft, newLeft));
+        const maxLeft = window.innerWidth - 60;
+        const maxTop = window.innerHeight - 36;
+        newLeft = Math.max(-10, Math.min(maxLeft, newLeft));
         newTop = Math.max(0, Math.min(maxTop, newTop));
 
         winEl.style.left = `${newLeft}px`;
@@ -175,16 +179,26 @@
         if (e.target.tagName.toLowerCase() === 'button') return;
         const touch = e.touches[0];
         onStart(touch.clientX, touch.clientY);
-      }, { passive: true });
+      }, { passive: false });
 
       window.addEventListener('touchmove', (e) => {
         if (!isDragging) return;
+        if (e.cancelable) e.preventDefault();
         const touch = e.touches[0];
         onMove(touch.clientX, touch.clientY);
-      }, { passive: true });
+      }, { passive: false });
 
       window.addEventListener('touchend', () => {
         if (isDragging) onEnd();
+      });
+      window.addEventListener('touchcancel', () => {
+        if (isDragging) onEnd();
+      });
+
+      // 双击/双击触控标题栏切换最大化/还原
+      handleEl.addEventListener('dblclick', (e) => {
+        if (e.target.tagName.toLowerCase() === 'button') return;
+        this.toggleMaximize(winEl.dataset.windowId);
       });
     }
 
@@ -220,11 +234,12 @@
       this.bringToFront(id);
 
       // On mobile viewports
-      if (window.innerWidth <= 768) {
-        win.element.style.left = '2px';
-        win.element.style.top = '2px';
-        win.element.style.width = 'calc(100vw - 4px)';
-        win.element.style.height = 'calc(100dvh - 36px)';
+      if (window.innerWidth <= 768 && !win.isMaximized) {
+        if (!win.element.style.left || win.element.style.left === '2px') {
+          win.element.style.left = '8px';
+          win.element.style.top = '10px';
+          win.element.style.width = 'calc(100vw - 16px)';
+        }
       }
 
       this.playSound('ding');
@@ -280,17 +295,17 @@
         }
       } else {
         win.prevRect = {
-          left: win.element.style.left,
-          top: win.element.style.top,
-          width: win.element.style.width,
-          height: win.element.style.height
+          left: win.element.style.left || '8px',
+          top: win.element.style.top || '10px',
+          width: win.element.style.width || '',
+          height: win.element.style.height || ''
         };
         win.element.classList.add('maximized');
         win.isMaximized = true;
         win.element.style.left = '0px';
         win.element.style.top = '0px';
         win.element.style.width = '100vw';
-        win.element.style.height = 'calc(100vh - 28px)';
+        win.element.style.height = 'calc(100dvh - var(--taskbar-height, 28px))';
       }
 
       if (id === 'win-visualizer' && window.visualizerManager) {
@@ -458,6 +473,23 @@
     }
 
     tidyWindows() {
+      if (window.innerWidth <= 768) {
+        let mobOffset = 0;
+        Object.keys(this.windows).forEach((id) => {
+          const win = this.windows[id];
+          if (win && !win.element.classList.contains('hidden') && !win.isMinimized) {
+            win.element.style.left = `${8 + mobOffset * 8}px`;
+            win.element.style.top = `${10 + mobOffset * 15}px`;
+            win.element.style.width = 'calc(100vw - 16px)';
+            mobOffset++;
+          }
+        });
+        this.playSound('ding');
+        if (window.clippy) window.clippy.speak('移动端窗口已重置对齐！');
+        this.updateTaskbar();
+        return;
+      }
+
       // 1. Arrange win-navigation on the left
       const winNav = this.windows['win-navigation'];
       if (winNav && !winNav.element.classList.contains('hidden')) {

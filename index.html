@@ -87,7 +87,7 @@
     </div>
 
     <!-- ==================== 窗口 1: 个人项目与网址导航 (Project Hub & Navigation) ==================== -->
-    <div class="window" id="win-navigation" data-window-id="win-navigation" style="left: 90px; top: 25px; width: 580px;">
+    <div class="window hidden" id="win-navigation" data-window-id="win-navigation" style="left: 90px; top: 25px; width: 580px;">
       <div class="title-bar">
         <div class="title-bar-text">
           <img src="./assets/icons/network-16x16.png" alt="">
@@ -232,75 +232,70 @@
           <div id="articles-container">
             <div class="gh-article-card">
               <div style="flex: 1;">
-                <div style="display: flex; justify-content: space-between; margin-bottom: 2px;">
-                  <span class="gh-article-badge">逆向实录</span>
-                  <span style="font-size: 11px; color: #666;">🗓️ 2026-11-10</span>
+                <div style="font-size: 11px; color: #666; margin-bottom: 2px;">
+                  🗓️ 2026-11-11
                 </div>
-                <a href="https://blog.zgqinc.gq/posts/giggle/" target="_blank" style="font-weight: bold; font-size: 12px; color: #000080; text-decoration: none;">
-                  《危笑乐园》（Giggleland）全文本深度汉化补丁发布与底层本地化缺陷逆向实录
+                <a href="https://blog.zgqinc.gq/posts/giggle/" target="_blank" rel="noopener noreferrer" style="font-weight: bold; font-size: 12px; color: #000080; text-decoration: none; display: block; margin: 2px 0;">
+                  《危笑乐园》（Giggleland）全文本深度汉化补丁发布与底层本地化缺陷逆向实录（附全笔记存档与 Telegram 贴纸包）
                 </a>
                 <p style="margin: 4px 0 0 0; font-size: 11px; color: #444; line-height: 1.4;">
-                  从底层逆向挖掘到全流程实机通关，详尽复盘《危笑乐园》汉化全景历程：曝光官方代码隐藏开关、思源黑体/CJK减速算法底层修复与全笔记存档。
+                  从底层逆向挖掘到全流程实机通关，详尽复盘《危笑乐园》（Giggleland）汉化全景历程：曝光官方代码隐藏开关、2026年10月分批翻译时间戳与思源黑体/CJK减速算法底层铁证；深度起底关卡硬编码、Font Asset 崩溃防御与全套笔记归档。
                 </p>
               </div>
             </div>
 
             <div class="gh-article-card">
               <div style="flex: 1;">
-                <div style="display: flex; justify-content: space-between; margin-bottom: 2px;">
-                  <span class="gh-article-badge">安全取证</span>
-                  <span style="font-size: 11px; color: #666;">🗓️ 2026-11-05</span>
+                <div style="font-size: 11px; color: #666; margin-bottom: 2px;">
+                  🗓️ 2026-11-05
                 </div>
-                <a href="https://blog.zgqinc.gq/posts/syshlp/" target="_blank" style="font-weight: bold; font-size: 12px; color: #000080; text-decoration: none;">
+                <a href="https://blog.zgqinc.gq/posts/syshlp/" target="_blank" rel="noopener noreferrer" style="font-weight: bold; font-size: 12px; color: #000080; text-decoration: none; display: block; margin: 2px 0;">
                   移动终端预装系统级组件 SystemHelper 深度逆向分析与时空行为监控技术取证白皮书
                 </a>
                 <p style="margin: 4px 0 0 0; font-size: 11px; color: #444; line-height: 1.4;">
-                  国家级/运营商级预装系统组件 SystemHelper (com.mobiletools.systemhelper) 深度逆向技术取证白皮书：横跨 4 年 5 代全量样本时空行为分析。
+                  国家级/运营商级预装系统组件 SystemHelper (com.mobiletools.systemhelper) 深度逆向技术取证白皮书：横跨 4 年 5 代全量样本，严格基于客观代码硬证据（L1-L4 取证链），深剖时空行为监控机制与通信协议。
                 </p>
               </div>
             </div>
 
             <div class="gh-article-card">
               <div style="flex: 1;">
-                <div style="display: flex; justify-content: space-between; margin-bottom: 2px;">
-                  <span class="gh-article-badge">Steam逆向</span>
-                  <span style="font-size: 11px; color: #666;">🗓️ 2026-11-05</span>
+                <div style="font-size: 11px; color: #666; margin-bottom: 2px;">
+                  🗓️ 2026-11-05
                 </div>
-                <a href="https://blog.zgqinc.gq/posts/c8k3m9/" target="_blank" style="font-weight: bold; font-size: 12px; color: #000080; text-decoration: none;">
-                  教程：翻车与神级反转！以《The Classrooms》实战起底 Steam 物品强校验与资产层“后门”拦截
+                <a href="https://blog.zgqinc.gq/posts/c8k3m9/" target="_blank" rel="noopener noreferrer" style="font-weight: bold; font-size: 12px; color: #000080; text-decoration: none; display: block; margin: 2px 0;">
+                  教程：翻车与神级反转！以《The Classrooms》实战起底 Steam 物品强校验与资产层“后门”
                 </a>
                 <p style="margin: 4px 0 0 0; font-size: 11px; color: #444; line-height: 1.4;">
-                  解析为什么常规 SmokeAPI 会在强校验游戏中折戟？深度追踪《The Classrooms》内部 SteamInventory 签名序列化拦截链与 DepotDownloader 清单提取。
+                  硬核避坑与绝妙反转：解析为什么常规 SmokeAPI 会在强校验游戏中折戟？深度追踪《The Classrooms》内部的 SteamInventory 签名序列化拦截链，并实操揭秘开发者遗留在 Code 中的后门机制。
                 </p>
               </div>
             </div>
 
             <div class="gh-article-card">
               <div style="flex: 1;">
-                <div style="display: flex; justify-content: space-between; margin-bottom: 2px;">
-                  <span class="gh-article-badge">3D打印DIY</span>
-                  <span style="font-size: 11px; color: #666;">🗓️ 2026-11-04</span>
+                <div style="font-size: 11px; color: #666; margin-bottom: 2px;">
+                  🗓️ 2026-11-04
                 </div>
-                <a href="https://blog.zgqinc.gq/posts/ag140s/" target="_blank" style="font-weight: bold; font-size: 12px; color: #000080; text-decoration: none;">
-                  86 元官方支架平替！MINIWARE AirGo 140 3D 打印“双模自动休眠支架”开源实测
+                <a href="https://blog.zgqinc.gq/posts/ag140s/" target="_blank" rel="noopener noreferrer" style="font-weight: bold; font-size: 12px; color: #000080; text-decoration: none; display: block; margin: 2px 0;">
+                  86 元官方支架平替！MINIWARE AirGo 140 3D 打印“双模自动休眠支架”开源实测 —— 桌面机械自重联动 + 12.4mm 超薄便携双版本设计全解
                 </a>
                 <p style="margin: 4px 0 0 0; font-size: 11px; color: #444; line-height: 1.4;">
-                  面对原厂高达 86 元且存在结构缺陷的钣金支架，基于拓竹 A1 mini 打造 3D 打印双模自动休眠支架并开源。
+                  在完成了 MINIWARE AirGo 140 便携热风枪的深度硬核拆解后，面对官方单卖高达 86 元且存在结构缺陷的原厂钣金支架，开源自制桌面机械自重联动与超薄便携双版本设计全解。
                 </p>
               </div>
             </div>
 
             <div class="gh-article-card">
               <div style="flex: 1;">
-                <div style="display: flex; justify-content: space-between; margin-bottom: 2px;">
-                  <span class="gh-article-badge">硬件拆解</span>
-                  <span style="font-size: 11px; color: #666;">🗓️ 2026-11-02</span>
+                <div style="font-size: 11px; color: #666; margin-bottom: 2px;">
+                  🗓️ 2026-11-02
                 </div>
-                <a href="https://blog.zgqinc.gq/posts/ag140d/" target="_blank" style="font-weight: bold; font-size: 12px; color: #000080; text-decoration: none;">
-                  全网首拆！MINIWARE AirGo 140 便携热风枪深度拆解与硬件架构全景分析
+                <a href="https://blog.zgqinc.gq/posts/ag140d/" target="_blank" rel="noopener noreferrer" style="font-weight: bold; font-size: 12px; color: #000080; text-decoration: none; display: block; margin: 2px 0;">
+                  全网首拆！MINIWARE AirGo 140 便携热风枪深度拆解与硬件架构全景分析 —— 140W PD 3.1 掌上拆焊神器内部秘密
                 </a>
                 <p style="margin: 4px 0 0 0; font-size: 11px; color: #444; line-height: 1.4;">
-                  全网首个 AirGo 140 便携热风枪深度硬核拆解，全面剖析 140W 微型涡轮与发热芯驱动拓扑。
+                  刚入手测试完 MINIWARE AirGo 140 便携热风枪，便难掩好奇心将其大卸八块！本文全面剖析其如何在仅 30mm 纤细笔身内驾驭 140W 澎湃功率与硬件架构全景。
                 </p>
               </div>
             </div>
@@ -453,7 +448,7 @@
     </div>
 
     <!-- ==================== 窗口 3: 频道和博客 (Channel & Blog) ==================== -->
-    <div class="window hidden" id="win-channel" data-window-id="win-channel" style="left: 140px; top: 45px; width: 620px; max-width: 95vw;">
+    <div class="window active" id="win-channel" data-window-id="win-channel" style="left: 100px; top: 25px; width: 640px; max-width: 95vw;">
       <div class="title-bar">
         <div class="title-bar-text">
           <img src="./assets/icons/news-16x16.png" alt="">
@@ -467,8 +462,8 @@
       </div>
       <div class="window-body" style="padding: 6px; display: flex; flex-direction: column; gap: 8px; max-height: 520px; overflow-y: auto;">
         
-        <!-- 头部双卡片: Telegram 频道 + 独立博客入口 -->
-        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 6px;">
+        <!-- 头部双卡片: Telegram 频道 + 独立博客入口 (自适应并排/堆叠) -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 6px;">
           <!-- Telegram 频道卡片 -->
           <div style="background: #fff; border: 1px inset #808080; padding: 8px; display: flex; flex-direction: column; justify-content: space-between; gap: 6px;">
             <div style="display: flex; align-items: center; justify-content: space-between;">
@@ -525,54 +520,62 @@
           <div id="channel-blog-container" style="max-height: 220px; overflow-y: auto; background: #fff; border: 1px inset #808080; padding: 6px; display: flex; flex-direction: column; gap: 6px;">
             <!-- 预置精选博文（RSS 现场拉取成功后会自动更新） -->
             <div class="article-card" style="padding: 6px; border: 1px solid #d0d0d0; border-radius: 3px; background: #fafafa;">
-              <div style="display: flex; justify-content: space-between; font-size: 10px; color: #888;">
-                <span>🗓️ 2026-11-10</span>
-                <span style="background: #000080; color: #fff; padding: 0 4px; border-radius: 2px;">汉化逆向</span>
+              <div style="font-size: 10px; color: #888;">
+                🗓️ 2026-11-11
               </div>
-              <a href="https://blog.zgqinc.gq/posts/giggle/" target="_blank" style="font-weight: bold; font-size: 12px; color: #000080; text-decoration: none; display: block; margin: 2px 0;">
-                《危笑乐园》（Giggleland）全文本深度汉化补丁发布与底层本地化缺陷逆向实录
+              <a href="https://blog.zgqinc.gq/posts/giggle/" target="_blank" rel="noopener noreferrer" style="font-weight: bold; font-size: 12px; color: #000080; text-decoration: none; display: block; margin: 2px 0;">
+                《危笑乐园》（Giggleland）全文本深度汉化补丁发布与底层本地化缺陷逆向实录（附全笔记存档与 Telegram 贴纸包）
               </a>
-              <div style="font-size: 11px; color: #555;">
-                从底层逆向挖掘到全流程实机通关，详尽复盘汉化全景历程：曝光官方代码隐藏开关、思源黑体/CJK减速算法底层修复与全笔记存档。
+              <div style="font-size: 11px; color: #555; line-height: 1.4;">
+                从底层逆向挖掘到全流程实机通关，详尽复盘《危笑乐园》（Giggleland）汉化全景历程：曝光官方代码隐藏开关、2026年10月分批翻译时间戳与思源黑体/CJK减速算法底层铁证；深度起底关卡硬编码、Font Asset 崩溃防御与全套笔记归档。
               </div>
             </div>
 
             <div class="article-card" style="padding: 6px; border: 1px solid #d0d0d0; border-radius: 3px; background: #fafafa;">
-              <div style="display: flex; justify-content: space-between; font-size: 10px; color: #888;">
-                <span>🗓️ 2026-11-05</span>
-                <span style="background: #000080; color: #fff; padding: 0 4px; border-radius: 2px;">系统安全</span>
+              <div style="font-size: 10px; color: #888;">
+                🗓️ 2026-11-05
               </div>
-              <a href="https://blog.zgqinc.gq/posts/syshlp/" target="_blank" style="font-weight: bold; font-size: 12px; color: #000080; text-decoration: none; display: block; margin: 2px 0;">
+              <a href="https://blog.zgqinc.gq/posts/syshlp/" target="_blank" rel="noopener noreferrer" style="font-weight: bold; font-size: 12px; color: #000080; text-decoration: none; display: block; margin: 2px 0;">
                 移动终端预装系统级组件 SystemHelper 深度逆向分析与时空行为监控技术取证白皮书
               </a>
-              <div style="font-size: 11px; color: #555;">
-                运营商级预装系统组件 SystemHelper 深度逆向技术取证白皮书：横跨 4 年 5 代全量样本，深剖时空行为监控机制与通信协议。
+              <div style="font-size: 11px; color: #555; line-height: 1.4;">
+                国家级/运营商级预装系统组件 SystemHelper (com.mobiletools.systemhelper) 深度逆向技术取证白皮书：横跨 4 年 5 代全量样本，严格基于客观代码硬证据（L1-L4 取证链），深剖时空行为监控机制与通信协议。
               </div>
             </div>
 
             <div class="article-card" style="padding: 6px; border: 1px solid #d0d0d0; border-radius: 3px; background: #fafafa;">
-              <div style="display: flex; justify-content: space-between; font-size: 10px; color: #888;">
-                <span>🗓️ 2026-11-05</span>
-                <span style="background: #000080; color: #fff; padding: 0 4px; border-radius: 2px;">逆向实战</span>
+              <div style="font-size: 10px; color: #888;">
+                🗓️ 2026-11-05
               </div>
-              <a href="https://blog.zgqinc.gq/posts/c8k3m9/" target="_blank" style="font-weight: bold; font-size: 12px; color: #000080; text-decoration: none; display: block; margin: 2px 0;">
+              <a href="https://blog.zgqinc.gq/posts/c8k3m9/" target="_blank" rel="noopener noreferrer" style="font-weight: bold; font-size: 12px; color: #000080; text-decoration: none; display: block; margin: 2px 0;">
                 教程：翻车与神级反转！以《The Classrooms》实战起底 Steam 物品强校验与资产层“后门”
               </a>
-              <div style="font-size: 11px; color: #555;">
-                硬核避坑与绝妙反转：解析 Steam 物品校验机制、网络层与资产层“后门”逆向技巧实战全纪录。
+              <div style="font-size: 11px; color: #555; line-height: 1.4;">
+                硬核避坑与绝妙反转：解析为什么常规 SmokeAPI 会在强校验游戏中折戟？深度追踪《The Classrooms》内部的 SteamInventory 签名序列化拦截链，并实操揭秘开发者遗留后门机制。
               </div>
             </div>
 
             <div class="article-card" style="padding: 6px; border: 1px solid #d0d0d0; border-radius: 3px; background: #fafafa;">
-              <div style="display: flex; justify-content: space-between; font-size: 10px; color: #888;">
-                <span>📌 项目索引</span>
-                <span style="background: #008000; color: #fff; padding: 0 4px; border-radius: 2px;">个人合集</span>
+              <div style="font-size: 10px; color: #888;">
+                🗓️ 2026-11-04
               </div>
-              <a href="https://blog.zgqinc.gq/posts/projects/" target="_blank" style="font-weight: bold; font-size: 12px; color: #000080; text-decoration: none; display: block; margin: 2px 0;">
-                我在做的项目汇总清单 (Project Index)
+              <a href="https://blog.zgqinc.gq/posts/ag140s/" target="_blank" rel="noopener noreferrer" style="font-weight: bold; font-size: 12px; color: #000080; text-decoration: none; display: block; margin: 2px 0;">
+                86 元官方支架平替！MINIWARE AirGo 140 3D 打印“双模自动休眠支架”开源实测 —— 桌面机械自重联动 + 12.4mm 超薄便携双版本设计全解
               </a>
-              <div style="font-size: 11px; color: #555;">
-                汇集 ZGQ 近年开源工具、自制服务、前端应用与逆向研究全景合辑。
+              <div style="font-size: 11px; color: #555; line-height: 1.4;">
+                在完成了 MINIWARE AirGo 140 便携热风枪的深度硬核拆解后，面对官方单卖高达 86 元且存在结构缺陷的原厂钣金支架，开源自制桌面机械自重联动与超薄便携双版本设计全解。
+              </div>
+            </div>
+
+            <div class="article-card" style="padding: 6px; border: 1px solid #d0d0d0; border-radius: 3px; background: #fafafa;">
+              <div style="font-size: 10px; color: #888;">
+                🗓️ 2026-11-02
+              </div>
+              <a href="https://blog.zgqinc.gq/posts/ag140d/" target="_blank" rel="noopener noreferrer" style="font-weight: bold; font-size: 12px; color: #000080; text-decoration: none; display: block; margin: 2px 0;">
+                全网首拆！MINIWARE AirGo 140 便携热风枪深度拆解与硬件架构全景分析 —— 140W PD 3.1 掌上拆焊神器内部秘密
+              </a>
+              <div style="font-size: 11px; color: #555; line-height: 1.4;">
+                刚入手测试完 MINIWARE AirGo 140 便携热风枪，便难掩好奇心将其大卸八块！本文全面剖析其如何在仅 30mm 纤细笔身内驾驭 140W 澎湃功率与硬件架构全景。
               </div>
             </div>
           </div>
@@ -754,7 +757,7 @@
     </div>
 
     <!-- ==================== 窗口 5: NRW 音乐播放器 (Music Player) ==================== -->
-    <div class="window" id="win-player" data-window-id="win-player" style="left: 690px; top: 25px; width: 420px;">
+    <div class="window hidden" id="win-player" data-window-id="win-player" style="left: 690px; top: 25px; width: 420px;">
       <div class="title-bar">
         <div class="title-bar-text">
           <img src="./assets/icons/media-player-16x16.png" alt="">
@@ -808,7 +811,7 @@
     </div>
 
     <!-- ==================== 窗口 6: Butterchurn Milkdrop 视觉器 ==================== -->
-    <div class="window" id="win-visualizer" data-window-id="win-visualizer" style="left: 690px; top: 275px; width: 420px; height: 320px;">
+    <div class="window hidden" id="win-visualizer" data-window-id="win-visualizer" style="left: 690px; top: 275px; width: 420px; height: 320px;">
       <div class="title-bar">
         <div class="title-bar-text">
           <img src="./assets/icons/3d-mode-32x32.png" alt="">
@@ -1124,6 +1127,7 @@
       // 2. 初始化桌面操作系统管理器
       const desktop = new DesktopOS();
       window.desktopOS = desktop;
+      window.desktop = desktop;
 
       // 3. 初始化 NRW Radio 音乐引擎
       const radio = new RadioEngine();
@@ -1483,24 +1487,21 @@
             const linkEl = entry.querySelector('link');
             const updatedEl = entry.querySelector('published') || entry.querySelector('updated');
             const summaryEl = entry.querySelector('summary') || entry.querySelector('content');
-            const catEl = entry.querySelector('category');
 
             const title = titleEl ? titleEl.textContent.trim() : '无标题';
             const link = linkEl ? (linkEl.getAttribute('href') || linkEl.textContent.trim()) : '#';
             const pubDate = updatedEl ? updatedEl.textContent.trim().substring(0, 10) : '';
             let summary = summaryEl ? summaryEl.textContent.replace(/<[^>]+>/g, '').trim() : '';
             if (summary.length > 140) summary = summary.substring(0, 140) + '...';
-            const category = catEl ? (catEl.getAttribute('term') || catEl.textContent.trim()) : '博文实录';
 
             const card = document.createElement('div');
             card.className = 'gh-article-card';
             card.innerHTML = `
               <div style="flex: 1;">
-                <div style="display: flex; justify-content: space-between; margin-bottom: 2px;">
-                  <span class="gh-article-badge">${category}</span>
-                  <span style="font-size: 11px; color: #666;">🗓️ ${pubDate}</span>
+                <div style="font-size: 11px; color: #666; margin-bottom: 2px;">
+                  🗓️ ${pubDate}
                 </div>
-                <a href="${link}" target="_blank" rel="noopener noreferrer" style="font-weight: bold; font-size: 12px; color: #000080; text-decoration: none;">
+                <a href="${link}" target="_blank" rel="noopener noreferrer" style="font-weight: bold; font-size: 12px; color: #000080; text-decoration: none; display: block;">
                   ${title}
                 </a>
                 <p style="margin: 4px 0 0 0; font-size: 11px; color: #444; line-height: 1.4;">
@@ -1521,22 +1522,19 @@
               const linkEl = entry.querySelector('link');
               const updatedEl = entry.querySelector('published') || entry.querySelector('updated');
               const summaryEl = entry.querySelector('summary') || entry.querySelector('content');
-              const catEl = entry.querySelector('category');
 
               const title = titleEl ? titleEl.textContent.trim() : '无标题';
               const link = linkEl ? (linkEl.getAttribute('href') || linkEl.textContent.trim()) : '#';
               const pubDate = updatedEl ? updatedEl.textContent.trim().substring(0, 10) : '';
               let summary = summaryEl ? summaryEl.textContent.replace(/<[^>]+>/g, '').trim() : '';
               if (summary.length > 120) summary = summary.substring(0, 120) + '...';
-              const category = catEl ? (catEl.getAttribute('term') || catEl.textContent.trim()) : '博文实录';
 
               const card = document.createElement('div');
               card.className = 'article-card';
               card.style.cssText = 'padding: 6px; border: 1px solid #d0d0d0; border-radius: 3px; background: #fafafa;';
               card.innerHTML = `
-                <div style="display: flex; justify-content: space-between; font-size: 10px; color: #888;">
-                  <span>🗓️ ${pubDate}</span>
-                  <span style="background: #000080; color: #fff; padding: 0 4px; border-radius: 2px;">${category}</span>
+                <div style="font-size: 10px; color: #888; margin-bottom: 2px;">
+                  🗓️ ${pubDate}
                 </div>
                 <a href="${link}" target="_blank" rel="noopener noreferrer" style="font-weight: bold; font-size: 12px; color: #000080; text-decoration: none; display: block; margin: 2px 0;">
                   ${title}
