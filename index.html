@@ -16,6 +16,37 @@
 
 <body>
 
+  <!-- Windows 98 开机引导动画 -->
+  <div id="win98-boot-screen" class="win98-boot-screen">
+    <div class="win98-boot-content">
+      <div class="win98-boot-brand">
+        <svg class="win98-boot-flag" viewBox="0 0 16 16">
+          <path d="M1 1h6v6H1z" fill="#e73827"/>
+          <path d="M8 1h6v6H8z" fill="#5ca626"/>
+          <path d="M1 8h6v6H1z" fill="#0090e7"/>
+          <path d="M8 8h6v6H8z" fill="#ffc926"/>
+        </svg>
+        <div class="win98-boot-text">
+          <div class="win98-boot-ms">Microsoft<sup>&reg;</sup></div>
+          <div class="win98-boot-title">Windows<span>98</span></div>
+          <div class="win98-boot-edition">Second Edition</div>
+        </div>
+      </div>
+      <div class="win98-boot-progress-track">
+        <div class="win98-boot-progress-bar">
+          <span class="bar-block"></span>
+          <span class="bar-block"></span>
+          <span class="bar-block"></span>
+          <span class="bar-block"></span>
+        </div>
+      </div>
+      <div class="win98-boot-footer">
+        <span>Starting Windows 98...</span>
+        <button id="win98-boot-skip" class="win98-boot-skip" title="跳过开机动画">跳过 &gt;&gt;</button>
+      </div>
+    </div>
+  </div>
+
   <!-- 动态 Canvas 现场渲染背景 (Wallpaper Engine Neon Sunset / Clouds / Starfield / Matrix) -->
   <canvas id="bg-canvas"></canvas>
 
@@ -1245,7 +1276,7 @@
       <!-- 动态填充任务栏项 -->
     </div>
     <div id="system-tray">
-      <img class="tray-icon" src="./assets/icons/speaker-16x16.png" alt="Volume" title="音量控制">
+      <img id="taskbar-sound-toggle" class="tray-icon" src="./assets/icons/audio-nope-16x16.png" alt="Volume" title="网页声音：已静音 (点击开启)">
       <span id="taskbar-clock">12:00 PM</span>
     </div>
   </footer>
@@ -2073,11 +2104,47 @@
         });
       });
 
-      // 12. 播放 Windows 98 真实原版开机音效
-      window.addEventListener('click', function playStartupOnce() {
-        desktop.playSound('startup');
-        window.removeEventListener('click', playStartupOnce);
+      // 12. Windows 98 开机引导动画与全局音频响应
+      const bootScreen = document.getElementById('win98-boot-screen');
+      const bootSkipBtn = document.getElementById('win98-boot-skip');
+
+      function endBootScreen() {
+        if (!bootScreen || bootScreen.dataset.ended) return;
+        bootScreen.dataset.ended = 'true';
+        bootScreen.classList.add('fade-out');
+
+        setTimeout(() => {
+          bootScreen.style.display = 'none';
+
+          // 开机动画过渡完成后的音频与 Clippy 交互
+          if (desktop.isSoundEnabled) {
+            desktop.playSound('startup');
+          } else {
+            setTimeout(() => {
+              if (window.clippyAssistant) {
+                window.clippyAssistant.promptEnableSound();
+              }
+            }, 1200);
+          }
+        }, 500);
+      }
+
+      if (bootSkipBtn) {
+        bootSkipBtn.addEventListener('click', (e) => {
+          e.stopPropagation();
+          endBootScreen();
+        });
+      }
+      bootScreen?.addEventListener('click', endBootScreen);
+      window.addEventListener('keydown', function bootKeySkip(e) {
+        if (bootScreen && !bootScreen.dataset.ended) {
+          endBootScreen();
+          window.removeEventListener('keydown', bootKeySkip);
+        }
       });
+
+      // 默认展示开机动画约 2.6 秒后平滑进入桌面
+      setTimeout(endBootScreen, 2600);
 
     })();
   </script>

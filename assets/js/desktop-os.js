@@ -18,6 +18,10 @@
       this.activeWindowId = null;
       this.webampInstance = null;
       this.isWebampRendered = false;
+      this.isWebampOpen = false;
+
+      // Global Sound Setting (Default: false / muted)
+      this.isSoundEnabled = localStorage.getItem('win98_sound_enabled') === 'true';
 
       // Authentic Sound Audio Objects
       this.sounds = {
@@ -37,6 +41,7 @@
       this.setupStartMenu();
       this.setupContextMenu();
       this.setupClock();
+      this.setupSoundToggle();
       this.setupFoldableAdaptation();
       this.setupWebampLauncher();
 
@@ -52,6 +57,7 @@
     }
 
     playSound(name) {
+      if (!this.isSoundEnabled) return;
       try {
         const s = this.sounds[name];
         if (s) {
@@ -59,6 +65,50 @@
           s.play().catch(() => {});
         }
       } catch (e) {}
+    }
+
+    setSoundEnabled(enabled, userTriggered = false) {
+      this.isSoundEnabled = !!enabled;
+      localStorage.setItem('win98_sound_enabled', this.isSoundEnabled ? 'true' : 'false');
+      this.updateSoundTrayIcon();
+      if (userTriggered) {
+        if (this.isSoundEnabled) {
+          this.playSound('chord');
+          if (window.clippyAssistant) {
+            window.clippyAssistant.speak("网页声音已开启！🔊 现在可以听到复古音效啦~", 6000);
+          }
+        } else {
+          if (window.clippyAssistant) {
+            window.clippyAssistant.speak("网页声音已静音。🔇", 5000);
+          }
+        }
+      }
+    }
+
+    setupSoundToggle() {
+      const soundIcon = document.getElementById('taskbar-sound-toggle');
+      if (!soundIcon) return;
+
+      this.updateSoundTrayIcon();
+      soundIcon.addEventListener('click', (e) => {
+        e.stopPropagation();
+        this.setSoundEnabled(!this.isSoundEnabled, true);
+      });
+    }
+
+    updateSoundTrayIcon() {
+      const soundIcon = document.getElementById('taskbar-sound-toggle');
+      if (!soundIcon) return;
+
+      if (this.isSoundEnabled) {
+        soundIcon.src = './assets/icons/speaker-16x16.png';
+        soundIcon.title = '网页声音：已开启 (点击静音)';
+        soundIcon.classList.remove('sound-muted');
+      } else {
+        soundIcon.src = './assets/icons/audio-nope-16x16.png';
+        soundIcon.title = '网页声音：已静音 (点击开启)';
+        soundIcon.classList.add('sound-muted');
+      }
     }
 
     /* -------------------------------------------------------------------------
@@ -574,53 +624,66 @@
 
         const existingWebampEl = document.getElementById('webamp');
         if (this.webampInstance && existingWebampEl) {
-          const isCurrentlyHidden = existingWebampEl.style.display === 'none' || window.getComputedStyle(existingWebampEl).display === 'none';
+          const isCurrentlyHidden = !this.isWebampOpen || existingWebampEl.style.display === 'none' || window.getComputedStyle(existingWebampEl).display === 'none';
           if (isCurrentlyHidden) {
             this.highestZIndex += 10;
             existingWebampEl.style.zIndex = this.highestZIndex;
             existingWebampEl.style.display = 'block';
+            this.webampInstance.reopen();
+            this.isWebampOpen = true;
+            this.activeWindowId = 'winamp';
+            this.updateTaskbar();
             this.playSound('ding');
           } else {
+            this.webampInstance.close();
             existingWebampEl.style.display = 'none';
+            this.isWebampOpen = false;
+            if (this.activeWindowId === 'winamp') this.activeWindowId = null;
+            this.updateTaskbar();
           }
           return Promise.resolve();
         }
 
         this.highestZIndex += 10;
         const initialZ = this.highestZIndex;
+        const posX = Math.max(30, Math.min(window.innerWidth - 300, 180));
+        const posY = Math.max(40, Math.min(window.innerHeight - 300, 90));
 
         this.webampInstance = new window.Webamp({
           zIndex: initialZ,
-          initialTracks: this.webampTracks
+          initialTracks: this.webampTracks,
+          __initialWindowLayout: {
+            main: { position: { x: posX, y: posY } },
+            equalizer: { position: { x: posX, y: posY + 116 } },
+            playlist: { position: { x: posX, y: posY + 232 } }
+          }
         });
 
         // Handle close button inside Webamp
         this.webampInstance.onClose(() => {
+          this.isWebampOpen = false;
           const el = document.getElementById('webamp');
           if (el) el.style.display = 'none';
+          if (this.activeWindowId === 'winamp') this.activeWindowId = null;
+          this.updateTaskbar();
         });
 
         const rootContainer = document.getElementById('webamp-root') || document.body;
         return this.webampInstance.renderWhenReady(rootContainer).then(() => {
           this.isWebampRendered = true;
+          this.isWebampOpen = true;
+          this.activeWindowId = 'winamp';
           this.playSound('ding');
           const el = document.getElementById('webamp');
           if (el) {
             this.highestZIndex += 5;
             el.style.zIndex = this.highestZIndex;
             el.style.display = 'block';
-
-            // Ensure window is in clear view on desktop
-            const mainWin = el.querySelector('#main-window');
-            if (mainWin && mainWin.parentElement) {
-              const posX = Math.max(30, Math.min(window.innerWidth - 300, 180));
-              const posY = Math.max(40, Math.min(window.innerHeight - 300, 90));
-              mainWin.parentElement.style.transform = `translate(${posX}px, ${posY}px)`;
-            }
           }
           if (this.webampInstance && this.webampInstance.store) {
             this.webampInstance.store.dispatch({ type: "CLICKED_TRACK", index: 0 });
           }
+          this.updateTaskbar();
           console.log('Webamp rendered onto desktop successfully.');
         });
       };
@@ -628,16 +691,20 @@
       // Ensure clicking anywhere inside Webamp brings it to the top
       document.addEventListener('mousedown', (e) => {
         const el = document.getElementById('webamp');
-        if (el && el.contains(e.target)) {
+        if (el && el.contains(e.target) && this.isWebampOpen) {
           this.highestZIndex += 1;
           el.style.zIndex = this.highestZIndex;
+          this.activeWindowId = 'winamp';
+          this.updateTaskbar();
         }
       });
       document.addEventListener('touchstart', (e) => {
         const el = document.getElementById('webamp');
-        if (el && el.contains(e.target)) {
+        if (el && el.contains(e.target) && this.isWebampOpen) {
           this.highestZIndex += 1;
           el.style.zIndex = this.highestZIndex;
+          this.activeWindowId = 'winamp';
+          this.updateTaskbar();
         }
       }, { passive: true });
 
@@ -838,6 +905,33 @@
 
         container.appendChild(btn);
       });
+
+      // Winamp taskbar entry
+      if (this.isWebampOpen) {
+        const btn = document.createElement('button');
+        btn.className = 'taskbar-item' + (this.activeWindowId === 'winamp' ? ' active' : '');
+        btn.innerHTML = '<img src="./assets/icons/winamp2-16x16.png" style="width: 16px; height: 16px; margin-right: 4px; vertical-align: middle;">Winamp';
+        btn.title = 'Winamp 音乐播放器';
+
+        btn.addEventListener('click', () => {
+          const el = document.getElementById('webamp');
+          if (this.activeWindowId === 'winamp' && el && el.style.display !== 'none') {
+            el.style.display = 'none';
+            this.activeWindowId = null;
+            this.updateTaskbar();
+          } else {
+            if (el) {
+              el.style.display = 'block';
+              this.highestZIndex += 1;
+              el.style.zIndex = this.highestZIndex;
+            }
+            this.activeWindowId = 'winamp';
+            this.updateTaskbar();
+          }
+        });
+
+        container.appendChild(btn);
+      }
     }
 
     setupStartMenu() {
