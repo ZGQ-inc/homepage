@@ -766,6 +766,106 @@ body.crt-active .crt-overlay {
   object-fit: cover;
 }
 
+/* GitHub Profile External Badges & Icons */
+.gh-icon-box {
+  background: #ffffff;
+  border: 2px inset #dfdfdf;
+  box-shadow: inset 1px 1px 0 #808080;
+  padding: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.gh-devicon,
+.gh-dashicon {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  transition: transform 0.12s ease, filter 0.12s ease;
+  cursor: pointer;
+}
+
+.gh-devicon:hover,
+.gh-dashicon:hover {
+  transform: scale(1.2);
+  filter: drop-shadow(1px 2px 3px rgba(0, 0, 0, 0.35));
+}
+
+.gh-badge-box {
+  background: #ffffff;
+  border: 2px inset #dfdfdf;
+  box-shadow: inset 1px 1px 0 #808080;
+  padding: 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.gh-badge-box img {
+  height: 26px;
+  max-width: 100%;
+  object-fit: contain;
+  transition: transform 0.12s ease, filter 0.12s ease;
+  vertical-align: middle;
+}
+
+.gh-badge-box img:hover {
+  transform: translateY(-2px);
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.25));
+}
+
+.gh-diy-table-wrapper {
+  background: #ffffff;
+  border: 2px inset #dfdfdf;
+  box-shadow: inset 1px 1px 0 #808080;
+  overflow-x: auto;
+  max-height: 380px;
+  overflow-y: auto;
+}
+
+.gh-diy-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11px;
+}
+
+.gh-diy-table thead th {
+  background: #c0c0c0;
+  border-bottom: 2px solid #808080;
+  border-right: 1px solid #808080;
+  padding: 5px 8px;
+  text-align: left;
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  box-shadow: 0 1px 0 #dfdfdf;
+}
+
+.gh-diy-table tbody td {
+  padding: 5px 8px;
+  border-bottom: 1px solid #e0e0e0;
+  border-right: 1px solid #e0e0e0;
+  color: #222;
+}
+
+.gh-diy-table tbody tr:nth-child(even) {
+  background: #f7f7f7;
+}
+
+.gh-diy-table tbody tr:hover {
+  background: #000080 !important;
+  color: #ffffff !important;
+}
+
+.gh-diy-table tbody tr:hover td {
+  color: #ffffff !important;
+}
+
 .gh-stats-badge {
   width: 100%;
   max-width: 440px;
