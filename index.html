@@ -60,7 +60,12 @@
         <span class="icon-label">音乐播放器</span>
       </div>
 
-      <div class="desktop-icon" data-target="win-github" title="双击打开 Spotify 音乐空间 (GitHub组件)">
+      <div class="desktop-icon" data-target="win-player" title="双击打开 NRW 音乐电台 (在线曲库)">
+        <img class="icon-img" src="./assets/icons/media-player-32x32.png" alt="NRW电台">
+        <span class="icon-label">NRW电台</span>
+      </div>
+
+      <div class="desktop-icon" data-target="win-spotify" title="双击打开 Spotify 音乐空间">
         <img class="icon-img" src="./assets/icons/media-player-32x32.png" alt="Spotify">
         <span class="icon-label">Spotify音乐</span>
       </div>
@@ -133,12 +138,12 @@
       </div>
     </div>
 
-    <!-- ==================== 窗口 2: GitHub 个人主页 - Spotify 音乐档案 ==================== -->
-    <div class="window hidden" id="win-github" data-window-id="win-github" style="left: 140px; top: 40px; width: 660px; height: 530px; max-width: 95vw;">
+    <!-- ==================== 窗口 2: GitHub 个人主页 (GitHub Profile) ==================== -->
+    <div class="window hidden" id="win-github" data-window-id="win-github" style="left: 100px; top: 30px; width: 680px; height: 530px; max-width: 95vw;">
       <div class="title-bar">
         <div class="title-bar-text">
           <img src="./assets/icons/my-documents-16x16.png" alt="">
-          <span>GitHub 个人主页 - Spotify 动态档案 (@ZGQ-inc)</span>
+          <span>ZGQ Inc. (@ZGQ-inc) 的 GitHub 个人主页</span>
         </div>
         <div class="title-bar-controls">
           <button aria-label="Minimize"></button>
@@ -146,72 +151,254 @@
           <button aria-label="Close"></button>
         </div>
       </div>
-      <div class="window-body" style="padding: 6px; display: flex; flex-direction: column; gap: 8px; flex: 1 1 auto; min-height: 0; overflow-y: auto;">
-        <!-- Spotify 用户卡片 -->
-        <div class="spotify-card" style="background: #121212; color: #fff; padding: 10px; border-radius: 4px; border: 2px inset #000;">
-          <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
-            <div style="display: flex; align-items: center; gap: 12px;">
-              <img src="https://i.scdn.co/image/ab6775700000ee85fd9d1f9dd6082c443c4b6237" alt="Spotify Avatar" style="width: 44px; height: 44px; border-radius: 50%; border: 2px solid #1DB954; object-fit: cover;">
-              <div>
-                <div style="display: flex; align-items: center; gap: 6px;">
-                  <span style="font-weight: 900; font-size: 15px; color: #fff;">ZGQ</span>
-                  <a href="https://open.spotify.com/user/a54fe2pnapk5pbzbh0on5gczd" target="_blank" rel="noopener noreferrer">
-                    <img src="https://img.shields.io/badge/Spotify-ZGQ-666666?style=for-the-badge&logo=Spotify&logoColor=&labelColor=000000" alt="Spotify Badge" style="height: 18px; vertical-align: middle;">
-                  </a>
-                </div>
-                <div style="font-size: 11px; color: #b3b3b3; margin-top: 2px;">GitHub Profile 动态组件实时联动 · 用户 ID: a54fe2pnapk5pbzbh0on5gczd</div>
-              </div>
+      <div class="window-body" style="padding: 6px; display: flex; flex-direction: column; flex: 1 1 auto; min-height: 0; overflow-y: hidden;">
+        <!-- 头部用户简介 -->
+        <div class="gh-profile-header" style="margin-bottom: 6px;">
+          <img src="./images/avatar.png" alt="Avatar" class="gh-avatar">
+          <div style="flex: 1;">
+            <div style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap;">
+              <h3 style="margin: 0; font-size: 15px;">ZGQ Inc. (@ZGQ-inc)</h3>
+              <span style="background: #1428A0; color: #fff; font-size: 10px; padding: 1px 6px; border-radius: 2px;">Furry & Gay 🦊</span>
+              <span style="background: #008000; color: #fff; font-size: 10px; padding: 1px 6px; border-radius: 2px;">Reverse Eng & FullStack</span>
             </div>
-            <div style="display: flex; gap: 6px;">
-              <a href="spotify:user:a54fe2pnapk5pbzbh0on5gczd" target="_blank" rel="noopener noreferrer"><button style="background: #1DB954; color: #000; font-weight: bold; border-color: #1ed760; font-size: 11px;">在客户端打开 ↗</button></a>
-              <a href="https://open.spotify.com/user/a54fe2pnapk5pbzbh0on5gczd" target="_blank" rel="noopener noreferrer"><button style="font-size: 11px;">网页主页 ↗</button></a>
+            <p style="margin: 3px 0 5px 0; color: #444; font-size: 11px;">北极狐 | 开源安全取证、底层逆向分析、嵌入式软硬件创客 & 极客玩家</p>
+            <div style="display: flex; gap: 6px; flex-wrap: wrap;">
+              <a href="https://github.com/ZGQ-inc" target="_blank" rel="noopener noreferrer"><button style="font-weight: bold; font-size: 11px;">👉 前往 GitHub 主页</button></a>
+              <a href="https://blog.zgqinc.gq/" target="_blank" rel="noopener noreferrer"><button style="font-size: 11px;">📖 个人博客</button></a>
+              <a href="https://t.me/CopyRightZGQInc" target="_blank" rel="noopener noreferrer"><button style="font-size: 11px;">📢 TG 频道</button></a>
             </div>
           </div>
         </div>
 
-        <!-- 自适应双列/单列排布: 正在播放 + 最近收听 -->
-        <div class="spotify-widgets-grid">
-          <!-- 组件 1: GitHub 正在播放实时组件 (spotify-github-profile) -->
-          <fieldset style="margin: 0;">
-            <legend>🟢 当前正在播放 (GitHub Live Profile Widget)</legend>
-            <div style="background: #000; padding: 6px; border: 1px inset #808080; border-radius: 4px; text-align: center;">
-              <a href="https://spotify-github-profile.kittinanx.com/api/view?uid=a54fe2pnapk5pbzbh0on5gczd&redirect=true" target="_blank" rel="noopener noreferrer" title="点击在 Spotify 查看当前曲目">
-                <img src="https://spotify-github-profile.kittinanx.com/api/view?uid=a54fe2pnapk5pbzbh0on5gczd&cover_image=true&theme=default&show_offline=false&background_color=121212&interchange=true&bar_color=53b14f&bar_color_cover=true" alt="Spotify 正在播放" style="max-width: 100%; height: auto; display: inline-block;">
-              </a>
-              <div style="margin-top: 4px; font-size: 10px; color: #888;">
-                源自 <a href="https://github.com/kittinan/spotify-github-profile" target="_blank" rel="noopener noreferrer" style="color: #1DB954;">kittinan/spotify-github-profile</a> · 实时心跳同步
-              </div>
+        <!-- 选项卡导航栏 -->
+        <div class="gh-tab-bar" style="margin-bottom: 6px;">
+          <button class="gh-tab-btn active" data-ghtab="skills">🛠️ 语言和工具</button>
+          <button class="gh-tab-btn" data-ghtab="devices">💻 个人设备</button>
+          <button class="gh-tab-btn" data-ghtab="smarthome">🏠 智能家居</button>
+          <button class="gh-tab-btn" data-ghtab="diy">🔧 DIY 设备</button>
+          <button class="gh-tab-btn" data-ghtab="inuse">⚡ 正在使用</button>
+        </div>
+
+        <!-- 选项卡 1: 语言和工具 -->
+        <div class="gh-tab-content active" id="ghtab-skills" style="flex: 1 1 auto; overflow-y: auto; padding-right: 4px;">
+          <fieldset style="margin-bottom: 8px;">
+            <legend>🛠️ 核心开发语言与编译环境</legend>
+            <div style="display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 6px;">
+              <span class="tech-tag" style="background: #3DDC84; color: #000; font-weight: bold;">Android / NDK</span>
+              <span class="tech-tag" style="background: #3776AB; color: #fff;">Python (PyQt/QtPy)</span>
+              <span class="tech-tag" style="background: #00599C; color: #fff;">C / C++</span>
+              <span class="tech-tag" style="background: #239120; color: #fff;">C# / .NET</span>
+              <span class="tech-tag" style="background: #F7DF1E; color: #000; font-weight: bold;">JavaScript (ES6+)</span>
+              <span class="tech-tag" style="background: #007396; color: #fff;">Java</span>
+              <span class="tech-tag" style="background: #7F52FF; color: #fff;">Kotlin</span>
+              <span class="tech-tag" style="background: #4EAA25; color: #fff;">Bash / Zsh</span>
+              <span class="tech-tag" style="background: #012456; color: #fff;">PowerShell</span>
+              <span class="tech-tag" style="background: #000080; color: #fff;">Lua</span>
+              <span class="tech-tag" style="background: #008080; color: #fff;">LaTeX / Markdown</span>
+            </div>
+            <div style="font-size: 11px; color: #444; line-height: 1.4;">
+              熟悉从嵌入式底层硬件通信、C/C++ 原生层逆向调试、Android 系统服务 Hook，到 Python 高性能桌面 GUI 与 Web 边缘计算全链路。
             </div>
           </fieldset>
 
-          <!-- 组件 2: GitHub 最近收听记录组件 (spotify-recently-played-readme) -->
-          <fieldset style="margin: 0;">
-            <legend>📻 最近收听记录 (Recently Played - GitHub Widget)</legend>
-            <div style="background: #000; padding: 6px; border: 1px inset #808080; border-radius: 4px; text-align: center; overflow-x: auto;">
-              <a href="https://open.spotify.com/user/a54fe2pnapk5pbzbh0on5gczd" target="_blank" rel="noopener noreferrer" title="点击在 Spotify 打开个人档案">
-                <img src="https://spotify-recently-played.jeffreyca.workers.dev/svg?user=a54fe2pnapk5pbzbh0on5gczd&theme=spotify&count=10&radius=16&duration=1&album=1" alt="Spotify 最近播放列表" style="max-width: 100%; height: auto; display: inline-block;">
-              </a>
-              <div style="margin-top: 4px; font-size: 10px; color: #888;">
-                源自 <a href="https://github.com/JeffreyCA/spotify-recently-played-readme" target="_blank" rel="noopener noreferrer" style="color: #1DB954;">JeffreyCA/spotify-recently-played-readme</a> · 专辑封面与时长
+          <fieldset style="margin-bottom: 8px;">
+            <legend>📦 架构、运维与底层工具链</legend>
+            <div style="display: flex; gap: 4px; flex-wrap: wrap; margin-bottom: 6px;">
+              <span class="tech-tag">Docker / WSL2</span>
+              <span class="tech-tag">Linux / Ubuntu</span>
+              <span class="tech-tag">Git / GitHub Actions</span>
+              <span class="tech-tag">Cloudflare Workers / D1</span>
+              <span class="tech-tag">CMake / Gradle</span>
+              <span class="tech-tag">MySQL / SQLite</span>
+              <span class="tech-tag">Frida / Ghidra / IDA Pro (逆向)</span>
+              <span class="tech-tag">Wireshark (协议取证)</span>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>🎨 三维建模与视觉创意软件</legend>
+            <div style="display: flex; gap: 4px; flex-wrap: wrap;">
+              <span class="tech-tag" style="background: #EA7600; color: #fff;">Blender 3D</span>
+              <span class="tech-tag" style="background: #F24E1E; color: #fff;">Figma</span>
+              <span class="tech-tag" style="background: #31A8FF; color: #000;">Adobe Photoshop</span>
+              <span class="tech-tag" style="background: #FF9A00; color: #000;">Adobe Illustrator</span>
+              <span class="tech-tag" style="background: #9999FF; color: #000;">Adobe Premiere Pro</span>
+            </div>
+          </fieldset>
+        </div>
+
+        <!-- 选项卡 2: 个人设备 -->
+        <div class="gh-tab-content" id="ghtab-devices" style="flex: 1 1 auto; overflow-y: auto; padding-right: 4px;">
+          <fieldset style="margin-bottom: 8px;">
+            <legend>📱 移动终端与可穿戴生态</legend>
+            <div style="display: flex; gap: 4px; flex-wrap: wrap;">
+              <span class="tech-tag" style="background: #1428A0; color: #fff;">Galaxy Z Fold7 (主力折叠屏)</span>
+              <span class="tech-tag" style="background: #1428A0; color: #fff;">Galaxy Tab S10+ 平板</span>
+              <span class="tech-tag" style="background: #1428A0; color: #fff;">Galaxy Watch9 44mm</span>
+              <span class="tech-tag" style="background: #1428A0; color: #fff;">Galaxy S22 Ultra</span>
+              <span class="tech-tag" style="background: #1428A0; color: #fff;">Galaxy Note 10+ 5G</span>
+              <span class="tech-tag" style="background: #1428A0; color: #fff;">Galaxy Note Fan Edition</span>
+              <span class="tech-tag" style="background: #1428A0; color: #fff;">Galaxy S7 Edge</span>
+              <span class="tech-tag" style="background: #1428A0; color: #fff;">Galaxy Buds3 Pro</span>
+              <span class="tech-tag" style="background: #1428A0; color: #fff;">Galaxy Buds2 Pro</span>
+              <span class="tech-tag" style="background: #0467DF; color: #fff;">Meta Quest 3 (VR 头显)</span>
+              <span class="tech-tag" style="background: #000; color: #fff;">Sony Ericsson Xperia X10i (经典收藏)</span>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>💻 主机、便携掌机与软路由硬件</legend>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 6px; font-size: 11px;">
+              <div style="background: #fff; border: 1px inset #808080; padding: 6px;">
+                <strong>🖥️ 旗舰台式工作站:</strong><br>
+                CPU: AMD Ryzen 5 9600X<br>
+                GPU: NVIDIA GeForce RTX 5070<br>
+                RAM: 32GB 高速内存 · Windows 11
+              </div>
+              <div style="background: #fff; border: 1px inset #808080; padding: 6px;">
+                <strong>🖥️ 次席生产力主机:</strong><br>
+                CPU: AMD Ryzen 5 3600<br>
+                GPU: NVIDIA GeForce RTX 3070<br>
+                RAM: 16GB · Windows 10 LTSC
+              </div>
+              <div style="background: #fff; border: 1px inset #808080; padding: 6px;">
+                <strong>🎮 极客掌机与超极本:</strong><br>
+                • GPD Win Max 2 (2023) 便携掌机电脑<br>
+                • One-netbook OneMix 1s+ 口袋笔记本
+              </div>
+              <div style="background: #fff; border: 1px inset #808080; padding: 6px;">
+                <strong>🌐 路由中枢与微主机:</strong><br>
+                • Intel N100 低功耗家庭小主机<br>
+                • Cudy TR3000 Wi-Fi 6 便携无线路由
               </div>
             </div>
           </fieldset>
         </div>
 
-        <!-- 组件 3: 官方互动播放器与歌单切换 (自适应撑满) -->
-        <fieldset style="margin: 0; flex: 1 1 auto; min-height: 220px;">
-          <legend>🎵 精选歌单与播放嵌入</legend>
-          <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 6px;" id="spotify-gh-playlist-btns">
-            <button class="active" data-spotify-id="4HkfwQljRfanSJ594U3HuQ" style="font-weight: bold;">🏆 Top Songs - All Time</button>
-            <button data-spotify-id="2XVgr6bpTDOlhKkaYeADld">💿 SRD Remaster</button>
-            <button data-spotify-id="5Gw8WjDXfZ3ggARpw1ciA8">⏳ My 2024 Playlist in a Bottle</button>
-          </div>
-          <iframe id="spotify-gh-embed-frame" style="border-radius:8px; width: 100%; height: 320px; border: 1px inset #808080;" src="https://open.spotify.com/embed/playlist/4HkfwQljRfanSJ594U3HuQ?utm_source=generator&theme=0" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
-        </fieldset>
+        <!-- 选项卡 3: 智能家居 -->
+        <div class="gh-tab-content" id="ghtab-smarthome" style="flex: 1 1 auto; overflow-y: auto; padding-right: 4px;">
+          <fieldset style="margin-bottom: 8px;">
+            <legend>💡 氛围照明与自研极客硬件</legend>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 6px; font-size: 11px;">
+              <div>🔹 <strong>显示器挂灯:</strong> Yeelight 挂灯 Pro</div>
+              <div>🔹 <strong>幻彩氛围:</strong> Yeelight Chameleon 灯带</div>
+              <div>🔹 <strong>彩光灯泡:</strong> Yeelight LED W3 彩光版</div>
+              <div>🔹 <strong>情景色温:</strong> 乐式 WiFi 色温灯 C系列</div>
+              <div>🔹 <strong>桌垫光效:</strong> QHM RGB 蓝牙调光桌垫</div>
+              <div>🔹 <strong>DIY极客灯:</strong> ESP32 水波纹氛围灯</div>
+              <div>🔹 <strong>DIY极客灯:</strong> ESP32 极光氛围灯</div>
+              <div>🔹 <strong>DIY半导体:</strong> 半导体小夜灯风扇</div>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>🏠 环境传感、中枢互联与远程控制</legend>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 6px; font-size: 11px;">
+              <div>🔹 <strong>人体传感器:</strong> 领普人体存在传感器 ES5</div>
+              <div>🔹 <strong>无线开关:</strong> 领普无线开关 KS1Pro</div>
+              <div>🔹 <strong>远程开机:</strong> 久豪电脑远程开机卡 Pro (WiFi)</div>
+              <div>🔹 <strong>计量插座:</strong> Sagewe 智能计量插座 Xs11-M</div>
+              <div>🔹 <strong>蓝牙网关:</strong> 清萍蓝牙网关 CGSPR1</div>
+              <div>🔹 <strong>温湿度计:</strong> 米家智能温湿度计 3 mini</div>
+              <div>🔹 <strong>智能大屏:</strong> Xiaomi 智能家庭屏 Pro 8</div>
+              <div>🔹 <strong>智能电视:</strong> REDMI A Pro 43英寸 (2025款)</div>
+              <div>🔹 <strong>智能摄像机:</strong> 小米摄像机 4 变焦版</div>
+              <div>🔹 <strong>空调控制:</strong> 米家空调伴侣 2</div>
+              <div>🔹 <strong>变频塔扇:</strong> 米家直流变频塔扇 2</div>
+              <div>🔹 <strong>窗帘控制:</strong> 艾达普 (ADAPROX) 窗帘机器人</div>
+              <div>🔹 <strong>投影时钟:</strong> Gra 智能控制器 V7 (WiFi)</div>
+              <div>🔹 <strong>智能香氛:</strong> 米家香氛机 / YFNSEA V12</div>
+              <div>🔹 <strong>驱蚊加热:</strong> COKIT 智能电热蚊香液加热器</div>
+              <div>🔹 <strong>个人护理:</strong> 映趣智能剃须刀 BS8</div>
+            </div>
+          </fieldset>
+        </div>
+
+        <!-- 选项卡 4: DIY 设备 -->
+        <div class="gh-tab-content" id="ghtab-diy" style="flex: 1 1 auto; overflow-y: auto; padding-right: 4px;">
+          <fieldset>
+            <legend>🔧 创客工坊仪器台与逆向硬件工具库</legend>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 6px; font-size: 11px;">
+              <div>🔹 <strong>万用表/示波器/信号源:</strong> 菲尼瑞斯 2D15P</div>
+              <div>🔹 <strong>智能热风枪:</strong> MINIWARE AirGo 140 (140W PD3.1)</div>
+              <div>🔹 <strong>有线精密电烙铁:</strong> 正点原子 T90B</div>
+              <div>🔹 <strong>无线便携电烙铁:</strong> 正点原子 TB1</div>
+              <div>🔹 <strong>智能电动螺丝刀:</strong> 正点原子 S40P</div>
+              <div>🔹 <strong>数控直流电源:</strong> 菲尼瑞斯 DPS-150</div>
+              <div>🔹 <strong>大功率供电基站:</strong> 影器 CC700 + 长城 1200W</div>
+              <div>🔹 <strong>三维打印机:</strong> 拓竹 Bambu Lab A1 mini</div>
+              <div>🔹 <strong>协议逻辑分析仪:</strong> 开源 NanoDLA</div>
+              <div>🔹 <strong>快充协议分析仪:</strong> ChargerLab KM003C</div>
+              <div>🔹 <strong>开源热成像仪:</strong> 开源项目 UMEKOLAB</div>
+              <div>🔹 <strong>LCR 智能贴片电桥:</strong> 菲尼瑞斯 LCR-ST2</div>
+              <div>🔹 <strong>晶体管测试仪:</strong> 菲尼瑞斯 LCR-P1</div>
+              <div>🔹 <strong>电池内阻测试仪:</strong> 菲尼瑞斯 HRM-10</div>
+              <div>🔹 <strong>恒温加热台:</strong> 菲尼瑞斯 HT-P1B</div>
+              <div>🔹 <strong>超声波切割刀:</strong> 杰科美 JM-Y10 PRO</div>
+              <div>🔹 <strong>储能式电池点焊机:</strong> 阿威兹 H2-2026</div>
+              <div>🔹 <strong>多功能充电器:</strong> LiitoKala Lii-M4S</div>
+              <div>🔹 <strong>便携电磨笔:</strong> 米家 MJDMB001QW</div>
+              <div>🔹 <strong>高精度数显卡尺:</strong> 利华中天 不锈钢卡尺</div>
+              <div>🔹 <strong>激光测距卷尺:</strong> Aicevoos P7-60M</div>
+              <div>🔹 <strong>OLED 3D打印笔:</strong> 便携式 OLED 调温笔</div>
+            </div>
+          </fieldset>
+        </div>
+
+        <!-- 选项卡 5: 正在使用 -->
+        <div class="gh-tab-content" id="ghtab-inuse" style="flex: 1 1 auto; overflow-y: auto; padding-right: 4px;">
+          <fieldset style="margin-bottom: 8px;">
+            <legend>🌐 自建服务、边缘网络与中枢平台</legend>
+            <div style="display: flex; gap: 4px; flex-wrap: wrap;">
+              <span class="tech-tag">Home Assistant</span>
+              <span class="tech-tag">AdGuard Home</span>
+              <span class="tech-tag">AriaNg / Aria2</span>
+              <span class="tech-tag">Cloudflare Zero Trust</span>
+              <span class="tech-tag">Clash</span>
+              <span class="tech-tag">Docker</span>
+              <span class="tech-tag">Jellyfin 媒体库</span>
+              <span class="tech-tag">OpenWrt</span>
+              <span class="tech-tag">Ollama 本地大模型</span>
+              <span class="tech-tag">IPFS</span>
+              <span class="tech-tag">OpenList</span>
+              <span class="tech-tag">fnOS 飞牛私有云</span>
+            </div>
+          </fieldset>
+
+          <fieldset style="margin-bottom: 8px;">
+            <legend>💻 常用桌面生产力与研发软件</legend>
+            <div style="display: flex; gap: 4px; flex-wrap: wrap;">
+              <span class="tech-tag">VS Code</span>
+              <span class="tech-tag">IntelliJ IDEA</span>
+              <span class="tech-tag">PyCharm</span>
+              <span class="tech-tag">Blender 3D</span>
+              <span class="tech-tag">FL Studio 音频制作</span>
+              <span class="tech-tag">Adobe CC 全家桶</span>
+              <span class="tech-tag">GIMP</span>
+              <span class="tech-tag">7-Zip</span>
+              <span class="tech-tag">Fluent Reader (RSS)</span>
+              <span class="tech-tag">Proton Pass</span>
+              <span class="tech-tag">DeepL 翻译</span>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>🖥️ 运行平台与操作系统环境</legend>
+            <div style="display: flex; gap: 4px; flex-wrap: wrap;">
+              <span class="tech-tag">Windows 11</span>
+              <span class="tech-tag">Windows 10 LTSC</span>
+              <span class="tech-tag">Ubuntu Linux</span>
+              <span class="tech-tag">Debian</span>
+              <span class="tech-tag">WSL2</span>
+              <span class="tech-tag">Batocera 复古主机</span>
+              <span class="tech-tag">Android</span>
+            </div>
+          </fieldset>
+        </div>
       </div>
       <div class="status-bar">
-        <p class="status-bar-field">来源: GitHub 个人主页动态组件</p>
-        <p class="status-bar-field">状态: 已连线</p>
+        <p class="status-bar-field" id="gh-status-view">当前视图: 语言和工具</p>
+        <p class="status-bar-field">状态: 已连线 GitHub</p>
         <p class="status-bar-field">@ZGQ-inc</p>
       </div>
     </div>
@@ -446,7 +633,88 @@
 
 
 
-    <!-- ==================== 窗口 5: NRW 音乐播放器 (Music Player) ==================== -->
+    <!-- ==================== 窗口: Spotify 音乐空间 (Spotify Music Space) ==================== -->
+    <div class="window hidden" id="win-spotify" data-window-id="win-spotify" style="left: 140px; top: 40px; width: 660px; height: 530px; max-width: 95vw;">
+      <div class="title-bar">
+        <div class="title-bar-text">
+          <img src="./assets/icons/media-player-16x16.png" alt="">
+          <span>Spotify 音乐空间 - 动态组件与精选歌单 (@a54fe2pnapk5pbzbh0on5gczd)</span>
+        </div>
+        <div class="title-bar-controls">
+          <button aria-label="Minimize"></button>
+          <button aria-label="Maximize"></button>
+          <button aria-label="Close"></button>
+        </div>
+      </div>
+      <div class="window-body" style="padding: 6px; display: flex; flex-direction: column; gap: 8px; flex: 1 1 auto; min-height: 0; overflow-y: auto;">
+        <!-- Spotify 用户卡片 -->
+        <div class="spotify-card" style="background: #121212; color: #fff; padding: 10px; border-radius: 4px; border: 2px inset #000;">
+          <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <img src="https://i.scdn.co/image/ab6775700000ee85fd9d1f9dd6082c443c4b6237" alt="Spotify Avatar" style="width: 44px; height: 44px; border-radius: 50%; border: 2px solid #1DB954; object-fit: cover;">
+              <div>
+                <div style="display: flex; align-items: center; gap: 6px;">
+                  <span style="font-weight: 900; font-size: 15px; color: #fff;">ZGQ</span>
+                  <a href="https://open.spotify.com/user/a54fe2pnapk5pbzbh0on5gczd" target="_blank" rel="noopener noreferrer">
+                    <img src="https://img.shields.io/badge/Spotify-ZGQ-666666?style=for-the-badge&logo=Spotify&logoColor=&labelColor=000000" alt="Spotify Badge" style="height: 18px; vertical-align: middle;">
+                  </a>
+                </div>
+                <div style="font-size: 11px; color: #b3b3b3; margin-top: 2px;">GitHub Profile 动态组件实时呈现 · 用户 ID: a54fe2pnapk5pbzbh0on5gczd</div>
+              </div>
+            </div>
+            <div style="display: flex; gap: 6px;">
+              <a href="spotify:user:a54fe2pnapk5pbzbh0on5gczd" target="_blank" rel="noopener noreferrer"><button style="background: #1DB954; color: #000; font-weight: bold; border-color: #1ed760; font-size: 11px;">在客户端打开 ↗</button></a>
+              <a href="https://open.spotify.com/user/a54fe2pnapk5pbzbh0on5gczd" target="_blank" rel="noopener noreferrer"><button style="font-size: 11px;">网页主页 ↗</button></a>
+            </div>
+          </div>
+        </div>
+
+        <!-- 自适应双列/单列排布: 正在播放 + 最近收听 -->
+        <div class="spotify-widgets-grid">
+          <!-- 组件 1: GitHub 正在播放实时组件 (spotify-github-profile) -->
+          <fieldset style="margin: 0;">
+            <legend>🟢 当前正在播放 (GitHub Live Profile Widget)</legend>
+            <div style="background: #000; padding: 6px; border: 1px inset #808080; border-radius: 4px; text-align: center;">
+              <a href="https://spotify-github-profile.kittinanx.com/api/view?uid=a54fe2pnapk5pbzbh0on5gczd&redirect=true" target="_blank" rel="noopener noreferrer" title="点击在 Spotify 查看当前曲目">
+                <img src="https://spotify-github-profile.kittinanx.com/api/view?uid=a54fe2pnapk5pbzbh0on5gczd&cover_image=true&theme=default&show_offline=false&background_color=121212&interchange=true&bar_color=53b14f&bar_color_cover=true" alt="Spotify 正在播放" style="max-width: 100%; height: auto; display: inline-block;">
+              </a>
+              <div style="margin-top: 4px; font-size: 10px; color: #888;">
+                源自 <a href="https://github.com/kittinan/spotify-github-profile" target="_blank" rel="noopener noreferrer" style="color: #1DB954;">kittinan/spotify-github-profile</a> · 实时心跳同步
+              </div>
+            </div>
+          </fieldset>
+
+          <!-- 组件 2: GitHub 最近收听记录组件 (spotify-recently-played-readme) -->
+          <fieldset style="margin: 0;">
+            <legend>📻 最近收听记录 (Recently Played - GitHub Widget)</legend>
+            <div style="background: #000; padding: 6px; border: 1px inset #808080; border-radius: 4px; text-align: center; overflow-x: auto;">
+              <a href="https://open.spotify.com/user/a54fe2pnapk5pbzbh0on5gczd" target="_blank" rel="noopener noreferrer" title="点击在 Spotify 打开个人档案">
+                <img src="https://spotify-recently-played.jeffreyca.workers.dev/svg?user=a54fe2pnapk5pbzbh0on5gczd&theme=spotify&count=10&radius=16&duration=1&album=1" alt="Spotify 最近播放列表" style="max-width: 100%; height: auto; display: inline-block;">
+              </a>
+              <div style="margin-top: 4px; font-size: 10px; color: #888;">
+                源自 <a href="https://github.com/JeffreyCA/spotify-recently-played-readme" target="_blank" rel="noopener noreferrer" style="color: #1DB954;">JeffreyCA/spotify-recently-played-readme</a> · 专辑封面与时长
+              </div>
+            </div>
+          </fieldset>
+        </div>
+
+        <!-- 组件 3: 官方互动播放器与歌单切换 (自适应撑满) -->
+        <fieldset style="margin: 0; flex: 1 1 auto; min-height: 220px;">
+          <legend>🎵 精选歌单与播放嵌入</legend>
+          <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 6px;" id="spotify-win-playlist-btns">
+            <button class="active" data-spotify-id="4HkfwQljRfanSJ594U3HuQ" style="font-weight: bold;">🏆 Top Songs - All Time</button>
+            <button data-spotify-id="2XVgr6bpTDOlhKkaYeADld">💿 SRD Remaster</button>
+            <button data-spotify-id="5Gw8WjDXfZ3ggARpw1ciA8">⏳ My 2024 Playlist in a Bottle</button>
+          </div>
+          <iframe id="spotify-win-embed-frame" style="border-radius:8px; width: 100%; height: 320px; border: 1px inset #808080;" src="https://open.spotify.com/embed/playlist/4HkfwQljRfanSJ594U3HuQ?utm_source=generator&theme=0" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        </fieldset>
+      </div>
+      <div class="status-bar">
+        <p class="status-bar-field">来源: Spotify 音乐空间动态档案</p>
+        <p class="status-bar-field">状态: 已连线</p>
+        <p class="status-bar-field">@a54fe2pnapk5pbzbh0on5gczd</p>
+      </div>
+    </div>
     <div class="window hidden" id="win-player" data-window-id="win-player" style="left: 690px; top: 25px; width: 420px;">
       <div class="title-bar">
         <div class="title-bar-text">
@@ -501,7 +769,7 @@
     </div>
 
     <!-- ==================== 窗口 6: Butterchurn Milkdrop 视觉器 ==================== -->
-    <div class="window hidden" id="win-visualizer" data-window-id="win-visualizer" style="left: 690px; top: 275px; width: 420px; height: 320px;">
+    <div class="window hidden" id="win-visualizer" data-window-id="win-visualizer" style="left: 560px; top: 120px; width: 560px; height: 440px; max-width: 95vw;">
       <div class="title-bar">
         <div class="title-bar-text">
           <img src="./assets/icons/3d-mode-32x32.png" alt="">
@@ -513,7 +781,7 @@
           <button aria-label="Close"></button>
         </div>
       </div>
-      <div class="window-body" style="padding: 4px;">
+      <div class="window-body" style="padding: 4px; display: flex; flex-direction: column; flex: 1 1 auto; min-height: 0;">
         <!-- 醒目当前预设常驻 LED 显示条 -->
         <div class="vis-preset-display-bar">
           <span style="color: #aaaaaa; font-weight: bold;">当前预设:</span>
@@ -607,7 +875,7 @@
     </div>
 
     <!-- ==================== 窗口 9: 回收站 (Recycle Bin) ==================== -->
-    <div class="window hidden" id="win-recycle" data-window-id="win-recycle" style="left: 120px; top: 50px; width: 680px; max-width: 95vw;">
+    <div class="window hidden" id="win-recycle" data-window-id="win-recycle" style="left: 120px; top: 50px; width: 680px; height: 460px; max-width: 95vw;">
       <div class="title-bar">
         <div class="title-bar-text">
           <img src="./assets/icons/recycle-bin-full-16x16.png" alt="">
@@ -619,7 +887,7 @@
           <button aria-label="Close"></button>
         </div>
       </div>
-      <div class="window-body" style="padding: 4px; display: flex; flex-direction: column; gap: 4px; flex: 1 1 0; min-height: 0;">
+      <div class="window-body" style="padding: 4px; display: flex; flex-direction: column; gap: 4px; flex: 1 1 auto; min-height: 0;">
         <!-- 仿 Win98 菜单与工具栏 -->
         <div style="display: flex; gap: 12px; font-size: 11px; padding: 2px 4px; border-bottom: 1px solid #808080;">
           <span>文件(<u>F</u>)</span>
@@ -640,8 +908,8 @@
           </div>
         </div>
 
-        <!-- 详细信息列表视图 -->
-        <div style="flex: 1 1 0; min-height: 140px; background: #fff; border: 2px inset #808080; overflow-y: auto;">
+        <!-- 详细信息列表视图 (自适应填充高度) -->
+        <div style="flex: 1 1 0; min-height: 200px; background: #fff; border: 2px inset #808080; overflow-y: auto;">
           <table class="recycle-table" id="recycle-file-table">
             <thead>
               <tr style="background: #c0c0c0; border-bottom: 1px solid #808080; position: sticky; top: 0; z-index: 2;">
@@ -704,7 +972,7 @@
         <img src="./assets/icons/network-16x16.png" alt=""> 个人项目与网址导航
       </div>
       <div class="start-item" data-open-window="win-github">
-        <img src="./assets/icons/media-player-16x16.png" alt=""> Spotify 音乐空间 (GitHub组件)
+        <img src="./assets/icons/my-documents-16x16.png" alt=""> GitHub 个人主页
       </div>
       <div class="start-item" data-open-window="win-channel">
         <img src="./assets/icons/news-16x16.png" alt=""> 频道和博客 (Channel & Blog)
@@ -712,12 +980,15 @@
       <div class="start-item" data-open-window="win-contact">
         <img src="./assets/icons/outlook-express-16x16.png" alt=""> 联系方式 / 通讯簿
       </div>
+      <div class="start-item" data-open-window="win-spotify">
+        <img src="./assets/icons/media-player-16x16.png" alt=""> Spotify 音乐空间
+      </div>
       <div class="start-divider"></div>
       <div class="start-item" data-open-window="winamp">
         <img src="./assets/icons/winamp2-16x16.png" alt=""> Winamp 音乐播放器
       </div>
       <div class="start-item" data-open-window="win-player">
-        <img src="./assets/icons/media-player-16x16.png" alt=""> NRW 音乐电台 (备用)
+        <img src="./assets/icons/media-player-16x16.png" alt=""> NRW 音乐电台
       </div>
       <div class="start-item" data-open-window="win-visualizer">
         <img src="./assets/icons/3d-mode-32x32.png" alt=""> Milkdrop 3D 视觉器
@@ -1087,11 +1358,11 @@
       const ghTabPanes = document.querySelectorAll('.gh-tab-content');
       const ghStatusView = document.getElementById('gh-status-view');
       const ghTabLabels = {
-        'overview': '当前视图: 概览与成就',
-        'articles': '当前视图: 逆向与实战博文',
-        'spotify': '当前视图: Spotify 音乐档案',
-        'rig': '当前视图: 极客装备库',
-        'skills': '当前视图: 技术栈与生态'
+        'skills': '当前视图: 语言和工具',
+        'devices': '当前视图: 个人设备',
+        'smarthome': '当前视图: 智能家居',
+        'diy': '当前视图: DIY 设备与创客工坊',
+        'inuse': '当前视图: 正在使用的软件与服务'
       };
 
       ghTabBtns.forEach(btn => {
