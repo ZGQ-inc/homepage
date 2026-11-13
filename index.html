@@ -81,13 +81,13 @@
       </div>
 
       <div class="desktop-icon" data-target="win-recycle" title="双击打开 回收站">
-        <img class="icon-img" src="./assets/icons/recycle-bin-32x32.png" alt="回收站">
+        <img class="icon-img" id="recycle-bin-icon-img" src="./assets/icons/recycle-bin-full-32x32.png" alt="回收站">
         <span class="icon-label">回收站</span>
       </div>
     </div>
 
     <!-- ==================== 窗口 1: 个人项目与网址导航 (Project Hub & Navigation) ==================== -->
-    <div class="window" id="win-navigation" data-window-id="win-navigation" style="left: 70px; top: 25px; width: 660px;">
+    <div class="window" id="win-navigation" data-window-id="win-navigation" style="left: 90px; top: 25px; width: 580px;">
       <div class="title-bar">
         <div class="title-bar-text">
           <img src="./assets/icons/network-16x16.png" alt="">
@@ -308,18 +308,19 @@
         </div>
 
         <!-- 标签页: Spotify 音乐档案 -->
-        <div class="gh-tab-content" id="ghtab-spotify" style="max-height: 420px; overflow-y: auto;">
-          <div class="spotify-card" style="background: #121212; color: #fff; padding: 10px; border-radius: 4px; margin-bottom: 10px; border: 2px inset #000;">
+        <div class="gh-tab-content" id="ghtab-spotify" style="max-height: 440px; overflow-y: auto;">
+          <div class="spotify-card" style="background: #121212; color: #fff; padding: 10px; border-radius: 4px; margin-bottom: 8px; border: 2px inset #000;">
             <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
               <div style="display: flex; align-items: center; gap: 12px;">
-                <img src="https://i.scdn.co/image/ab6775700000ee85fd9d1f9dd6082c443c4b6237" alt="Spotify Avatar" style="width: 52px; height: 52px; border-radius: 50%; border: 2px solid #1DB954; object-fit: cover;">
+                <img src="https://i.scdn.co/image/ab6775700000ee85fd9d1f9dd6082c443c4b6237" alt="Spotify Avatar" style="width: 44px; height: 44px; border-radius: 50%; border: 2px solid #1DB954; object-fit: cover;">
                 <div>
                   <div style="display: flex; align-items: center; gap: 6px;">
                     <span style="font-weight: 900; font-size: 15px; color: #fff;">ZGQ</span>
-                    <span style="background: #1DB954; color: #000; font-size: 9px; font-weight: bold; padding: 1px 4px; border-radius: 2px;">SPOTIFY VERIFIED</span>
+                    <a href="https://open.spotify.com/user/a54fe2pnapk5pbzbh0on5gczd" target="_blank">
+                      <img src="https://img.shields.io/badge/Spotify-ZGQ-666666?style=for-the-badge&logo=Spotify&logoColor=&labelColor=000000" alt="Spotify Badge" style="height: 18px; vertical-align: middle;">
+                    </a>
                   </div>
-                  <div style="font-size: 11px; color: #b3b3b3; margin-top: 2px;">用户 ID: a54fe2pnapk5pbzbh0on5gczd</div>
-                  <div style="font-size: 11px; color: #1DB954; margin-top: 2px;">🟢 实时曲库已联通 · 30 首 Top 歌曲持续循环</div>
+                  <div style="font-size: 11px; color: #b3b3b3; margin-top: 2px;">GitHub Profile 动态组件实时联动 · ID: a54fe2pnapk5pbzbh0on5gczd</div>
                 </div>
               </div>
               <div style="display: flex; gap: 6px;">
@@ -329,19 +330,44 @@
             </div>
           </div>
 
+          <!-- 组件 1: GitHub 正在播放实时组件 (spotify-github-profile) -->
           <fieldset style="margin-bottom: 8px;">
-            <legend>🎵 精选公开歌单切换 (Select Playlist)</legend>
-            <div style="display: flex; gap: 6px; flex-wrap: wrap;" id="spotify-gh-playlist-btns">
-              <button class="active" data-spotify-id="4HkfwQljRfanSJ594U3HuQ" style="font-weight: bold;">🏆 Top Songs - All Time</button>
-              <button data-spotify-id="2XVgr6bpTDOlhKkaYeADld">💿 SRD Remaster</button>
-              <button data-spotify-id="5Gw8WjDXfZ3ggARpw1ciA8">⏳ My 2024 Playlist in a Bottle</button>
+            <legend>🟢 当前正在播放 (GitHub Live Profile Widget)</legend>
+            <div style="background: #000; padding: 6px; border: 1px inset #808080; border-radius: 4px; text-align: center;">
+              <a href="https://spotify-github-profile.kittinanx.com/api/view?uid=a54fe2pnapk5pbzbh0on5gczd&redirect=true" target="_blank" title="点击在 Spotify 查看当前曲目">
+                <img src="https://spotify-github-profile.kittinanx.com/api/view?uid=a54fe2pnapk5pbzbh0on5gczd&cover_image=true&theme=default&show_offline=false&background_color=121212&interchange=true&bar_color=53b14f&bar_color_cover=true" alt="Spotify 正在播放" style="max-width: 100%; height: auto; display: inline-block;">
+              </a>
+              <div style="margin-top: 4px; font-size: 10px; color: #888;">
+                源自 <a href="https://github.com/kittinan/spotify-github-profile" target="_blank" style="color: #1DB954;">kittinan/spotify-github-profile</a> · 实时心跳同步
+              </div>
             </div>
           </fieldset>
 
-          <fieldset>
-            <legend>🎧 Spotify 官方播放器 (Interactive Player)</legend>
-            <iframe id="spotify-gh-embed-frame" style="border-radius:8px; width: 100%; height: 352px; border: 1px inset #808080;" src="https://open.spotify.com/embed/playlist/4HkfwQljRfanSJ594U3HuQ?utm_source=generator&theme=0" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+          <!-- 组件 2: GitHub 最近收听记录组件 (spotify-recently-played-readme) -->
+          <fieldset style="margin-bottom: 8px;">
+            <legend>📻 最近收听记录 (Recently Played - GitHub Widget)</legend>
+            <div style="background: #000; padding: 6px; border: 1px inset #808080; border-radius: 4px; text-align: center; overflow-x: auto;">
+              <a href="https://open.spotify.com/user/a54fe2pnapk5pbzbh0on5gczd" target="_blank" title="点击在 Spotify 打开个人档案">
+                <img src="https://spotify-recently-played.jeffreyca.workers.dev/svg?user=a54fe2pnapk5pbzbh0on5gczd&theme=spotify&count=10&radius=16&duration=1&album=1" alt="Spotify 最近播放列表" style="max-width: 100%; height: auto; display: inline-block;">
+              </a>
+              <div style="margin-top: 4px; font-size: 10px; color: #888;">
+                源自 <a href="https://github.com/JeffreyCA/spotify-recently-played-readme" target="_blank" style="color: #1DB954;">JeffreyCA/spotify-recently-played-readme</a> · 专辑封面、时长与时间戳
+              </div>
+            </div>
           </fieldset>
+
+          <!-- 组件 3: 官方互动播放器与歌单切换 (可折叠) -->
+          <details style="margin-bottom: 4px;">
+            <summary style="font-size: 11px; font-weight: bold; cursor: pointer; padding: 3px 0;">▶ 展开 Spotify 官方互动播放器与精选歌单</summary>
+            <div style="margin-top: 6px;">
+              <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 6px;" id="spotify-gh-playlist-btns">
+                <button class="active" data-spotify-id="4HkfwQljRfanSJ594U3HuQ" style="font-weight: bold;">🏆 Top Songs - All Time</button>
+                <button data-spotify-id="2XVgr6bpTDOlhKkaYeADld">💿 SRD Remaster</button>
+                <button data-spotify-id="5Gw8WjDXfZ3ggARpw1ciA8">⏳ My 2024 Playlist in a Bottle</button>
+              </div>
+              <iframe id="spotify-gh-embed-frame" style="border-radius:8px; width: 100%; height: 352px; border: 1px inset #808080;" src="https://open.spotify.com/embed/playlist/4HkfwQljRfanSJ594U3HuQ?utm_source=generator&theme=0" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+            </div>
+          </details>
         </div>
 
         <!-- 标签页 3: 极客装备库 -->
@@ -537,11 +563,11 @@
     </div>
 
     <!-- ==================== 窗口: Spotify 音乐空间 (Spotify Music Space) ==================== -->
-    <div class="window hidden" id="win-spotify" data-window-id="win-spotify" style="left: 210px; top: 80px; width: 520px;">
+    <div class="window hidden" id="win-spotify" data-window-id="win-spotify" style="left: 130px; top: 40px; width: 660px; max-width: 95vw;">
       <div class="title-bar">
         <div class="title-bar-text">
           <img src="./assets/icons/media-player-16x16.png" alt="">
-          <span>Spotify 音乐空间 - ZGQ (@a54fe2pnapk5pbzbh0on5gczd)</span>
+          <span>Spotify 音乐空间 - GitHub 动态组件联动 (@a54fe2pnapk5pbzbh0on5gczd)</span>
         </div>
         <div class="title-bar-controls">
           <button aria-label="Minimize"></button>
@@ -549,50 +575,76 @@
           <button aria-label="Close"></button>
         </div>
       </div>
-      <div class="window-body" style="padding: 6px;">
-        <div class="spotify-card" style="background: #121212; color: #fff; padding: 10px; border-radius: 4px; margin-bottom: 10px; border: 2px inset #000;">
+      <div class="window-body" style="padding: 6px; max-height: 520px; overflow-y: auto;">
+        <div class="spotify-card" style="background: #121212; color: #fff; padding: 10px; border-radius: 4px; margin-bottom: 8px; border: 2px inset #000;">
           <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px;">
             <div style="display: flex; align-items: center; gap: 12px;">
-              <img src="https://i.scdn.co/image/ab6775700000ee85fd9d1f9dd6082c443c4b6237" alt="Spotify Avatar" style="width: 52px; height: 52px; border-radius: 50%; border: 2px solid #1DB954; object-fit: cover;">
+              <img src="https://i.scdn.co/image/ab6775700000ee85fd9d1f9dd6082c443c4b6237" alt="Spotify Avatar" style="width: 48px; height: 48px; border-radius: 50%; border: 2px solid #1DB954; object-fit: cover;">
               <div>
                 <div style="display: flex; align-items: center; gap: 6px;">
                   <span style="font-weight: 900; font-size: 15px; color: #fff;">ZGQ</span>
-                  <span style="background: #1DB954; color: #000; font-size: 9px; font-weight: bold; padding: 1px 4px; border-radius: 2px;">SPOTIFY VERIFIED</span>
+                  <a href="https://open.spotify.com/user/a54fe2pnapk5pbzbh0on5gczd" target="_blank">
+                    <img src="https://img.shields.io/badge/Spotify-ZGQ-666666?style=for-the-badge&logo=Spotify&logoColor=&labelColor=000000" alt="Spotify Badge" style="height: 18px; vertical-align: middle;">
+                  </a>
                 </div>
-                <div style="font-size: 11px; color: #b3b3b3; margin-top: 2px;">用户 ID: a54fe2pnapk5pbzbh0on5gczd</div>
-                <div style="font-size: 11px; color: #1DB954; margin-top: 2px;">🟢 实时曲库已联通 · 30 首 Top 歌曲持续循环</div>
+                <div style="font-size: 11px; color: #b3b3b3; margin-top: 2px;">GitHub Profile 动态组件实时呈现 · 用户 ID: a54fe2pnapk5pbzbh0on5gczd</div>
               </div>
             </div>
             <div style="display: flex; gap: 6px;">
-              <a href="spotify:user:a54fe2pnapk5pbzbh0on5gczd" target="_blank"><button style="background: #1DB954; color: #000; font-weight: bold; border-color: #1ed760; font-size: 11px;">在客户端打开 ↗</button></a>
+              <a href="spotify:user:a54fe2pnapk5pbzbh0on5gczd" target="_blank"><button style="background: #1DB954; color: #000; font-weight: bold; border-color: #1ed760; font-size: 11px;">在 Spotify 客户端打开 ↗</button></a>
               <a href="https://open.spotify.com/user/a54fe2pnapk5pbzbh0on5gczd" target="_blank"><button style="font-size: 11px;">网页主页 ↗</button></a>
             </div>
           </div>
         </div>
 
+        <!-- 组件 1: GitHub 正在播放实时组件 (spotify-github-profile) -->
         <fieldset style="margin-bottom: 8px;">
-          <legend>🎵 精选公开歌单切换 (Select Playlist)</legend>
-          <div style="display: flex; gap: 6px; flex-wrap: wrap;" id="spotify-win-playlist-btns">
-            <button class="active" data-spotify-id="4HkfwQljRfanSJ594U3HuQ" style="font-weight: bold;">🏆 Top Songs - All Time</button>
-            <button data-spotify-id="2XVgr6bpTDOlhKkaYeADld">💿 SRD Remaster</button>
-            <button data-spotify-id="5Gw8WjDXfZ3ggARpw1ciA8">⏳ My 2024 Playlist in a Bottle</button>
+          <legend>🟢 当前正在播放 (GitHub Live Profile Widget)</legend>
+          <div style="background: #000; padding: 6px; border: 1px inset #808080; border-radius: 4px; text-align: center;">
+            <a href="https://spotify-github-profile.kittinanx.com/api/view?uid=a54fe2pnapk5pbzbh0on5gczd&redirect=true" target="_blank" title="点击在 Spotify 查看当前曲目">
+              <img src="https://spotify-github-profile.kittinanx.com/api/view?uid=a54fe2pnapk5pbzbh0on5gczd&cover_image=true&theme=default&show_offline=false&background_color=121212&interchange=true&bar_color=53b14f&bar_color_cover=true" alt="Spotify 正在播放" style="max-width: 100%; height: auto; display: inline-block;">
+            </a>
+            <div style="margin-top: 4px; font-size: 10px; color: #888;">
+              源自 <a href="https://github.com/kittinan/spotify-github-profile" target="_blank" style="color: #1DB954;">kittinan/spotify-github-profile</a> · 实时心跳同步
+            </div>
           </div>
         </fieldset>
 
-        <fieldset>
-          <legend>🎧 Spotify 官方播放器 (Interactive Player)</legend>
-          <iframe id="spotify-win-embed-frame" style="border-radius:8px; width: 100%; height: 352px; border: 1px inset #808080;" src="https://open.spotify.com/embed/playlist/4HkfwQljRfanSJ594U3HuQ?utm_source=generator&theme=0" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+        <!-- 组件 2: GitHub 最近收听记录组件 (spotify-recently-played-readme) -->
+        <fieldset style="margin-bottom: 8px;">
+          <legend>📻 最近收听记录 (Recently Played - GitHub Widget)</legend>
+          <div style="background: #000; padding: 6px; border: 1px inset #808080; border-radius: 4px; text-align: center; overflow-x: auto;">
+            <a href="https://open.spotify.com/user/a54fe2pnapk5pbzbh0on5gczd" target="_blank" title="点击在 Spotify 打开个人档案">
+              <img src="https://spotify-recently-played.jeffreyca.workers.dev/svg?user=a54fe2pnapk5pbzbh0on5gczd&theme=spotify&count=10&radius=16&duration=1&album=1" alt="Spotify 最近播放列表" style="max-width: 100%; height: auto; display: inline-block;">
+            </a>
+            <div style="margin-top: 4px; font-size: 10px; color: #888;">
+              源自 <a href="https://github.com/JeffreyCA/spotify-recently-played-readme" target="_blank" style="color: #1DB954;">JeffreyCA/spotify-recently-played-readme</a> · 包含专辑封面、曲长时间与相对时间
+            </div>
+          </div>
         </fieldset>
+
+        <!-- 组件 3: 官方互动播放器与歌单切换 (可折叠) -->
+        <details style="margin-bottom: 4px;">
+          <summary style="font-size: 11px; font-weight: bold; cursor: pointer; padding: 3px 0;">▶ 展开 Spotify 互动播放器与精选歌单</summary>
+          <div style="margin-top: 6px;">
+            <div style="display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 6px;" id="spotify-win-playlist-btns">
+              <button class="active" data-spotify-id="4HkfwQljRfanSJ594U3HuQ" style="font-weight: bold;">🏆 Top Songs - All Time</button>
+              <button data-spotify-id="2XVgr6bpTDOlhKkaYeADld">💿 SRD Remaster</button>
+              <button data-spotify-id="5Gw8WjDXfZ3ggARpw1ciA8">⏳ My 2024 Playlist in a Bottle</button>
+            </div>
+            <iframe id="spotify-win-embed-frame" style="border-radius:8px; width: 100%; height: 352px; border: 1px inset #808080;" src="https://open.spotify.com/embed/playlist/4HkfwQljRfanSJ594U3HuQ?utm_source=generator&theme=0" frameBorder="0" allowfullscreen="" allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" loading="lazy"></iframe>
+          </div>
+        </details>
       </div>
       <div class="status-bar">
-        <p class="status-bar-field">服务: Spotify Official Web API</p>
+        <p class="status-bar-field">来源: GitHub 动态同步组件</p>
         <p class="status-bar-field">状态: 已连线</p>
-        <p class="status-bar-field">30 首 Top 歌曲</p>
+        <p class="status-bar-field">自动心跳刷新</p>
       </div>
     </div>
 
     <!-- ==================== 窗口 5: NRW 音乐播放器 (Music Player) ==================== -->
-    <div class="window" id="win-player" data-window-id="win-player" style="left: 760px; top: 15px; width: 480px;">
+    <div class="window" id="win-player" data-window-id="win-player" style="left: 690px; top: 25px; width: 420px;">
       <div class="title-bar">
         <div class="title-bar-text">
           <img src="./assets/icons/media-player-16x16.png" alt="">
@@ -646,7 +698,7 @@
     </div>
 
     <!-- ==================== 窗口 6: Butterchurn Milkdrop 视觉器 ==================== -->
-    <div class="window" id="win-visualizer" data-window-id="win-visualizer" style="left: 760px; top: 290px; width: 480px;">
+    <div class="window" id="win-visualizer" data-window-id="win-visualizer" style="left: 690px; top: 275px; width: 420px; height: 320px;">
       <div class="title-bar">
         <div class="title-bar-text">
           <img src="./assets/icons/3d-mode-32x32.png" alt="">
@@ -752,11 +804,11 @@
     </div>
 
     <!-- ==================== 窗口 9: 回收站 (Recycle Bin) ==================== -->
-    <div class="window hidden" id="win-recycle" data-window-id="win-recycle" style="left: 150px; top: 150px; width: 420px;">
+    <div class="window hidden" id="win-recycle" data-window-id="win-recycle" style="left: 120px; top: 50px; width: 680px; max-width: 95vw;">
       <div class="title-bar">
         <div class="title-bar-text">
-          <img src="./assets/icons/recycle-bin-16x16.png" alt="">
-          <span>回收站 - 历史旧项目归档区</span>
+          <img src="./assets/icons/recycle-bin-full-16x16.png" alt="">
+          <span>回收站 - 原网站历史工程与媒体曲库归档 (C:\RECYCLED\old)</span>
         </div>
         <div class="title-bar-controls">
           <button aria-label="Minimize"></button>
@@ -764,13 +816,56 @@
           <button aria-label="Close"></button>
         </div>
       </div>
-      <div class="window-body">
-        <p style="margin: 4px 0 8px 0;">回收站是空的 (0 个项目)。系统运行良好。</p>
-        <div style="background: #fff; border: 1px inset #808080; padding: 12px; text-align: center; color: #666; font-size: 11px;">
-          暂无已删除的文件
+      <div class="window-body" style="padding: 4px; display: flex; flex-direction: column; gap: 4px; height: 440px;">
+        <!-- 仿 Win98 菜单与工具栏 -->
+        <div style="display: flex; gap: 12px; font-size: 11px; padding: 2px 4px; border-bottom: 1px solid #808080;">
+          <span>文件(<u>F</u>)</span>
+          <span>编辑(<u>E</u>)</span>
+          <span>查看(<u>V</u>)</span>
+          <span>工具(<u>T</u>)</span>
+          <span>帮助(<u>H</u>)</span>
         </div>
-        <div style="display: flex; justify-content: flex-end; margin-top: 8px;">
-          <button onclick="window.desktopOS.playSound('recycle'); alert('回收站已清理！')">清空回收站</button>
+        <div style="display: flex; align-items: center; justify-content: space-between; gap: 6px; padding: 2px 0; flex-wrap: wrap;">
+          <div style="display: flex; gap: 4px;">
+            <button id="btn-recycle-open" style="font-size: 11px; display: flex; align-items: center; gap: 3px;" title="在新标签页预览打开选定历史文件或送入播放器">
+              <span>📂</span> 打开/预览
+            </button>
+            <button id="btn-recycle-restore" style="font-size: 11px; display: flex; align-items: center; gap: 3px;">
+              <span>⏪</span> 还原全部项目
+            </button>
+            <button id="btn-recycle-empty" style="font-size: 11px; display: flex; align-items: center; gap: 3px;">
+              <span>🗑️</span> 清空回收站
+            </button>
+          </div>
+          <div style="display: flex; align-items: center; gap: 4px; font-size: 11px;">
+            <span>地址(<u>D</u>):</span>
+            <input type="text" value="C:\RECYCLED\old" readonly style="width: 170px; font-size: 11px; padding: 1px 4px; background: #fff;">
+          </div>
+        </div>
+
+        <!-- 详细信息列表视图 -->
+        <div style="flex: 1; background: #fff; border: 2px inset #808080; overflow-y: auto;">
+          <table class="recycle-table" id="recycle-file-table">
+            <thead>
+              <tr style="background: #c0c0c0; border-bottom: 1px solid #808080; position: sticky; top: 0; z-index: 2;">
+                <th style="width: 230px;">原名称</th>
+                <th style="width: 130px;">原位置</th>
+                <th style="width: 120px;">删除日期</th>
+                <th style="width: 90px;">类型</th>
+                <th style="text-align: right; width: 70px;">大小</th>
+              </tr>
+            </thead>
+            <tbody id="recycle-tbody">
+              <!-- 由 JS 渲染历史归档条目，支持双击预览与单选高亮 -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- 底部状态栏 -->
+        <div class="status-bar" style="margin-top: 2px;">
+          <p class="status-bar-field" id="recycle-status-items">19 个对象</p>
+          <p class="status-bar-field" id="recycle-status-size">总计 48.6 MB</p>
+          <p class="status-bar-field">双击可直接在新标签页打开历史网页或送至播放器试听</p>
         </div>
       </div>
     </div>
@@ -780,6 +875,11 @@
   <!-- 桌面右键上下文菜单 -->
   <div id="desktop-context-menu">
     <div class="ctx-item" id="ctx-refresh"><span>🔄</span> 刷新桌面</div>
+    <div class="ctx-divider"></div>
+    <div class="ctx-item" id="ctx-tidy"><span>📐</span> 整理当前窗口 (Tidy)</div>
+    <div class="ctx-item" id="ctx-cascade"><span>🗂️</span> 层叠所有窗口 (Cascade)</div>
+    <div class="ctx-item" id="ctx-tile"><span>🔲</span> 平铺所有窗口 (Tile)</div>
+    <div class="ctx-item" id="ctx-show-desktop"><span>🪟</span> 显示桌面 (Show Desktop)</div>
     <div class="ctx-divider"></div>
     <div class="ctx-item" id="ctx-wallpaper"><span>🖼️</span> 切换壁纸 (Wallpaper Engine)</div>
     <div class="ctx-item" id="ctx-next-song"><span>🎶</span> 随机切歌 (NRW)</div>
@@ -799,6 +899,10 @@
       </div>
     </div>
     <div class="start-items">
+      <div class="start-item" id="start-tidy-windows">
+        <span>📐</span> 整理桌面所有窗口
+      </div>
+      <div class="start-divider"></div>
       <div class="start-item" data-open-window="win-navigation">
         <img src="./assets/icons/network-16x16.png" alt=""> 个人项目与网址导航
       </div>
@@ -828,6 +932,9 @@
         <img src="./assets/icons/notepad-16x16.png" alt=""> 记事本
       </div>
       <div class="start-divider"></div>
+      <div class="start-item" data-open-window="win-recycle">
+        <img src="./assets/icons/recycle-bin-full-16x16.png" alt=""> 回收站 (历史归档)
+      </div>
       <div class="start-item" data-open-window="win-computer">
         <img src="./assets/icons/my-computer-16x16.png" alt=""> 系统属性 (关于)
       </div>
@@ -836,6 +943,29 @@
 
   <!-- 底部任务栏 -->
   <footer id="taskbar">
+    <button id="start-button">
+      <img src="./assets/images/start.png" alt="Start">
+      <span>开始</span>
+    </button>
+    <div class="taskbar-divider"></div>
+    <!-- Quick Launch Bar (Windows 98 快速启动栏) -->
+    <div class="quick-launch">
+      <button id="btn-show-desktop" title="显示桌面 (Windows 98 快速启动)">
+        <img src="./assets/icons/desktop-16x16.png" alt="Show Desktop" style="width: 16px; height: 16px;">
+      </button>
+      <button id="btn-tidy-windows" title="一键整理窗口排版" style="font-size: 11px;">
+        <span>📐</span>
+      </button>
+    </div>
+    <div class="taskbar-divider"></div>
+    <div id="taskbar-tasks">
+      <!-- 动态填充任务栏项 -->
+    </div>
+    <div id="system-tray">
+      <img class="tray-icon" src="./assets/icons/speaker-16x16.png" alt="Volume" title="音量控制">
+      <span id="taskbar-clock">12:00 PM</span>
+    </div>
+  </footer>
     <button id="start-button">
       <img src="./assets/images/start.png" alt="Start">
       <span>开始</span>
@@ -1520,6 +1650,132 @@
       // 初始化拉取留言和 RSS
       fetchGbMessages();
       setTimeout(fetchBlogRss, 800);
+
+      // 10. 回收站历史工程与旧曲库渲染与交互
+      const RECYCLE_ARCHIVES = [
+        { name: 'index.html', path: 'old/index.html', origin: 'C:\\inetpub\\wwwroot', date: '2026/11/13 20:00', type: 'HTML 动态主页', size: '14.6 KB', isMedia: false, isHtml: true, desc: '原霓虹日落主页 (Dimension 动态日落主题)' },
+        { name: 'resources.html', path: 'old/resources.html', origin: 'C:\\inetpub\\wwwroot', date: '2026/11/13 20:00', type: 'HTML 资源导航', size: '24.0 KB', isMedia: false, isHtml: true, desc: '历史资源导航' },
+        { name: 'FBI_WARNING.html', path: 'old/FBI_WARNING.html', origin: 'C:\\inetpub\\wwwroot', date: '2026/11/13 20:00', type: 'HTML 安全警示', size: '6.7 KB', isMedia: false, isHtml: true, desc: 'FBI 警示页面' },
+        { name: 'board.html', path: 'old/board.html', origin: 'C:\\inetpub\\wwwroot', date: '2026/11/13 20:00', type: 'HTML 历史留言板', size: '408 B', isMedia: false, isHtml: true, desc: '旧单页留言板' },
+        { name: 'mywords.html', path: 'old/mywords.html', origin: 'C:\\inetpub\\wwwroot', date: '2026/11/13 20:00', type: 'HTML 个人随笔', size: '2.9 KB', isMedia: false, isHtml: true, desc: '个人语录随笔' },
+        { name: 'rtk-HTML.html', path: 'old/rtk-HTML.html', origin: 'C:\\inetpub\\wwwroot', date: '2026/11/13 20:00', type: 'HTML 展示页', size: '4.9 KB', isMedia: false, isHtml: true, desc: 'RTK HTML' },
+        { name: 'rtk_up.html', path: 'old/rtk_up.html', origin: 'C:\\inetpub\\wwwroot', date: '2026/11/13 20:00', type: 'HTML 上传页', size: '2.2 KB', isMedia: false, isHtml: true, desc: 'RTK 上传页面' },
+        { name: 'fool.html', path: 'old/fool.html', origin: 'C:\\inetpub\\wwwroot', date: '2026/11/13 20:00', type: 'HTML 愚人节恶搞', size: '1.4 KB', isMedia: false, isHtml: true, desc: '愚人节彩蛋' },
+        { name: '404.html', path: 'old/404.html', origin: 'C:\\inetpub\\wwwroot', date: '2026/11/13 20:00', type: 'HTML 404页', size: '25.8 KB', isMedia: false, isHtml: true, desc: '404 Not Found' },
+        { name: 'The_Midnight-Los_Angeles.mp3', path: 'old/music/The_Midnight-Los_Angeles.mp3', origin: 'C:\\Music\\LocalSynth', date: '2026/11/13 20:00', type: 'MP3 音频', size: '6.1 MB', isMedia: true, title: 'The Midnight - Los Angeles' },
+        { name: 'The_Midnight&Timecop1983-River_of_Darkness.mp3', path: 'old/music/The_Midnight&Timecop1983-River_of_Darkness_(feat._Timecop1983).mp3', origin: 'C:\\Music\\LocalSynth', date: '2026/11/13 20:00', type: 'MP3 音频', size: '5.8 MB', isMedia: true, title: 'The Midnight & Timecop1983 - River of Darkness' },
+        { name: 'GUNSHIP-When_You_Grow_up,_Your_Heart_Dies.mp3', path: 'old/music/GUNSHIP-When_You_Grow_up,_Your_Heart_Dies.mp3', origin: 'C:\\Music\\LocalSynth', date: '2026/11/13 20:00', type: 'MP3 音频', size: '5.5 MB', isMedia: true, title: 'GUNSHIP - When You Grow up, Your Heart Dies' },
+        { name: 'Timecop1983-On_the_Run.mp3', path: 'old/music/Timecop1983-On_the_Run.mp3', origin: 'C:\\Music\\LocalSynth', date: '2026/11/13 20:00', type: 'MP3 音频', size: '4.8 MB', isMedia: true, title: 'Timecop1983 - On the Run' },
+        { name: 'Running_in_the_Night-FM-84&Ollie_Wride.mp3', path: 'old/music/Running_in_the_Night-FM-84&Ollie_Wride.mp3', origin: 'C:\\Music\\LocalSynth', date: '2026/11/13 20:00', type: 'MP3 音频', size: '4.2 MB', isMedia: true, title: 'FM-84 - Running in the Night' },
+        { name: 'Dance_With_The_Dead-Dead_of_Night.mp3', path: 'old/music/Dance_With_The_Dead-Dead_of_Night.mp3', origin: 'C:\\Music\\LocalSynth', date: '2026/11/13 20:00', type: 'MP3 音频', size: '3.9 MB', isMedia: true, title: 'Dance With The Dead - Dead of Night' },
+        { name: 'PYLOT-A_Race_Against_Time.mp3', path: 'old/music/PYLOT-A_Race_Against_Time.mp3', origin: 'C:\\Music\\LocalSynth', date: '2026/11/13 20:00', type: 'MP3 音频', size: '3.9 MB', isMedia: true, title: 'PYLOT - A Race Against Time' },
+        { name: 'LeBrock-Please_Don`t_Cry.mp3', path: 'old/music/LeBrock-Please_Don`t_Cry.mp3', origin: 'C:\\Music\\LocalSynth', date: '2026/11/13 20:00', type: 'MP3 音频', size: '3.6 MB', isMedia: true, title: 'LeBrock - Please Don\'t Cry' },
+        { name: 'LeBrock-Takes_All_Night.mp3', path: 'old/music/LeBrock-Takes_All_Night.mp3', origin: 'C:\\Music\\LocalSynth', date: '2026/11/13 20:00', type: 'MP3 音频', size: '3.3 MB', isMedia: true, title: 'LeBrock - Takes All Night' },
+        { name: 'LeBrock-Hangin`_On.mp3', path: 'old/music/LeBrock-Hangin`_On.mp3', origin: 'C:\\Music\\LocalSynth', date: '2026/11/13 20:00', type: 'MP3 音频', size: '2.8 MB', isMedia: true, title: 'LeBrock - Hangin\' On' }
+      ];
+
+      let selectedRecycleItem = null;
+
+      function renderRecycleBin(items = RECYCLE_ARCHIVES) {
+        const tbody = document.getElementById('recycle-tbody');
+        const statusItems = document.getElementById('recycle-status-items');
+        const statusSize = document.getElementById('recycle-status-size');
+        const iconImg = document.getElementById('recycle-bin-icon-img');
+
+        if (!tbody) return;
+        tbody.innerHTML = '';
+
+        if (items.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: #888; padding: 25px;">回收站是空的 (0 个项目)。系统运行良好。</td></tr>';
+          if (statusItems) statusItems.textContent = '0 个对象';
+          if (statusSize) statusSize.textContent = '0 字节';
+          if (iconImg) iconImg.src = './assets/icons/recycle-bin-32x32.png';
+          return;
+        }
+
+        if (statusItems) statusItems.textContent = `${items.length} 个对象`;
+        if (statusSize) statusSize.textContent = '总计 48.6 MB';
+        if (iconImg) iconImg.src = './assets/icons/recycle-bin-full-32x32.png';
+
+        items.forEach((item) => {
+          const tr = document.createElement('tr');
+          if (selectedRecycleItem === item) tr.classList.add('selected');
+
+          const iconSrc = item.isMedia ? './assets/icons/media-player-16x16.png' : './assets/icons/html-16x16.png';
+
+          tr.innerHTML = `
+            <td>
+              <img src="${iconSrc}" class="recycle-file-icon" alt="">
+              <span style="font-weight: 500;">${item.name}</span>
+            </td>
+            <td style="color: #666;">${item.origin}</td>
+            <td style="color: #666;">${item.date}</td>
+            <td style="color: #333;">${item.type}</td>
+            <td style="text-align: right; font-family: monospace;">${item.size}</td>
+          `;
+
+          tr.addEventListener('click', () => {
+            selectedRecycleItem = item;
+            tbody.querySelectorAll('tr').forEach(r => r.classList.remove('selected'));
+            tr.classList.add('selected');
+          });
+
+          tr.addEventListener('dblclick', () => {
+            openRecycleItem(item);
+          });
+
+          tbody.appendChild(tr);
+        });
+      }
+
+      function openRecycleItem(item) {
+        if (!item) return;
+        desktop.playSound('ding');
+        if (item.isHtml) {
+          window.open(item.path, '_blank');
+        } else if (item.isMedia) {
+          if (radio) {
+            radio.audio.src = item.path;
+            radio.play();
+            const pt = document.getElementById('player-title');
+            const pa = document.getElementById('player-artist');
+            if (pt) pt.textContent = item.title;
+            if (pa) pa.textContent = '原站经典曲库 (本地归档)';
+            desktop.openWindow('win-player');
+          }
+        }
+      }
+
+      const btnRecycleOpen = document.getElementById('btn-recycle-open');
+      if (btnRecycleOpen) {
+        btnRecycleOpen.addEventListener('click', () => {
+          if (selectedRecycleItem) {
+            openRecycleItem(selectedRecycleItem);
+          } else {
+            alert('请先单击选中列表中的一个文件，然后再点击“打开/预览”。');
+          }
+        });
+      }
+
+      const btnRecycleRestore = document.getElementById('btn-recycle-restore');
+      if (btnRecycleRestore) {
+        btnRecycleRestore.addEventListener('click', () => {
+          desktop.playSound('chord');
+          alert('全部 19 项历史主页文件与经典复古电音完整留存于本地 ./old/ 目录中，随时可双击预览或直接访问！');
+        });
+      }
+
+      const btnRecycleEmpty = document.getElementById('btn-recycle-empty');
+      if (btnRecycleEmpty) {
+        btnRecycleEmpty.addEventListener('click', () => {
+          desktop.playSound('recycle');
+          if (confirm('确定要清空回收站视图吗？（真实文件仍然受到 Git 保护安全存放在 ./old/ 目录中）')) {
+            renderRecycleBin([]);
+          }
+        });
+      }
+
+      renderRecycleBin();
 
       // 11. 复制邮箱按钮
       document.getElementById('copy-email-btn').addEventListener('click', () => {

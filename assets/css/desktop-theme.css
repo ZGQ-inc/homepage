@@ -487,6 +487,81 @@ body.crt-active .crt-overlay {
   color: #d8e5ff !important;
 }
 
+/* Quick Launch Toolbar (Windows 98 Style) */
+.quick-launch {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  padding: 0 4px;
+  border-right: 1px solid #808080;
+  box-shadow: 1px 0 0 #fff;
+  margin-right: 4px;
+}
+
+.quick-launch button {
+  min-width: 22px !important;
+  height: 22px !important;
+  padding: 1px 3px !important;
+  background: var(--win-surface, #c0c0c0);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.quick-launch button:active {
+  box-shadow: inset 1px 1px 0px #000, inset -1px -1px 0px #fff !important;
+}
+
+/* Recycle Bin Explorer Table */
+.recycle-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 11px;
+  background: #ffffff;
+}
+
+.recycle-table th {
+  background: var(--win-surface, #c0c0c0);
+  font-weight: normal;
+  padding: 3px 6px;
+  box-shadow: inset 1px 1px 0px #fff, inset -1px -1px 0px #808080;
+  text-align: left;
+  user-select: none;
+}
+
+.recycle-table td {
+  padding: 2px 6px;
+  border-bottom: 1px dotted #e8e8e8;
+  white-space: nowrap;
+  user-select: none;
+}
+
+.recycle-table tr {
+  cursor: pointer;
+}
+
+.recycle-table tr:hover {
+  background: #f0f4ff;
+}
+
+.recycle-table tr.selected {
+  background: #000080 !important;
+  color: #ffffff !important;
+}
+
+.recycle-table tr.selected td {
+  color: #ffffff !important;
+}
+
+.recycle-file-icon {
+  width: 16px;
+  height: 16px;
+  vertical-align: middle;
+  margin-right: 5px;
+  image-rendering: pixelated;
+}
+
 /* Webamp Retro Winamp Integration */
 #webamp {
   position: absolute !important;

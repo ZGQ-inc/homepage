@@ -440,7 +440,137 @@
      * Taskbar & Start Menu
      * ------------------------------------------------------------------------- */
     setupTaskbar() {
+      const btnShowDesktop = document.getElementById('btn-show-desktop');
+      if (btnShowDesktop) {
+        btnShowDesktop.addEventListener('click', () => {
+          this.showDesktop();
+        });
+      }
+
+      const btnTidyWindows = document.getElementById('btn-tidy-windows');
+      if (btnTidyWindows) {
+        btnTidyWindows.addEventListener('click', () => {
+          this.tidyWindows();
+        });
+      }
+
       this.updateTaskbar();
+    }
+
+    tidyWindows() {
+      // 1. Arrange win-navigation on the left
+      const winNav = this.windows['win-navigation'];
+      if (winNav && !winNav.element.classList.contains('hidden')) {
+        winNav.element.classList.remove('minimized');
+        winNav.isMinimized = false;
+        winNav.element.style.left = '90px';
+        winNav.element.style.top = '25px';
+        const navW = Math.min(580, Math.max(320, window.innerWidth - 480));
+        winNav.element.style.width = `${navW}px`;
+      }
+
+      // 2. Stack win-player and win-visualizer neatly on the right
+      const rightX = Math.max(680, window.innerWidth - 450);
+      const winPlayer = this.windows['win-player'];
+      if (winPlayer && !winPlayer.element.classList.contains('hidden')) {
+        winPlayer.element.classList.remove('minimized');
+        winPlayer.isMinimized = false;
+        winPlayer.element.style.left = `${rightX}px`;
+        winPlayer.element.style.top = '25px';
+        winPlayer.element.style.width = '420px';
+      }
+
+      const winVis = this.windows['win-visualizer'];
+      if (winVis && !winVis.element.classList.contains('hidden')) {
+        winVis.element.classList.remove('minimized');
+        winVis.isMinimized = false;
+        winVis.element.style.left = `${rightX}px`;
+        winVis.element.style.top = '275px';
+        winVis.element.style.width = '420px';
+        winVis.element.style.height = '320px';
+        if (window.visualizerManager) {
+          setTimeout(() => {
+            const wrapper = winVis.element.querySelector('.visualizer-wrapper');
+            if (wrapper) window.visualizerManager.resize(wrapper.clientWidth, wrapper.clientHeight);
+          }, 60);
+        }
+      }
+
+      // 3. Cascade any other open windows in center workspace
+      let offset = 0;
+      Object.keys(this.windows).forEach((id) => {
+        if (id === 'win-navigation' || id === 'win-player' || id === 'win-visualizer') return;
+        const win = this.windows[id];
+        if (win && !win.element.classList.contains('hidden') && !win.isMinimized) {
+          const posX = 120 + (offset * 30);
+          const posY = 40 + (offset * 30);
+          win.element.style.left = `${posX}px`;
+          win.element.style.top = `${posY}px`;
+          offset++;
+        }
+      });
+
+      this.playSound('ding');
+      if (window.clippy) window.clippy.speak('桌面窗口已自动整理对齐！');
+      this.updateTaskbar();
+    }
+
+    cascadeWindows() {
+      let offset = 0;
+      const visibleWins = Object.values(this.windows).filter(w => !w.element.classList.contains('hidden') && !w.isMinimized);
+      visibleWins.forEach((win) => {
+        win.element.style.left = `${80 + offset * 30}px`;
+        win.element.style.top = `${25 + offset * 30}px`;
+        this.bringToFront(win.element.dataset.windowId);
+        offset++;
+      });
+      this.playSound('ding');
+      this.updateTaskbar();
+    }
+
+    tileWindows() {
+      const visibleWins = Object.values(this.windows).filter(w => !w.element.classList.contains('hidden') && !w.isMinimized);
+      if (visibleWins.length === 0) return;
+      const screenW = window.innerWidth - 85;
+      const screenH = window.innerHeight - 36;
+      const cols = visibleWins.length > 2 ? 2 : visibleWins.length;
+      const rows = Math.ceil(visibleWins.length / cols);
+      const tileW = Math.floor(screenW / cols);
+      const tileH = Math.floor(screenH / rows);
+
+      visibleWins.forEach((win, idx) => {
+        const c = idx % cols;
+        const r = Math.floor(idx / cols);
+        win.element.style.left = `${80 + c * tileW}px`;
+        win.element.style.top = `${8 + r * tileH}px`;
+        win.element.style.width = `${tileW - 10}px`;
+        win.element.style.height = `${tileH - 10}px`;
+      });
+      this.playSound('ding');
+      this.updateTaskbar();
+    }
+
+    showDesktop() {
+      const hasUnminimized = Object.values(this.windows).some(w => !w.element.classList.contains('hidden') && !w.isMinimized);
+      if (hasUnminimized) {
+        this._savedMinimizedState = {};
+        Object.keys(this.windows).forEach((id) => {
+          const w = this.windows[id];
+          if (!w.element.classList.contains('hidden') && !w.isMinimized) {
+            this._savedMinimizedState[id] = true;
+            this.minimizeWindow(id);
+          }
+        });
+      } else if (this._savedMinimizedState) {
+        Object.keys(this._savedMinimizedState).forEach((id) => {
+          if (this.windows[id]) {
+            this.windows[id].element.classList.remove('minimized');
+            this.windows[id].isMinimized = false;
+          }
+        });
+        this._savedMinimizedState = null;
+        this.updateTaskbar();
+      }
     }
 
     updateTaskbar() {
@@ -503,6 +633,14 @@
           this.closeStartMenu();
         });
       });
+
+      const startTidy = document.getElementById('start-tidy-windows');
+      if (startTidy) {
+        startTidy.addEventListener('click', () => {
+          this.tidyWindows();
+          this.closeStartMenu();
+        });
+      }
     }
 
     closeStartMenu() {
@@ -539,13 +677,21 @@
         }
       });
 
-      document.getElementById('ctx-refresh').addEventListener('click', () => {
-        this.closeContextMenu();
-        window.location.reload();
-      });
+      const bindCtx = (id, fn) => {
+        const el = document.getElementById(id);
+        if (el) el.addEventListener('click', () => {
+          this.closeContextMenu();
+          fn();
+        });
+      };
 
-      document.getElementById('ctx-wallpaper').addEventListener('click', () => {
-        this.closeContextMenu();
+      bindCtx('ctx-refresh', () => window.location.reload());
+      bindCtx('ctx-tidy', () => this.tidyWindows());
+      bindCtx('ctx-cascade', () => this.cascadeWindows());
+      bindCtx('ctx-tile', () => this.tileWindows());
+      bindCtx('ctx-show-desktop', () => this.showDesktop());
+
+      bindCtx('ctx-wallpaper', () => {
         if (window.retroBackground) {
           const modes = ['wallpaper-engine', 'neon-sunset', 'win98-clouds', 'win98-teal', 'starfield', 'matrix'];
           const curIdx = modes.indexOf(window.retroBackground.mode);
@@ -555,23 +701,19 @@
         }
       });
 
-      document.getElementById('ctx-next-song').addEventListener('click', () => {
-        this.closeContextMenu();
+      bindCtx('ctx-next-song', () => {
         if (window.radioEngine) window.radioEngine.next();
       });
 
-      document.getElementById('ctx-toggle-clippy').addEventListener('click', () => {
-        this.closeContextMenu();
+      bindCtx('ctx-toggle-clippy', () => {
         if (window.clippy) window.clippy.toggle();
       });
 
-      document.getElementById('ctx-toggle-crt').addEventListener('click', () => {
-        this.closeContextMenu();
+      bindCtx('ctx-toggle-crt', () => {
         document.body.classList.toggle('crt-active');
       });
 
-      document.getElementById('ctx-about').addEventListener('click', () => {
-        this.closeContextMenu();
+      bindCtx('ctx-about', () => {
         this.openWindow('win-computer');
       });
     }
