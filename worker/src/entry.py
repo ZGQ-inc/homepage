@@ -1,5 +1,5 @@
 from workers import WorkerEntrypoint, Response
-from js import fetch, URLSearchParams
+from js import fetch, Object
 import json
 import html
 import re
@@ -169,25 +169,27 @@ class Default(WorkerEntrypoint):
                         headers=cors_headers
                     )
 
-                params = URLSearchParams.new()
-                params.append("secret", str(turnstile_secret))
-                params.append("response", str(turnstile_token))
+                verify_payload = {
+                    "secret": str(turnstile_secret),
+                    "response": str(turnstile_token)
+                }
                 if client_ip:
-                    params.append("remoteip", str(client_ip))
+                    verify_payload["remoteip"] = str(client_ip)
 
                 try:
+                    verify_opts = Object.fromEntries([
+                        ("method", "POST"),
+                        ("headers", Object.fromEntries([
+                            ("Content-Type", "application/json")
+                        ])),
+                        ("body", json.dumps(verify_payload))
+                    ])
                     verify_res = await fetch(
                         "https://challenges.cloudflare.com/turnstile/v0/siteverify",
-                        {
-                            "method": "POST",
-                            "body": params,
-                            "headers": {
-                                "Content-Type": "application/x-www-form-urlencoded"
-                            }
-                        }
+                        verify_opts
                     )
                     verify_text = await verify_res.text()
-                    verify_data = json.loads(verify_text)
+                    verify_data = json.loads(str(verify_text))
                     if not verify_data.get("success"):
                         error_codes = verify_data.get("error-codes", [])
                         return Response(
@@ -223,6 +225,20 @@ class Default(WorkerEntrypoint):
                         pass
 
                 # 7. Strictly Parameterized SQL INSERT (Defense against SQL Injection)
+                # Ensure table exists
+                await self.env.DB.prepare("""
+                    CREATE TABLE IF NOT EXISTS guestbook (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        nickname TEXT NOT NULL,
+                        contact TEXT DEFAULT '',
+                        content TEXT NOT NULL,
+                        ip TEXT DEFAULT '',
+                        user_agent TEXT DEFAULT '',
+                        is_approved INTEGER DEFAULT 1,
+                        created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+                    )
+                """).run()
+
                 insert_stmt = self.env.DB.prepare(
                     "INSERT INTO guestbook (nickname, contact, content, ip, user_agent, is_approved) VALUES (?, ?, ?, ?, ?, ?)"
                 ).bind(clean_nickname, clean_contact, clean_content, client_ip[:45], user_agent[:200], 1)
@@ -250,9 +266,15 @@ class Default(WorkerEntrypoint):
                     headers=cors_headers
                 )
 
-        except Exception as e:
+        except BaseException as e:
+            import traceback
+            tb = traceback.format_exc()
             return Response(
-                json.dumps({"success": False, "error": f"Server Error: {str(e)}"}, ensure_ascii=False),
+                json.dumps({
+                    "success": False,
+                    "error": f"Server Error: {str(e)}",
+                    "traceback": tb
+                }, ensure_ascii=False),
                 status=500,
                 headers=cors_headers
             )

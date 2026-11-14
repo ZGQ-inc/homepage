@@ -9,6 +9,7 @@
   <link rel="icon" href="./favicon.ico">
   <link rel="stylesheet" href="./assets/css/98.css">
   <link rel="stylesheet" href="./assets/css/desktop-theme.css">
+  <script src="./assets/js/win98-dialog.js"></script>
   <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 
@@ -1992,10 +1993,10 @@
 
       const navAddBtn = document.getElementById('nav-add-custom-btn');
       if (navAddBtn) {
-        navAddBtn.addEventListener('click', () => {
-          const name = prompt('请输入书签名称:');
+        navAddBtn.addEventListener('click', async () => {
+          const name = await prompt('请输入书签名称:');
           if (!name) return;
-          const url = prompt('请输入网址:', 'https://');
+          const url = await prompt('请输入网址:', 'https://');
           if (!url) return;
           BOOKMARKS[0].items.unshift({
             name: name,
@@ -2377,30 +2378,21 @@
             })
           });
 
-          const resData = await res.json();
-          if (res.ok && resData.success) {
+          const resData = await res.json().catch(() => null);
+          if (res.ok && resData && resData.success) {
             desktop.playSound('ding');
-            alert('🎉 留言成功！感谢您的寄语与支持！');
+            alert('🎉 留言成功！感谢您的寄语与支持！', '留言板');
             gbContent.value = '';
             fetchGbMessages();
           } else {
-            alert(resData.error || '提交失败，请稍后重试！');
+            const errMsg = (resData && resData.error) ? resData.error : `提交失败 (HTTP ${res.status})，请稍后重试！`;
+            desktop.playSound('chord');
+            alert(errMsg, '留言板错误');
           }
         } catch (e) {
-          console.warn('Worker unreachable, saving to local cache:', e);
-          const cached = JSON.parse(localStorage.getItem('zgq_cached_messages') || '[]');
-          const newMsg = {
-            nickname: nickname,
-            contact: contact,
-            content: content,
-            created_at: new Date().toISOString()
-          };
-          cached.unshift(newMsg);
-          localStorage.setItem('zgq_cached_messages', JSON.stringify(cached));
-          renderGbMessages(cached);
-          desktop.playSound('ding');
-          alert('✔ (DEBUG)留言已成功保存！');
-          gbContent.value = '';
+          console.error('Failed to submit message to Cloudflare D1:', e);
+          desktop.playSound('chord');
+          alert('网络通信异常或服务端无法连接，请检查网络后重试！', '系统错误');
         } finally {
           resetGbTurnstile();
           if (gbSubmitBtn) {

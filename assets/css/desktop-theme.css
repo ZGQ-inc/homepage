@@ -1621,3 +1621,109 @@ body.crt-active .crt-overlay {
     height: calc(50vh - var(--taskbar-height)) !important;
   }
 }
+
+
+/* 
+   Windows 98 Authentic Modal Dialog & MessageBox Styles
+    */
+
+.win98-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 99999999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0, 0, 0, 0.2);
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.win98-dialog-box {
+  position: absolute;
+  min-width: 280px;
+  max-width: min(480px, calc(100vw - 16px));
+  box-sizing: border-box;
+  animation: win98DialogPopup 0.1s ease-out;
+}
+
+@keyframes win98DialogPopup {
+  from {
+    transform: scale(0.96);
+    opacity: 0.8;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.win98-dialog-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 16px 14px 14px 14px;
+  box-sizing: border-box;
+}
+
+.win98-dialog-icon-wrap {
+  flex-shrink: 0;
+}
+
+.win98-dialog-icon-wrap img {
+  width: 32px;
+  height: 32px;
+  image-rendering: pixelated;
+  display: block;
+}
+
+.win98-dialog-body {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.win98-dialog-message {
+  font-size: 12px;
+  line-height: 1.5;
+  color: #000;
+  word-break: break-word;
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+.win98-dialog-input-wrap {
+  margin-top: 10px;
+}
+
+.win98-dialog-input {
+  width: 100%;
+  height: 22px;
+  background: #fff;
+  border: 1px solid #000;
+  box-shadow: inset 1px 1px #808080, inset -1px -1px #dfdfdf;
+  font-family: inherit;
+  font-size: 12px;
+  padding: 2px 5px;
+  box-sizing: border-box;
+  color: #000;
+}
+
+.win98-dialog-input:focus {
+  outline: none;
+}
+
+.win98-dialog-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 8px;
+  padding: 4px 14px 12px 14px;
+}
+
+.win98-dialog-buttons button {
+  min-width: 75px;
+  min-height: 23px;
+  cursor: pointer;
+}
