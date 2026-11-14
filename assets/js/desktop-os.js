@@ -100,17 +100,11 @@
           }
         } catch (e) {}
 
-        // If radio is not playing and Webamp is not playing, start radio so the user immediately gets music
-        if (window.radioEngine) {
-          const webamp = this.webampInstance;
-          const isWebampPlaying = !!(webamp && webamp.store && webamp.store.getState().media && webamp.store.getState().media.status === 'PLAYING');
-          if (!window.radioEngine.isPlaying && !isWebampPlaying) {
-            window.radioEngine.play();
-          } else if (window.radioEngine.isPlaying) {
-            if (window.radioEngine.audio) {
-              window.radioEngine.audio.muted = false;
-              window.radioEngine.audio.volume = window.radioEngine.volume;
-            }
+        // Unmute radio if it is already playing
+        if (window.radioEngine && window.radioEngine.isPlaying) {
+          if (window.radioEngine.audio) {
+            window.radioEngine.audio.muted = false;
+            window.radioEngine.audio.volume = window.radioEngine.volume;
           }
         }
       } else {

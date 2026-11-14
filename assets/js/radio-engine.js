@@ -243,15 +243,6 @@
           this.isOnlineReady = true;
           console.log(`Loaded ${this.playlist.length} tracks from NRW Radio (Randomized).`);
           this.emit('playlistready', { count: this.playlist.length });
-
-          // Auto-start radio if global sound is already enabled and system has booted
-          if (window.desktopOS && window.desktopOS.isSoundEnabled && !this.isPlaying) {
-            const webamp = window.desktopOS.webampInstance;
-            const isWebampPlaying = !!(webamp && webamp.store && webamp.store.getState().media && webamp.store.getState().media.status === 'PLAYING');
-            if (!isWebampPlaying && window.win98Boot && window.win98Boot.isEnded) {
-              this.play();
-            }
-          }
           return;
         }
       } catch (err) {
@@ -261,13 +252,6 @@
       // Fallback
       this.playlist = this.shuffleArray([...LOCAL_FALLBACK_TRACKS]);
       this.emit('playlistready', { count: this.playlist.length });
-      if (window.desktopOS && window.desktopOS.isSoundEnabled && !this.isPlaying) {
-        const webamp = window.desktopOS.webampInstance;
-        const isWebampPlaying = !!(webamp && webamp.store && webamp.store.getState().media && webamp.store.getState().media.status === 'PLAYING');
-        if (!isWebampPlaying && window.win98Boot && window.win98Boot.isEnded) {
-          this.play();
-        }
-      }
     }
 
     shuffleArray(arr) {
