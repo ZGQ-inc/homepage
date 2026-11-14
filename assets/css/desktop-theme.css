@@ -32,11 +32,11 @@
   box-sizing: border-box;
 }
 
-/* ==========================================================================
+/* 
    Windows 95/98 Authentic Scrollbars (Dakedres Gist - windows93.net)
    Source: https://gist.github.com/Dakedres/0ccda599648833a1c2f65d3967aa131b
    With Universal Smooth Scrolling
-   ========================================================================== */
+    */
 
 /* Universal smooth scrolling across all scroll containers */
 html, body, *, *::before, *::after {
@@ -295,9 +295,9 @@ html, body {
   overflow: visible;
 }
 
-/* -------------------------------------------------------------------------
+/* 
  * Authentic Win98 8-way Window Resizing Handles (Inspired by 1j01/98 os-gui)
- * ------------------------------------------------------------------------- */
+ *  */
 .window-handle {
   position: absolute;
   z-index: 120;
@@ -582,9 +582,9 @@ html, body {
   filter: grayscale(0.2) contrast(1.1);
 }
 
-/* ==========================================================================
+/* 
  * Windows 98 Authentic Canvas Boot Screen (LOGO.SYS 1:1)
- * ========================================================================== */
+ *  */
 #win98-boot-screen {
   position: fixed;
   inset: 0;
@@ -638,9 +638,9 @@ html, body {
   border-color: #aaa;
 }
 
-/* ==========================================================================
+/* 
  * Windows 98 Authentic System Tray Balloon Notification
- * ========================================================================== */
+ *  */
 .win98-tray-balloon {
   position: fixed;
   bottom: calc(var(--taskbar-height, 28px) + 8px);
@@ -904,9 +904,9 @@ body.crt-active .crt-overlay {
   display: block;
 }
 
-/* -------------------------------------------------------------------------
+/* 
  * Application Windows Specific UI
- * ------------------------------------------------------------------------- */
+ *  */
 
 /* Navigation Hub */
 .nav-search-bar {
@@ -1292,11 +1292,6 @@ body.crt-active .crt-overlay {
   border-color: #1ed760;
   box-shadow: inset 1px 1px 0px #000;
 }
-  padding: 1px 5px;
-  background: #000080;
-  color: #fff;
-  border-radius: 2px;
-}
 
 .tag-cloud {
   display: flex;
@@ -1527,9 +1522,9 @@ body.crt-active .crt-overlay {
   pointer-events: auto;
 }
 
-/* -------------------------------------------------------------------------
+/* 
  * Responsive & Mobile Adaptation - Authentic Floating Retro Windows
- * ------------------------------------------------------------------------- */
+ *  */
 @media (max-width: 768px) {
   .desktop-icons-container {
     flex-direction: row;
@@ -1582,9 +1577,9 @@ body.crt-active .crt-overlay {
   }
 }
 
-/* -------------------------------------------------------------------------
+/* 
  * Foldable Screen Adaptations (CSS Viewport Segments API)
- * ------------------------------------------------------------------------- */
+ *  */
 @media (horizontal-viewport-segments: 2) {
   #desktop {
     display: flex;

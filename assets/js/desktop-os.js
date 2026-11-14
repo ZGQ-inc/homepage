@@ -231,9 +231,9 @@
       }
     }
 
-    /* -------------------------------------------------------------------------
+    /* 
      * Window Management
-     * ------------------------------------------------------------------------- */
+     *  */
     setupWindows() {
       const windowElements = document.querySelectorAll('.window[data-window-id]');
       windowElements.forEach((el, index) => {
@@ -368,17 +368,16 @@
         if (isDragging) onEnd();
       });
 
-      // 双击/双击触控标题栏切换最大化/还原
       handleEl.addEventListener('dblclick', (e) => {
         if (e.target.tagName.toLowerCase() === 'button') return;
         this.toggleMaximize(winEl.dataset.windowId);
       });
     }
 
-    /* -------------------------------------------------------------------------
+    /* 
      * 8-Way Window Resizing (Inspired by 1j01/98 $Window.js)
      * Supports mouse & touch edge/corner dragging with constraints
-     * ------------------------------------------------------------------------- */
+     *  */
     makeResizable(winEl) {
       const directions = ['n', 's', 'w', 'e', 'nw', 'ne', 'sw', 'se'];
       directions.forEach((dir) => {
@@ -618,9 +617,9 @@
       }
     }
 
-    /* -------------------------------------------------------------------------
+    /* 
      * Desktop Icons Setup
-     * ------------------------------------------------------------------------- */
+     *  */
     setupDesktopIcons() {
       const icons = document.querySelectorAll('.desktop-icon[data-target]');
       icons.forEach((icon) => {
@@ -651,9 +650,9 @@
       });
     }
 
-    /* -------------------------------------------------------------------------
+    /* 
      * Webamp Secondary Player Integration
-     * ------------------------------------------------------------------------- */
+     *  */
     setupWebampLauncher() {
       this.webampTracks = [
         {
@@ -754,6 +753,9 @@
             this.activeWindowId = 'winamp';
             this.updateTaskbar();
             this.playSound('ding');
+            if (window.clippy && typeof window.clippy.reactToWindow === 'function') {
+              window.clippy.reactToWindow('winamp');
+            }
           } else {
             this.webampInstance.close();
             existingWebampEl.style.display = 'none';
@@ -834,6 +836,9 @@
           this.isWebampOpen = true;
           this.activeWindowId = 'winamp';
           this.playSound('ding');
+          if (window.clippy && typeof window.clippy.reactToWindow === 'function') {
+            window.clippy.reactToWindow('winamp');
+          }
           const el = document.getElementById('webamp');
           if (el) {
             this.highestZIndex += 5;
@@ -892,9 +897,9 @@
       };
     }
 
-    /* -------------------------------------------------------------------------
+    /* 
      * Taskbar & Start Menu
-     * ------------------------------------------------------------------------- */
+     *  */
     setupTaskbar() {
       const btnShowDesktop = document.getElementById('btn-show-desktop');
       if (btnShowDesktop) {
@@ -1150,9 +1155,9 @@
       if (startBtn) startBtn.classList.remove('active');
     }
 
-    /* -------------------------------------------------------------------------
+    /* 
      * Desktop Context Menu
-     * ------------------------------------------------------------------------- */
+     *  */
     setupContextMenu() {
       const menu = document.getElementById('desktop-context-menu');
       if (!menu) return;
@@ -1223,9 +1228,9 @@
       if (menu) menu.classList.remove('visible');
     }
 
-    /* -------------------------------------------------------------------------
+    /* 
      * Taskbar Clock
-     * ------------------------------------------------------------------------- */
+     *  */
     setupClock() {
       const clockEl = document.getElementById('taskbar-clock');
       if (!clockEl) return;
@@ -1248,9 +1253,9 @@
       setInterval(update, 1000);
     }
 
-    /* -------------------------------------------------------------------------
+    /* 
      * Foldable Screen & Viewport Adaptation
-     * ------------------------------------------------------------------------- */
+     *  */
     setupFoldableAdaptation() {
       const handleResize = () => {
         const isDualHorizontal = window.matchMedia('(horizontal-viewport-segments: 2)').matches;

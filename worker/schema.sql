@@ -1,7 +1,5 @@
--- ================================================================
 -- Cloudflare D1 Database Schema for ZGQ Homepage Guestbook
 -- Database: homepage-db
--- ================================================================
 
 CREATE TABLE IF NOT EXISTS guestbook (
   id          INTEGER PRIMARY KEY AUTOINCREMENT,

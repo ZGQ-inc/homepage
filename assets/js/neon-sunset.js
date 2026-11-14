@@ -175,9 +175,9 @@
       }
     }
 
-    /* -------------------------------------------------------------------------
+    /* 
      * Mode 1: Wallpaper Engine Authentic Neon Sunset
-     * ------------------------------------------------------------------------- */
+     *  */
     renderWallpaperEngine(ctx, w, h) {
       // 1. Draw 4K Backdrop Image (Cover fit)
       if (this.weImage.complete && this.weImage.naturalWidth > 0) {
@@ -303,9 +303,9 @@
       }
     }
 
-    /* -------------------------------------------------------------------------
+    /* 
      * Mode 2: Procedural Neon Sunset
-     * ------------------------------------------------------------------------- */
+     *  */
     renderProceduralSunset(ctx, w, h) {
       const horizonY = h * 0.58;
       const t = this.elapsed;

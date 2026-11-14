@@ -284,11 +284,11 @@
                 this.connectWebamp(webamp);
               }
 
-              // =========================================================================
+              
               // Option A: 100% Real-time Native Hardware Audio FFT!
               // Calling render() without args lets Butterchurn sample from connected AudioNode
               // using its built-in dual-channel splitter, 1024 FFT, and bass/mid/treb detectors.
-              // =========================================================================
+              
               this.visualizer.render();
 
               const levels = this.visualizer.renderer.audioLevels;
@@ -315,9 +315,9 @@
 
               this.updateAudioSourceDisplay('Winamp 实时硬件直连');
             } else if (isRadioPlaying) {
-              // =========================================================================
+              
               // Option B: NRW Radio Engine Audio
-              // =========================================================================
+              
               let hasRealOscillation = false;
               if (radio && radio.analyser) {
                 try {
@@ -360,10 +360,10 @@
               }
               this.updateAudioSourceDisplay('NRW 在线电台');
             } else {
-              // =========================================================================
+              
               // Option C: Music is paused or stopped -> True Silence (Zero Energy)!
               // Butterchurn samples silence from connected node. Oscilloscope stays flat.
-              // =========================================================================
+              
               this.visualizer.render();
 
               if (vuBass) vuBass.style.width = '0%';
