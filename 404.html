@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>404 - 页面未找到 · Windows 98</title>
+  <title>404 - 页面未找到</title>
   <link rel="stylesheet" href="./assets/css/98.css">
   <link rel="icon" type="image/png" href="./assets/icons/msg_error-0.png">
   <style>
@@ -27,7 +27,6 @@
       user-select: none;
     }
 
-    /* 经典扫描线视效 (CRT Scanline) */
     .crt-overlay {
       position: fixed;
       top: 0;
@@ -41,7 +40,6 @@
       opacity: 0.45;
     }
 
-    /* 404 主错误弹窗 */
     #error-dialog {
       width: 480px;
       max-width: 92vw;
@@ -112,7 +110,6 @@
       flex-wrap: wrap;
     }
 
-    /* 蓝屏死机 BSOD 全屏层 */
     #bsod-screen {
       display: none;
       position: fixed;
@@ -123,23 +120,48 @@
       background-color: #0000AA;
       color: #FFFFFF;
       font-family: "Lucida Console", "Courier New", monospace;
-      padding: 8vw 10vw;
+      padding: 24px;
       z-index: 1000;
       cursor: pointer;
       user-select: none;
       box-sizing: border-box;
       line-height: 1.8;
       font-size: 15px;
+      justify-content: center;
+      align-items: center;
+    }
+
+    #bsod-screen[style*="display: block"],
+    #bsod-screen[style*="display: flex"] {
+      display: flex !important;
+    }
+
+    .bsod-container {
+      max-width: 680px;
+      width: 100%;
+      margin: auto;
+      box-sizing: border-box;
+    }
+
+    .bsod-header {
+      text-align: center;
+      margin-bottom: 28px;
     }
 
     #bsod-screen h1 {
       display: inline-block;
       background-color: #AAAAAA;
       color: #0000AA;
-      padding: 2px 14px;
+      padding: 2px 18px;
       font-size: 16px;
-      margin-bottom: 24px;
+      margin: 0 auto;
       font-weight: normal;
+      letter-spacing: 1px;
+    }
+
+    .bsod-footer {
+      text-align: center;
+      margin-top: 28px;
     }
 
     .blinking-cursor {
@@ -155,7 +177,6 @@
 
   <div class="crt-overlay"></div>
 
-  <!-- Windows 98 404 错误弹窗 -->
   <div class="window" id="error-dialog">
     <div class="title-bar">
       <div class="title-bar-text">
@@ -167,7 +188,6 @@
     </div>
     <div class="error-body">
       <div class="error-row">
-        <!-- 经典红底白叉错误图标 -->
         <svg class="error-icon" viewBox="0 0 32 32">
           <circle cx="16" cy="16" r="14" fill="#E02020" stroke="#000" stroke-width="2"/>
           <line x1="10" y1="10" x2="22" y2="22" stroke="#FFF" stroke-width="3" stroke-linecap="round"/>
@@ -180,18 +200,16 @@
         </div>
       </div>
 
-      <!-- 详细技术诊断信息区 -->
       <div class="details-box" id="details-panel">
         <div>STATUS: HTTP/1.1 404 Object Not Found</div>
         <div>KERNEL: 0028:C0011E36 in VXD VMM(01) + 00010E36</div>
         <div>TIMESTAMP: <span id="disp-time">2026-11-13 23:20:00</span></div>
         <div>REFERRER: <span id="disp-ref">Direct Access</span></div>
-        <div>USER_AGENT: <span id="disp-ua">Mozilla/5.0</span></div>
+        <div>USER_AGENT: <span id="disp-ua"></span></div>
         <div>STACK DUMP: EAX=00000404 EBX=00790000 ECX=00000000 EDX=81734560</div>
         <div>DIAGNOSIS: 请求的虚拟目录映射为空，请检查 URL 拼写或返回主站。</div>
       </div>
 
-      <!-- 操作按钮栏 -->
       <div class="error-actions">
         <button type="button" onclick="toggleDetails()" id="btn-details">详细信息(D) &gt;&gt;</button>
         <button type="button" onclick="triggerBsod()">蓝屏模式 (BSOD)</button>
@@ -200,27 +218,29 @@
     </div>
   </div>
 
-  <!-- Windows 98 蓝屏死机 BSOD 全屏层 -->
   <div id="bsod-screen" onclick="goHome()">
-    <h1>Windows</h1>
-    <p>致命异常 0E 已在 0028:C0011E36 的 VXD VMM(01) + 00010E36 处发生。</p>
-    <p>当前的网页请求已被系统终止 (HTTP 404: 页面资源未找到)。</p>
-    <br>
-    <p>* 按任意键或点击屏幕任意位置重新启动并返回 Windows 98 桌面。</p>
-    <p>* 按 CTRL+ALT+DEL 重新启动您的计算机。所有应用程序中未保存的信息都将丢失。</p>
-    <br>
-    <p style="text-align: center;">按任意键继续 <span class="blinking-cursor">_</span></p>
+    <div class="bsod-container">
+      <div class="bsod-header">
+        <h1>Windows</h1>
+      </div>
+      <p>致命异常 0E 已在 0028:C0011E36 的 VXD VMM(01) + 00010E36 处发生。</p>
+      <p>当前的网页请求已被系统终止 (HTTP 404: 页面资源未找到)。</p>
+      <br>
+      <p>* 按任意键或点击屏幕任意位置重新启动并返回桌面。</p>
+      <br>
+      <div class="bsod-footer">
+        按任意键继续 <span class="blinking-cursor">_</span>
+      </div>
+    </div>
   </div>
 
   <script>
-    // 动态提取当前错误 URL 与环境信息
     const currentUrl = window.location.href;
     document.getElementById('disp-url').textContent = 'URL: ' + currentUrl;
     document.getElementById('disp-time').textContent = new Date().toLocaleString();
     document.getElementById('disp-ref').textContent = document.referrer || '直接输入 / 无引用页';
     document.getElementById('disp-ua').textContent = navigator.userAgent;
 
-    // 返回主页
     function goHome() {
       playBeep(440, 0.1);
       setTimeout(() => {
@@ -228,7 +248,6 @@
       }, 100);
     }
 
-    // 展开/折叠详细信息
     function toggleDetails() {
       const panel = document.getElementById('details-panel');
       const btn = document.getElementById('btn-details');
@@ -242,17 +261,16 @@
       playBeep(800, 0.05);
     }
 
-    // 触发蓝屏死机 BSOD
     function triggerBsod() {
       playBeep(180, 0.3);
-      document.getElementById('bsod-screen').style.display = 'block';
+      const bsod = document.getElementById('bsod-screen');
+      bsod.style.display = 'flex';
       document.title = 'Windows 98 - 蓝屏死机';
     }
 
-    // 监听键盘按键 (在 BSOD 状态下按任意键返回主页，按 ESC 退出弹窗)
     window.addEventListener('keydown', (e) => {
       const bsod = document.getElementById('bsod-screen');
-      if (bsod.style.display === 'block') {
+      if (bsod.style.display !== 'none' && bsod.style.display !== '') {
         goHome();
       } else if (e.key === 'Escape') {
         goHome();
@@ -261,7 +279,6 @@
       }
     });
 
-    // 纯前端 Web Audio API 合成复古蜂鸣声
     function playBeep(freq, duration) {
       try {
         const AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -269,7 +286,7 @@
         const ctx = new AudioContext();
         const osc = ctx.createOscillator();
         const gain = ctx.createGain();
-        osc.type = 'square'; // 经典 8-bit 方波
+        osc.type = 'square';
         osc.frequency.setValueAtTime(freq, ctx.currentTime);
         gain.gain.setValueAtTime(0.1, ctx.currentTime);
         gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + duration);

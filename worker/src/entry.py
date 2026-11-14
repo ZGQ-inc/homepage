@@ -1,4 +1,4 @@
-from js import Response
+from js import Response, fetch, Object
 import json
 import html
 import re
@@ -99,6 +99,15 @@ async def on_fetch(request, env):
             raw_nickname = str(body.get("nickname", "")).strip()
             raw_contact = str(body.get("contact", "")).strip()
             raw_content = str(body.get("content", "")).strip()
+            turnstile_token = str(body.get("turnstile_token") or body.get("cf-turnstile-response") or body.get("token") or "").strip()
+
+            # Anti-Spam & Bot Protection: Cloudflare Turnstile Verification
+            if not turnstile_token:
+                return Response.new(
+                    json.dumps({"success": False, "error": "请先完成人机安全验证 (Turnstile)"}, ensure_ascii=False),
+                    status=400,
+                    headers=cors_headers
+                )
 
             # Anti-Injection & Content Validation:
             # 1. Content validation
@@ -138,7 +147,7 @@ async def on_fetch(request, env):
             # Strip zero-width and potentially malicious control bytes
             clean_content = re.sub(r'[\x00-\x08\x0b\x0c\x0e-\x1f\x7f]', '', clean_content)
 
-            # 4. Extract Client IP & User Agent for rate limiting
+            # 4. Extract Client IP & User Agent for rate limiting and verification
             client_ip = ""
             user_agent = ""
             try:
@@ -147,7 +156,53 @@ async def on_fetch(request, env):
             except Exception:
                 pass
 
-            # 5. Rate Limiting Protection (Anti-Spam Flooding: 15s per IP)
+            # 5. Cloudflare Turnstile Server-side Verification
+            turnstile_secret = getattr(env, "TURNSTILE_SECRET_KEY", None)
+            if not turnstile_secret:
+                return Response.new(
+                    json.dumps({"success": False, "error": "服务端未配置 TURNSTILE_SECRET_KEY 密钥"}, ensure_ascii=False),
+                    status=500,
+                    headers=cors_headers
+                )
+            verify_payload = {
+                "secret": str(turnstile_secret),
+                "response": str(turnstile_token)
+            }
+            if client_ip:
+                verify_payload["remoteip"] = str(client_ip)
+
+            try:
+                verify_res = await fetch(
+                    "https://challenges.cloudflare.com/turnstile/v0/siteverify",
+                    Object.fromEntries([
+                        ("method", "POST"),
+                        ("headers", Object.fromEntries([
+                            ("Content-Type", "application/json")
+                        ])),
+                        ("body", json.dumps(verify_payload))
+                    ])
+                )
+                verify_text = await verify_res.text()
+                verify_data = json.loads(verify_text)
+                if not verify_data.get("success"):
+                    error_codes = verify_data.get("error-codes", [])
+                    return Response.new(
+                        json.dumps({
+                            "success": False,
+                            "error": "人机安全验证未通过，请重新验证",
+                            "error_codes": error_codes
+                        }, ensure_ascii=False),
+                        status=403,
+                        headers=cors_headers
+                    )
+            except Exception as verify_err:
+                return Response.new(
+                    json.dumps({"success": False, "error": f"安全验证服务通信异常: {str(verify_err)}"}, ensure_ascii=False),
+                    status=502,
+                    headers=cors_headers
+                )
+
+            # 6. Rate Limiting Protection (Anti-Spam Flooding: 15s per IP)
             if client_ip:
                 try:
                     check_stmt = env.DB.prepare(
