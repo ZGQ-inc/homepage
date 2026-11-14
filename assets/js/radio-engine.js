@@ -14,6 +14,7 @@
   const NRW_API_BASE = 'https://backend.nrwmusic.stream/api/';
   const NRW_AUDIO_BASE = 'https://backend.nrwmusic.stream/uploads/354fg6wGRd5s4J/';
   const NRW_IMAGE_BASE = 'https://backend.nrwmusic.stream/uploads/images/';
+  const NRW_STREAM_PROXY = 'https://nrw.zgqinc.gq/api/proxy/stream';
 
   // Local fallback tracks in case network is unreachable
   const LOCAL_FALLBACK_TRACKS = [
@@ -89,12 +90,15 @@
 
       // Audio Elements & Web Audio
       this.audio = new Audio();
+      this.audio.crossOrigin = 'anonymous';
       this.audio.preload = 'metadata';
       this.audio.volume = this.volume;
       if (window.desktopOS && !window.desktopOS.isSoundEnabled) {
         this.audio.muted = true;
       }
       this.errorTimer = null;
+      this._retriedDirect = false;
+      this._frequencyLoopRunning = false;
 
       this.audioContext = null;
       this.analyser = null;
@@ -139,7 +143,19 @@
         // Code 1 is MEDIA_ERR_ABORTED: fetching process aborted by user
         if (this.audio.error && this.audio.error.code === 1) return;
 
-        console.warn('RadioEngine audio error, trying next track:', e);
+        console.warn('RadioEngine audio error:', e);
+
+        // Fallback: If streaming proxy fails, fallback once directly to track.urlsong
+        const track = this.getCurrentTrack();
+        if (track && this.audio.src && this.audio.src.includes(NRW_STREAM_PROXY) && !this._retriedDirect) {
+          this._retriedDirect = true;
+          console.warn('Retrying track via direct origin:', track.urlsong);
+          this.audio.src = track.urlsong;
+          this.audio.play().catch(() => {});
+          return;
+        }
+        this._retriedDirect = false;
+
         clearTimeout(this.errorTimer);
         this.errorTimer = setTimeout(() => {
           if (this.isPlaying) {
@@ -150,28 +166,43 @@
     }
 
     initAudioContext() {
-      if (this.hasAudioContext) return;
+      if (this.hasAudioContext && this.sourceNode) return;
       try {
         const AudioCtx = (window.getSharedAudioContext ? window.getSharedAudioContext() : null) || window.AudioContext || window.webkitAudioContext;
         if (!AudioCtx) return;
-        this.audioContext = typeof AudioCtx === 'function' ? new AudioCtx() : AudioCtx;
-        this.analyser = this.audioContext.createAnalyser();
-        this.analyser.fftSize = 1024;
-        this.analyser.smoothingTimeConstant = 0.5;
-        this.audioData = new Uint8Array(this.analyser.frequencyBinCount);
-        this.timeData = new Uint8Array(this.analyser.fftSize);
+        if (!this.audioContext) {
+          this.audioContext = typeof AudioCtx === 'function' ? new AudioCtx() : AudioCtx;
+        }
+        if (!this.analyser) {
+          this.analyser = this.audioContext.createAnalyser();
+          this.analyser.fftSize = 1024;
+          this.analyser.smoothingTimeConstant = 0.5;
+          this.audioData = new Uint8Array(this.analyser.frequencyBinCount);
+          this.timeData = new Uint8Array(this.analyser.fftSize);
+        }
 
-        // Web Audio Analyser setup (used for frequency analysis)
+        // Web Audio Analyser setup (connect HTML5 <audio> element via MediaElementAudioSourceNode)
+        if (!this.sourceNode && this.audio) {
+          try {
+            this.sourceNode = this.audioContext.createMediaElementSource(this.audio);
+            this.sourceNode.connect(this.analyser);
+            this.analyser.connect(this.audioContext.destination);
+          } catch (e) {
+            console.warn('Could not create MediaElementSource for radio:', e);
+          }
+        }
+
         this.hasAudioContext = true;
 
-        // Note: We deliberately do NOT call createMediaElementSource(this.audio).
-        // Calling createMediaElementSource steals output to Web Audio graph, which forces
-        // silence on cross-origin audio streams without Access-Control-Allow-Origin (all NRW streams).
-        // By leaving this.audio as a native HTML5 audio element, it plays directly to speakers
-        // with zero CORS restrictions and 100% reliable sound across all browsers.
+        if (window.visualizerManager && typeof window.visualizerManager.connectRadio === 'function') {
+          window.visualizerManager.connectRadio(this);
+        }
 
         // Start beat & frequency pulse loop
-        this.startFrequencyLoop();
+        if (!this._frequencyLoopRunning) {
+          this._frequencyLoopRunning = true;
+          this.startFrequencyLoop();
+        }
       } catch (err) {
         console.warn('Could not initialize AudioContext:', err);
       }
@@ -295,7 +326,13 @@
         }
       }
 
-      this.audio.src = track.urlsong;
+      this._retriedDirect = false;
+      if (track.isLocal) {
+        this.audio.src = track.urlsong;
+      } else {
+        // Route through Cloudflare Worker proxy for CORS permission & real-time FFT
+        this.audio.src = `${NRW_STREAM_PROXY}?url=${encodeURIComponent(track.urlsong)}`;
+      }
       this.audio.muted = window.desktopOS ? !window.desktopOS.isSoundEnabled : false;
       this.audio.volume = this.volume;
 

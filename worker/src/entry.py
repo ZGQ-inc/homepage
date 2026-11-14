@@ -3,19 +3,116 @@ from js import fetch, Object
 import json
 import html
 import re
+from urllib.parse import urlparse, parse_qs
 
 class Default(WorkerEntrypoint):
     """
-    Cloudflare Python Worker for ZGQ Inc. Homepage Guestbook.
-    Backed by Cloudflare D1 Database (homepage-db).
-    Features Turnstile anti-bot verification, parameterized anti-SQLi queries,
-    anti-XSS HTML escaping, and rate limiting.
+    Cloudflare Python Worker for ZGQ Inc. Homepage.
+    Features:
+      1. NewRetroWave Audio Stream CORS Proxy (/api/proxy/stream) with Range streaming
+      2. Cloudflare D1 Guestbook (/api/messages) with Turnstile anti-bot verification
     """
 
     async def fetch(self, request):
         method = request.method
+        parsed = urlparse(str(request.url))
+        pathname = parsed.path
 
-        # Standard security & CORS headers
+        # Route 1: Audio Stream CORS Proxy for NewRetroWave Radio
+        if pathname.startswith("/api/proxy/") or pathname == "/stream":
+            audio_cors_headers = {
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Methods": "GET, HEAD, OPTIONS",
+                "Access-Control-Allow-Headers": "*",
+                "Access-Control-Expose-Headers": "Content-Range, Content-Length, Accept-Ranges",
+                "Accept-Ranges": "bytes",
+                "Cache-Control": "public, max-age=604800, immutable"
+            }
+
+            if method == "OPTIONS":
+                return Response("", status=204, headers=audio_cors_headers)
+
+            query_params = parse_qs(parsed.query)
+            song_param = query_params.get("song", [""])[0]
+            url_param = query_params.get("url", [""])[0]
+
+            if song_param:
+                clean_song = re.sub(r'[^a-zA-Z0-9_\-\.]', '', song_param)
+                target_url = f"https://backend.nrwmusic.stream/uploads/354fg6wGRd5s4J/{clean_song}"
+            elif url_param:
+                if url_param.startswith("https://backend.nrwmusic.stream/") or url_param.startswith("http://backend.nrwmusic.stream/"):
+                    target_url = url_param
+                else:
+                    return Response(
+                        json.dumps({"error": "Forbidden target origin"}, ensure_ascii=False),
+                        status=403,
+                        headers={"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"}
+                    )
+            else:
+                return Response(
+                    json.dumps({"error": "Missing 'song' or 'url' parameter"}, ensure_ascii=False),
+                    status=400,
+                    headers={"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"}
+                )
+
+            # Pass client Range header if requested
+            range_header = None
+            try:
+                range_header = request.headers.get("range") or request.headers.get("Range")
+            except Exception:
+                pass
+
+            try:
+                if range_header:
+                    fetch_opts = Object.fromEntries([
+                        ("method", method),
+                        ("headers", Object.fromEntries([
+                            ("Range", str(range_header))
+                        ]))
+                    ])
+                    sub_res = await fetch(target_url, fetch_opts)
+                else:
+                    fetch_opts = Object.fromEntries([
+                        ("method", method)
+                    ])
+                    sub_res = await fetch(target_url, fetch_opts)
+
+                sub_status = int(sub_res.status)
+                resp_headers = dict(audio_cors_headers)
+
+                try:
+                    ct = sub_res.headers.get("content-type")
+                    resp_headers["Content-Type"] = str(ct) if ct else "audio/mpeg"
+                except Exception:
+                    resp_headers["Content-Type"] = "audio/mpeg"
+
+                try:
+                    cl = sub_res.headers.get("content-length")
+                    if cl:
+                        resp_headers["Content-Length"] = str(cl)
+                except Exception:
+                    pass
+
+                try:
+                    cr = sub_res.headers.get("content-range")
+                    if cr:
+                        resp_headers["Content-Range"] = str(cr)
+                except Exception:
+                    pass
+
+                if method == "HEAD":
+                    return Response("", status=sub_status, headers=resp_headers)
+
+                return Response(sub_res.body, status=sub_status, headers=resp_headers)
+
+            except Exception as proxy_err:
+                return Response(
+                    json.dumps({"error": f"Stream Proxy Error: {str(proxy_err)}"}, ensure_ascii=False),
+                    status=502,
+                    headers={"Content-Type": "application/json", "Access-Control-Allow-Origin": "*"}
+                )
+
+        # Standard security & CORS headers for API
         cors_headers = {
             "Access-Control-Allow-Origin": "*",
             "Access-Control-Allow-Methods": "GET, POST, OPTIONS",

@@ -120,10 +120,26 @@
         if (node) {
           this.visualizer.connectAudio(node);
           this._webampConnected = true;
+          this._radioConnected = false;
           console.log('Butterchurn connected directly to Webamp AudioNode.');
         }
       } catch (e) {
         console.warn('Could not connect Webamp directly to Butterchurn:', e);
+      }
+    }
+
+    connectRadio(radioEngine) {
+      if (!this.visualizer || !radioEngine) return;
+      try {
+        const node = radioEngine.sourceNode || radioEngine.analyser;
+        if (node) {
+          this.visualizer.connectAudio(node);
+          this._radioConnected = true;
+          this._webampConnected = false;
+          console.log('Butterchurn connected directly to Radio AudioNode.');
+        }
+      } catch (e) {
+        console.warn('Could not connect Radio directly to Butterchurn:', e);
       }
     }
 
@@ -315,50 +331,38 @@
 
               this.updateAudioSourceDisplay('Winamp 实时硬件直连');
             } else if (isRadioPlaying) {
-              
-              // Option B: NRW Radio Engine Audio
-              
-              let hasRealOscillation = false;
-              if (radio && radio.analyser) {
-                try {
-                  radio.analyser.getByteTimeDomainData(realWavData);
-                  for (let k = 0; k < 64; k += 4) {
-                    if (Math.abs(realWavData[k] - 128) > 2) {
-                      hasRealOscillation = true;
-                      break;
-                    }
-                  }
-                } catch (e) {}
+              // Ensure Radio AudioNode is connected to Butterchurn native audio graph
+              if ((radio.sourceNode || radio.analyser) && !this._radioConnected) {
+                this.connectRadio(radio);
               }
 
-              if (hasRealOscillation) {
-                this.visualizer.render({
-                  audioLevels: {
-                    timeByteArray: realWavData,
-                    timeByteArrayL: realWavData,
-                    timeByteArrayR: realWavData
-                  }
-                });
+              // Option B: 100% Real-time Native Hardware Audio FFT for NRW Radio!
+              // Calling render() without args lets Butterchurn sample directly from connected AudioNode
+              this.visualizer.render();
 
-                if (window.retroBackground && radio.audioData) {
-                  let sum = 0;
-                  for (let i = 1; i < 14; i++) sum += (radio.audioData[i] || 0);
-                  const energy = sum / (13 * 255);
-                  window.retroBackground.setAudioEnergy(energy);
-                  if (vuBass) vuBass.style.width = `${Math.min(100, energy * 180).toFixed(1)}%`;
-                  if (vuMid) vuMid.style.width = `${Math.min(100, energy * 140).toFixed(1)}%`;
-                  if (vuTreb) vuTreb.style.width = `${Math.min(100, energy * 100).toFixed(1)}%`;
+              const levels = this.visualizer.renderer.audioLevels;
+              if (levels) {
+                const bVal = Math.min(100, Math.max(0, (levels.bass / 2.2) * 100));
+                const mVal = Math.min(100, Math.max(0, (levels.mid / 2.2) * 100));
+                const tVal = Math.min(100, Math.max(0, (levels.treb / 2.2) * 100));
+
+                if (vuBass) vuBass.style.width = `${bVal.toFixed(1)}%`;
+                if (vuMid) vuMid.style.width = `${mVal.toFixed(1)}%`;
+                if (vuTreb) vuTreb.style.width = `${tVal.toFixed(1)}%`;
+                if (vuBadge) {
+                  vuBadge.textContent = '● NRW 电台实时硬件直连 (FFT)';
+                  vuBadge.style.color = '#00e5ff';
+                  vuBadge.style.borderColor = '#0088cc';
                 }
-              } else {
-                this.renderSynthwaveWave(wavBuffer, wavBufferL, wavBufferR, fftSize, radio);
+
+                // Synchronize background neon glow with Radio's actual bass beat
+                if (window.retroBackground) {
+                  const energy = Math.min(1.0, (levels.bass_att / 2.0));
+                  window.retroBackground.setAudioEnergy(energy);
+                }
               }
 
-              if (vuBadge) {
-                vuBadge.textContent = '● NRW 电台在线广播';
-                vuBadge.style.color = '#00e5ff';
-                vuBadge.style.borderColor = '#0088cc';
-              }
-              this.updateAudioSourceDisplay('NRW 在线电台');
+              this.updateAudioSourceDisplay('NRW 电台实时硬件直连');
             } else {
               
               // Option C: Music is paused or stopped -> True Silence (Zero Energy)!
