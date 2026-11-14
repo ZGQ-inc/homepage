@@ -45,12 +45,23 @@
       const existing = document.getElementById('retro-clippy');
       if (existing) existing.remove();
 
-      // Attempt to load official clippyjs agent first
+      // Attempt to load official clippyjs agent first (with timeout for offline/CDN resilience)
       try {
-        const clippyModule = await import('https://unpkg.com/clippyjs/dist/index.mjs');
-        const agentsModule = await import('https://unpkg.com/clippyjs/dist/agents/index.mjs');
-        if (clippyModule && agentsModule && agentsModule.Clippy) {
-          this.agent = await clippyModule.initAgent(agentsModule.Clippy);
+        const loadOfficialPromise = (async () => {
+          const clippyModule = await import('https://unpkg.com/clippyjs/dist/index.mjs');
+          const agentsModule = await import('https://unpkg.com/clippyjs/dist/agents/index.mjs');
+          if (clippyModule && agentsModule && agentsModule.Clippy) {
+            return await clippyModule.initAgent(agentsModule.Clippy);
+          }
+          return null;
+        })();
+
+        const timeoutPromise = new Promise((_, reject) =>
+          setTimeout(() => reject(new Error('CDN timeout')), 2500)
+        );
+
+        this.agent = await Promise.race([loadOfficialPromise, timeoutPromise]);
+        if (this.agent) {
 
           // Mute clippy internal sound effects immediately BEFORE show() if desktop sound is muted
           if (this.agent && this.agent._sound) {
@@ -65,6 +76,19 @@
 
           this.agent.show();
           this.isAgentLoaded = true;
+
+          if (this.agent && this.agent._el) {
+            this.agent._el.classList.add('clippy');
+            this.agent._el.id = 'clippyjs-agent';
+          }
+
+          // Position Clippy safely above taskbar & tray, especially on mobile
+          const isMobile = window.innerWidth <= 768;
+          const initialX = Math.max(10, window.innerWidth - (isMobile ? 120 : 160));
+          const initialY = Math.max(10, window.innerHeight - (isMobile ? 210 : 180));
+          if (this.agent && typeof this.agent.moveTo === 'function') {
+            try { this.agent.moveTo(initialX, initialY, 0); } catch (e) {}
+          }
 
           // Grand entrance
           setTimeout(() => {
@@ -100,23 +124,16 @@
     }
 
     bindAgentInteractions() {
-      // Click & double click on clippy element
-      setTimeout(() => {
-        const el = document.querySelector('.clippy') || document.querySelector('[class*="clippy"]');
-        if (el) {
-          el.style.cursor = 'pointer';
-          el.title = '我是 Clippy！点击我互动，双击看绝活！';
-
-          el.addEventListener('click', () => {
-            this.reactToClick();
-          });
-
-          el.addEventListener('dblclick', (e) => {
-            e.stopPropagation();
-            this.reactToDoubleClick();
-          });
-        }
-      }, 1500);
+      // Setup drag and interactions on clippy element
+      const el = (this.agent && this.agent._el) || document.getElementById('clippyjs-agent') || document.querySelector('.clippy') || document.querySelector('[class*="clippy"]');
+      if (el) {
+        this.setupDraggable(el);
+      } else {
+        setTimeout(() => {
+          const fallbackEl = (this.agent && this.agent._el) || document.getElementById('clippyjs-agent') || document.querySelector('.clippy') || document.querySelector('[class*="clippy"]');
+          if (fallbackEl) this.setupDraggable(fallbackEl);
+        }, 300);
+      }
 
       // Listen to radio song changes
       window.addEventListener('radio:songchanged', (e) => {
@@ -263,12 +280,23 @@
       const container = document.createElement('div');
       container.id = 'retro-clippy';
       container.className = 'retro-clippy-widget';
+
+      // Safe initial position above taskbar
+      const isMobile = window.innerWidth <= 768;
+      const initialX = Math.max(10, window.innerWidth - (isMobile ? 120 : 160));
+      const initialY = Math.max(10, window.innerHeight - (isMobile ? 210 : 180));
+      container.style.position = 'fixed';
+      container.style.left = `${initialX}px`;
+      container.style.top = `${initialY}px`;
+      container.style.right = 'auto';
+      container.style.bottom = 'auto';
+
       container.innerHTML = `
         <div class="clippy-balloon" id="clippy-balloon" style="display: none;">
           <div class="clippy-tip"></div>
           <div class="clippy-content" id="clippy-content"></div>
         </div>
-        <div class="clippy-character" id="clippy-character" title="Click me for tips!">
+        <div class="clippy-character" id="clippy-character" title="我是 Clippy！拖动我可以移动我，点击我互动，双击看绝活！">
           <div class="clippy-eyes">
             <span class="eye eye-left"><span class="pupil"></span></span>
             <span class="eye eye-right"><span class="pupil"></span></span>
@@ -284,12 +312,121 @@
     }
 
     bindEvents() {
-      const char = document.getElementById('clippy-character');
-      if (char) {
-        char.addEventListener('click', () => {
-          this.reactToClick();
-        });
+      const container = document.getElementById('retro-clippy');
+      if (container) {
+        this.setupDraggable(container);
       }
+    }
+
+    setupDraggable(el) {
+      if (!el || el.dataset.draggableSetup) return;
+      el.dataset.draggableSetup = 'true';
+      el.style.touchAction = 'none';
+      el.style.cursor = 'grab';
+      el.title = '我是 Clippy！按住拖动可移动位置，点击互动，双击看绝活！';
+
+      let isDragging = false;
+      let startX = 0, startY = 0;
+      let initialLeft = 0, initialTop = 0;
+      let hasMoved = false;
+
+      const ensureFixedCoords = () => {
+        const rect = el.getBoundingClientRect();
+        el.style.position = 'fixed';
+        el.style.left = `${rect.left}px`;
+        el.style.top = `${rect.top}px`;
+        el.style.right = 'auto';
+        el.style.bottom = 'auto';
+        return rect;
+      };
+
+      const onPointerDown = (e) => {
+        if (e.button !== undefined && e.button !== 0) return;
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+
+        isDragging = true;
+        hasMoved = false;
+        startX = clientX;
+        startY = clientY;
+
+        const rect = ensureFixedCoords();
+        initialLeft = rect.left;
+        initialTop = rect.top;
+
+        el.style.cursor = 'grabbing';
+        el.style.zIndex = '999999';
+
+        if (e.type === 'touchstart' && e.cancelable) {
+          e.preventDefault();
+        }
+      };
+
+      const onPointerMove = (e) => {
+        if (!isDragging) return;
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+
+        const dx = clientX - startX;
+        const dy = clientY - startY;
+
+        if (Math.abs(dx) > 4 || Math.abs(dy) > 4) {
+          hasMoved = true;
+        }
+
+        let newLeft = initialLeft + dx;
+        let newTop = initialTop + dy;
+
+        const elW = el.offsetWidth || 124;
+        const elH = el.offsetHeight || 93;
+        const maxLeft = window.innerWidth - elW - 4;
+        const maxTop = window.innerHeight - elH - 34; // keep above taskbar
+
+        newLeft = Math.max(4, Math.min(newLeft, maxLeft));
+        newTop = Math.max(4, Math.min(newTop, maxTop));
+
+        el.style.left = `${newLeft}px`;
+        el.style.top = `${newTop}px`;
+
+        if (this.agent) {
+          this.agent._targetX = newLeft;
+          this.agent._targetY = newTop;
+          if (this.agent._balloon && typeof this.agent._balloon.reposition === 'function') {
+            try { this.agent._balloon.reposition(); } catch (err) {}
+          }
+        }
+
+        if (e.cancelable) {
+          e.preventDefault();
+        }
+      };
+
+      const onPointerUp = (e) => {
+        if (!isDragging) return;
+        isDragging = false;
+        el.style.cursor = 'grab';
+
+        // Tap without drag triggers normal interaction
+        if (!hasMoved) {
+          this.reactToClick();
+        }
+      };
+
+      // Touch events for mobile
+      el.addEventListener('touchstart', onPointerDown, { passive: false });
+      window.addEventListener('touchmove', onPointerMove, { passive: false });
+      window.addEventListener('touchend', onPointerUp, { passive: true });
+      window.addEventListener('touchcancel', onPointerUp, { passive: true });
+
+      // Mouse events for desktop
+      el.addEventListener('mousedown', onPointerDown);
+      window.addEventListener('mousemove', onPointerMove);
+      window.addEventListener('mouseup', onPointerUp);
+
+      el.addEventListener('dblclick', (e) => {
+        e.stopPropagation();
+        this.reactToDoubleClick();
+      });
     }
 
     toggle() {

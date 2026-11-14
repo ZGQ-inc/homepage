@@ -689,8 +689,10 @@
 
         this.highestZIndex += 10;
         const initialZ = this.highestZIndex;
-        const posX = Math.max(30, Math.min(window.innerWidth - 300, 180));
-        const posY = Math.max(40, Math.min(window.innerHeight - 300, 90));
+        const isMobile = window.innerWidth <= 768;
+        // Winamp initial layout: to the left side and vertically centered ("默认靠左边中间一点")
+        const posX = isMobile ? 12 : Math.max(70, Math.min(window.innerWidth - 300, 100));
+        const posY = isMobile ? 50 : Math.max(50, Math.floor((window.innerHeight - 360) / 2));
 
         this.webampInstance = new window.Webamp({
           zIndex: initialZ,
@@ -724,6 +726,15 @@
             el.style.display = 'block';
           }
           if (this.webampInstance && this.webampInstance.store) {
+            this.webampInstance.store.dispatch({
+              type: 'UPDATE_WINDOW_POSITIONS',
+              positions: {
+                main: { x: posX, y: posY },
+                equalizer: { x: posX, y: posY + 116 },
+                playlist: { x: posX, y: posY + 232 }
+              },
+              absolute: true
+            });
             this.webampInstance.store.dispatch({ type: "CLICKED_TRACK", index: 0 });
           }
           this.updateTaskbar();
