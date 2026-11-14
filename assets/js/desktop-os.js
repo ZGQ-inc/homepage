@@ -784,6 +784,11 @@
         // Intercept and sync Webamp media with desktop mute state
         const media = this.webampInstance.media;
         if (media) {
+          // Direct Web Audio connection: Connect Webamp audio node directly into Butterchurn Milkdrop
+          if (window.visualizerManager && typeof window.visualizerManager.connectWebamp === 'function') {
+            window.visualizerManager.connectWebamp(this.webampInstance);
+          }
+
           const origSetVolume = media.setVolume.bind(media);
           media._savedVolume = (this.webampInstance.store && this.webampInstance.store.getState().media)
             ? this.webampInstance.store.getState().media.volume

@@ -993,6 +993,31 @@
           <select id="vis-preset-select" style="max-width: 170px; font-size: 11px;"></select>
         </div>
 
+        <!-- 实时音频频谱跳动指示器 (VU Meter LED 仪表盘) -->
+        <div class="vis-vu-meter-bar" style="display: flex; align-items: center; justify-content: space-between; background: #0c0d12; border: 1px inset #808080; padding: 2px 8px; margin-bottom: 4px; font-family: 'Courier New', monospace; font-size: 11px;">
+          <div style="display: flex; gap: 10px; align-items: center; flex-wrap: wrap;">
+            <div style="display: flex; align-items: center; gap: 4px;">
+              <span style="color: #00ff66; font-weight: bold; font-size: 10px;">BASS:</span>
+              <div style="width: 55px; height: 7px; background: #1a1a1a; border: 1px solid #333; overflow: hidden; display: flex;">
+                <div id="vis-vu-bass" style="width: 0%; height: 100%; background: linear-gradient(90deg, #00ff66, #ffcc00 70%, #ff2200 90%);"></div>
+              </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 4px;">
+              <span style="color: #00e5ff; font-weight: bold; font-size: 10px;">MID:</span>
+              <div style="width: 55px; height: 7px; background: #1a1a1a; border: 1px solid #333; overflow: hidden; display: flex;">
+                <div id="vis-vu-mid" style="width: 0%; height: 100%; background: linear-gradient(90deg, #00e5ff, #0088ff 70%, #ff00ff 90%);"></div>
+              </div>
+            </div>
+            <div style="display: flex; align-items: center; gap: 4px;">
+              <span style="color: #ffaa00; font-weight: bold; font-size: 10px;">TREB:</span>
+              <div style="width: 55px; height: 7px; background: #1a1a1a; border: 1px solid #333; overflow: hidden; display: flex;">
+                <div id="vis-vu-treb" style="width: 0%; height: 100%; background: linear-gradient(90deg, #ffcc00, #ff6600 70%, #ff0000 90%);"></div>
+              </div>
+            </div>
+          </div>
+          <span id="vis-vu-status-badge" style="color: #888888; font-size: 10px; border: 1px solid #444; padding: 1px 4px; border-radius: 2px;">○ 音频待机 (静止)</span>
+        </div>
+
         <div class="visualizer-wrapper">
           <canvas id="visualizer-canvas"></canvas>
           <div id="visualizer-osd">Milkdrop 3D</div>
@@ -1275,6 +1300,29 @@
   </footer>
 
   <!-- 核心逻辑与脚本库 -->
+  <!-- 全局单例 AudioContext 统一桥接，确保 Webamp、Butterchurn Milkdrop 与音频引擎在同一硬件上下文中无缝直连 -->
+  <script>
+    (function () {
+      const OrigAudioContext = window.AudioContext || window.webkitAudioContext;
+      if (!OrigAudioContext) return;
+      let sharedContext = null;
+      function getGlobalSharedContext() {
+        if (!sharedContext) {
+          sharedContext = new OrigAudioContext();
+        }
+        return sharedContext;
+      }
+      window.AudioContext = function() {
+        return getGlobalSharedContext();
+      };
+      window.AudioContext.prototype = OrigAudioContext.prototype;
+      if (window.webkitAudioContext) {
+        window.webkitAudioContext = window.AudioContext;
+      }
+      window.getSharedAudioContext = getGlobalSharedContext;
+      window._sharedAudioCtx = getGlobalSharedContext();
+    })();
+  </script>
   <script src="./assets/js/neon-sunset.js"></script>
   <script src="./assets/js/radio-engine.js"></script>
   <script src="./assets/js/butterchurn.min.js"></script>

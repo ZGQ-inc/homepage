@@ -93,6 +93,11 @@
             } catch (e) {}
           }
 
+          // Direct Web Audio connection to Webamp if already available
+          if (window.desktopOS && window.desktopOS.webampInstance) {
+            this.connectWebamp(window.desktopOS.webampInstance);
+          }
+
           if (this.presetKeys.length > 0) {
             this.loadPresetByIndex(this.currentPresetIndex, 0.0);
           }
@@ -105,6 +110,20 @@
         }
       } catch (err) {
         console.warn('Error creating Butterchurn visualizer:', err);
+      }
+    }
+
+    connectWebamp(webampInstance) {
+      if (!this.visualizer || !webampInstance || !webampInstance.media) return;
+      try {
+        const node = webampInstance.media._gainNode;
+        if (node) {
+          this.visualizer.connectAudio(node);
+          this._webampConnected = true;
+          console.log('Butterchurn connected directly to Webamp AudioNode.');
+        }
+      } catch (e) {
+        console.warn('Could not connect Webamp directly to Butterchurn:', e);
       }
     }
 
@@ -245,7 +264,11 @@
       const wavBufferR = new Uint8Array(fftSize);
       const realWavData = new Uint8Array(fftSize);
       const realFreqData = new Uint8Array(fftSize);
-      let idleFrame = 0;
+
+      const vuBass = document.getElementById('vis-vu-bass');
+      const vuMid = document.getElementById('vis-vu-mid');
+      const vuTreb = document.getElementById('vis-vu-treb');
+      const vuBadge = document.getElementById('vis-vu-status-badge');
 
       const loop = () => {
         if (this.visualizer) {
@@ -256,49 +279,49 @@
             const isRadioPlaying = !!(radio && radio.isPlaying);
 
             if (isWebampPlaying) {
-              // ==========================================
-              // Option A: 100% Real-time Winamp Audio!
-              // ==========================================
-              const webampAnalyser = (webamp.media && typeof webamp.media.getAnalyser === 'function')
-                ? webamp.media.getAnalyser()
-                : (webamp.media ? webamp.media._analyser : null);
+              // Ensure Webamp gainNode is connected to Butterchurn native audio graph
+              if (webamp.media && webamp.media._gainNode && !this._webampConnected) {
+                this.connectWebamp(webamp);
+              }
 
-              if (webampAnalyser) {
-                try {
-                  webampAnalyser.getByteTimeDomainData(realWavData);
-                  webampAnalyser.getByteFrequencyData(realFreqData);
-                } catch (e) {}
+              // =========================================================================
+              // Option A: 100% Real-time Native Hardware Audio FFT!
+              // Calling render() without args lets Butterchurn sample from connected AudioNode
+              // using its built-in dual-channel splitter, 1024 FFT, and bass/mid/treb detectors.
+              // =========================================================================
+              this.visualizer.render();
 
-                this.visualizer.render({
-                  audioLevels: {
-                    timeByteArray: realWavData,
-                    timeByteArrayL: realWavData,
-                    timeByteArrayR: realWavData
-                  }
-                });
+              const levels = this.visualizer.renderer.audioLevels;
+              if (levels) {
+                const bVal = Math.min(100, Math.max(0, (levels.bass / 2.2) * 100));
+                const mVal = Math.min(100, Math.max(0, (levels.mid / 2.2) * 100));
+                const tVal = Math.min(100, Math.max(0, (levels.treb / 2.2) * 100));
 
-                // Synchronize Wallpaper Engine Neon Sunset background with Winamp bass & beat
-                if (window.retroBackground) {
-                  let sum = 0;
-                  for (let i = 1; i < 14; i++) sum += (realFreqData[i] || 0);
-                  const energy = Math.min(1.0, (sum / (13 * 255)) * 1.5);
-                  window.retroBackground.setAudioEnergy(energy);
+                if (vuBass) vuBass.style.width = `${bVal.toFixed(1)}%`;
+                if (vuMid) vuMid.style.width = `${mVal.toFixed(1)}%`;
+                if (vuTreb) vuTreb.style.width = `${tVal.toFixed(1)}%`;
+                if (vuBadge) {
+                  vuBadge.textContent = '● Winamp 实时硬件直连 (FFT)';
+                  vuBadge.style.color = '#00ff66';
+                  vuBadge.style.borderColor = '#00aa44';
                 }
 
-                this.updateAudioSourceDisplay('Winamp 实时频谱');
-              } else {
-                this.renderAmbientWave(wavBuffer, wavBufferL, wavBufferR, fftSize, ++idleFrame);
-                this.updateAudioSourceDisplay('Winamp');
+                // Synchronize background neon glow with Winamp's actual bass beat
+                if (window.retroBackground) {
+                  const energy = Math.min(1.0, (levels.bass_att / 2.0));
+                  window.retroBackground.setAudioEnergy(energy);
+                }
               }
+
+              this.updateAudioSourceDisplay('Winamp 实时硬件直连');
             } else if (isRadioPlaying) {
-              // ==========================================
+              // =========================================================================
               // Option B: NRW Radio Engine Audio
-              // ==========================================
+              // =========================================================================
               let hasRealOscillation = false;
               if (radio && radio.analyser) {
                 try {
                   radio.analyser.getByteTimeDomainData(realWavData);
-                  // Check if waveform differs from 128 (flat silence)
                   for (let k = 0; k < 64; k += 4) {
                     if (Math.abs(realWavData[k] - 128) > 2) {
                       hasRealOscillation = true;
@@ -309,7 +332,6 @@
               }
 
               if (hasRealOscillation) {
-                // Real Audio waveform from Web Audio API
                 this.visualizer.render({
                   audioLevels: {
                     timeByteArray: realWavData,
@@ -318,23 +340,46 @@
                   }
                 });
 
-                // Background pulse from real audio
                 if (window.retroBackground && radio.audioData) {
                   let sum = 0;
                   for (let i = 1; i < 14; i++) sum += (radio.audioData[i] || 0);
-                  window.retroBackground.setAudioEnergy(sum / (13 * 255));
+                  const energy = sum / (13 * 255);
+                  window.retroBackground.setAudioEnergy(energy);
+                  if (vuBass) vuBass.style.width = `${Math.min(100, energy * 180).toFixed(1)}%`;
+                  if (vuMid) vuMid.style.width = `${Math.min(100, energy * 140).toFixed(1)}%`;
+                  if (vuTreb) vuTreb.style.width = `${Math.min(100, energy * 100).toFixed(1)}%`;
                 }
               } else {
-                // Synthesize dynamic, beat-locked synthwave audio waveforms synchronized with radio.audio.currentTime
                 this.renderSynthwaveWave(wavBuffer, wavBufferL, wavBufferR, fftSize, radio);
               }
-              this.updateAudioSourceDisplay('NRW 电台');
+
+              if (vuBadge) {
+                vuBadge.textContent = '● NRW 电台在线广播';
+                vuBadge.style.color = '#00e5ff';
+                vuBadge.style.borderColor = '#0088cc';
+              }
+              this.updateAudioSourceDisplay('NRW 在线电台');
             } else {
-              // ==========================================
-              // Option C: Music is paused or stopped -> gentle ambient wave so canvas doesn't decay to pitch black
-              // ==========================================
-              this.renderAmbientWave(wavBuffer, wavBufferL, wavBufferR, fftSize, ++idleFrame);
-              this.updateAudioSourceDisplay('待机');
+              // =========================================================================
+              // Option C: Music is paused or stopped -> True Silence (Zero Energy)!
+              // Butterchurn samples silence from connected node. Oscilloscope stays flat.
+              // =========================================================================
+              this.visualizer.render();
+
+              if (vuBass) vuBass.style.width = '0%';
+              if (vuMid) vuMid.style.width = '0%';
+              if (vuTreb) vuTreb.style.width = '0%';
+              if (vuBadge) {
+                vuBadge.textContent = '○ 音频待机 (静止)';
+                vuBadge.style.color = '#888888';
+                vuBadge.style.borderColor = '#444444';
+              }
+
+              if (window.retroBackground) {
+                window.retroBackground.setAudioEnergy(0.0);
+              }
+
+              this.updateAudioSourceDisplay('待机 (静止)');
             }
           } catch (e) {
             console.warn('Butterchurn render error:', e);
@@ -349,23 +394,18 @@
 
     renderSynthwaveWave(wavBuffer, wavBufferL, wavBufferR, fftSize, radio) {
       const curTime = (radio.audio && radio.audio.currentTime > 0) ? radio.audio.currentTime : (performance.now() / 1000);
-      const bpm = 124; // Standard Synthwave tempo
+      const bpm = 124;
       const beatTime = curTime * (bpm / 60);
       const beatFraction = beatTime % 1.0;
       const isSnareBeat = (Math.floor(beatTime) % 2 === 1);
 
-      // Kick punch: powerful low frequency drop on beat
       const kickImpulse = Math.pow(Math.max(0, 1 - beatFraction * 3.5), 2) * 115;
-      // Snare punch: noisy mid-frequency punch on beats 2 & 4
       const snareImpulse = isSnareBeat ? Math.pow(Math.max(0, 1 - beatFraction * 2.8), 2) * 85 : 0;
-      // 16th-note rolling synth bassline
       const sixteenth = (beatTime * 4) % 1.0;
       const bassArp = Math.sin(sixteenth * Math.PI * 2) * (30 + kickImpulse * 0.4);
-      // Lead melody & chord shimmer
       const melodyPhase = curTime * 7.5;
       const leadSynth = Math.sin(melodyPhase) * 25 + Math.cos(melodyPhase * 1.5) * 18;
 
-      // Generate stereo 1024-sample audio waveform with massive dynamic range
       for (let i = 0; i < fftSize; i++) {
         const phase = (i / fftSize) * Math.PI * 4;
         const kickWave = Math.sin(phase * 1.2) * kickImpulse;
@@ -389,35 +429,16 @@
         }
       });
 
-      // Synchronize background neon glow with kick bass
+      const vuBass = document.getElementById('vis-vu-bass');
+      const vuMid = document.getElementById('vis-vu-mid');
+      const vuTreb = document.getElementById('vis-vu-treb');
+      if (vuBass) vuBass.style.width = `${Math.min(100, (kickImpulse / 115) * 100).toFixed(1)}%`;
+      if (vuMid) vuMid.style.width = `${Math.min(100, (Math.abs(bassArp) / 50) * 100).toFixed(1)}%`;
+      if (vuTreb) vuTreb.style.width = `${Math.min(100, (Math.abs(leadSynth) / 45) * 100).toFixed(1)}%`;
+
       if (window.retroBackground) {
         const energy = Math.min(1.0, (kickImpulse / 115) * 0.85 + 0.1);
         window.retroBackground.setAudioEnergy(energy);
-      }
-    }
-
-    renderAmbientWave(wavBuffer, wavBufferL, wavBufferR, fftSize, frameCount) {
-      const t = frameCount * 0.02;
-      const ambientSway = Math.sin(t * 1.5) * 18;
-
-      for (let i = 0; i < fftSize; i++) {
-        const phase = (i / fftSize) * Math.PI * 2;
-        const val = Math.min(255, Math.max(0, Math.floor(128 + Math.sin(phase + t) * ambientSway)));
-        wavBuffer[i] = val;
-        wavBufferL[i] = val;
-        wavBufferR[i] = val;
-      }
-
-      this.visualizer.render({
-        audioLevels: {
-          timeByteArray: wavBuffer,
-          timeByteArrayL: wavBufferL,
-          timeByteArrayR: wavBufferR
-        }
-      });
-
-      if (window.retroBackground) {
-        window.retroBackground.setAudioEnergy(0.05);
       }
     }
   }
