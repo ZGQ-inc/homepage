@@ -45,19 +45,29 @@
       const existing = document.getElementById('retro-clippy');
       if (existing) existing.remove();
 
-      // Attempt to load official clippyjs agent first (with timeout for offline/CDN resilience)
+      // Attempt to load official clippyjs agent first (local bundle preferred, CDN fallback)
       try {
         const loadOfficialPromise = (async () => {
-          const clippyModule = await import('https://unpkg.com/clippyjs/dist/index.mjs');
-          const agentsModule = await import('https://unpkg.com/clippyjs/dist/agents/index.mjs');
-          if (clippyModule && agentsModule && agentsModule.Clippy) {
-            return await clippyModule.initAgent(agentsModule.Clippy);
+          let clippyModule, clippyAgent;
+          try {
+            // 1. Load local offline bundle first (instant, 100% offline, zero network latency/timeout)
+            clippyModule = await import('../vendor/clippy/index.mjs');
+            const clippyPkg = await import('../vendor/clippy/agents/clippy/index.mjs');
+            clippyAgent = clippyPkg.default || clippyPkg.Clippy;
+          } catch (localErr) {
+            console.warn('Local Clippy assets unavailable, falling back to CDN:', localErr);
+            clippyModule = await import('https://unpkg.com/clippyjs/dist/index.mjs');
+            const agentsModule = await import('https://unpkg.com/clippyjs/dist/agents/index.mjs');
+            clippyAgent = agentsModule && agentsModule.Clippy;
+          }
+          if (clippyModule && clippyAgent) {
+            return await clippyModule.initAgent(clippyAgent);
           }
           return null;
         })();
 
         const timeoutPromise = new Promise((_, reject) =>
-          setTimeout(() => reject(new Error('CDN timeout')), 2500)
+          setTimeout(() => reject(new Error('Clippy load timeout')), 6000)
         );
 
         this.agent = await Promise.race([loadOfficialPromise, timeoutPromise]);
