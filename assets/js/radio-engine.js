@@ -91,6 +91,9 @@
       this.audio = new Audio();
       this.audio.preload = 'metadata';
       this.audio.volume = this.volume;
+      if (window.desktopOS && !window.desktopOS.isSoundEnabled) {
+        this.audio.muted = true;
+      }
       this.errorTimer = null;
 
       this.audioContext = null;
@@ -161,8 +164,13 @@
         // Attempt MediaElementSource connection
         try {
           this.sourceNode = this.audioContext.createMediaElementSource(this.audio);
+          this.gainNode = this.audioContext.createGain();
+          const isMuted = window.desktopOS ? !window.desktopOS.isSoundEnabled : true;
+          this.gainNode.gain.value = isMuted ? 0 : 1;
+
           this.sourceNode.connect(this.analyser);
-          this.analyser.connect(this.audioContext.destination);
+          this.analyser.connect(this.gainNode);
+          this.gainNode.connect(this.audioContext.destination);
           this.hasAudioContext = true;
 
           // If Butterchurn is ready, connect to it
@@ -342,6 +350,10 @@
     setVolume(val) {
       this.volume = Math.max(0, Math.min(1, val));
       this.audio.volume = this.volume;
+      if (this.gainNode) {
+        const isMuted = window.desktopOS ? !window.desktopOS.isSoundEnabled : true;
+        this.gainNode.gain.value = isMuted ? 0 : 1;
+      }
       this.emit('volumechanged', { volume: this.volume });
     }
 

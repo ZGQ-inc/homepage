@@ -11,6 +11,18 @@
 (function (window) {
   'use strict';
 
+  // Global Media Mute Guardian: automatically mute any media element played while muted
+  if (typeof HTMLMediaElement !== 'undefined' && !window._audioPlayIntercepted) {
+    window._audioPlayIntercepted = true;
+    const origAudioPlay = HTMLMediaElement.prototype.play;
+    HTMLMediaElement.prototype.play = function (...args) {
+      if (window.desktopOS && !window.desktopOS.isSoundEnabled) {
+        this.muted = true;
+      }
+      return origAudioPlay.apply(this, args);
+    };
+  }
+
   class DesktopOS {
     constructor() {
       this.windows = {};
@@ -45,6 +57,7 @@
       this.setupSoundBalloon();
       this.setupFoldableAdaptation();
       this.setupWebampLauncher();
+      this.syncAllAudio();
 
       // Keyboard shortcuts
       window.addEventListener('keydown', (e) => {
@@ -88,12 +101,60 @@
         });
       }
 
-      // Sync all media elements on the page with global mute state
+      // Sync all media across the application with the global mute state
+      this.syncAllAudio();
+    }
+
+    syncAllAudio() {
+      const isMuted = !this.isSoundEnabled;
+
+      // 1. Sync all DOM audio & video tags
       try {
         document.querySelectorAll('audio, video').forEach(media => {
-          media.muted = !this.isSoundEnabled;
+          media.muted = isMuted;
         });
       } catch (e) {}
+
+      // 2. Sync NRW Radio Engine's detached audio instance
+      if (window.radioEngine) {
+        if (window.radioEngine.audio) {
+          window.radioEngine.audio.muted = isMuted;
+        }
+        if (window.radioEngine.gainNode) {
+          window.radioEngine.gainNode.gain.value = isMuted ? 0 : 1;
+        }
+      }
+
+      // 3. Sync Clippy Assistant internal sounds
+      if (window.clippy && typeof window.clippy.syncSoundMute === 'function') {
+        window.clippy.syncSoundMute();
+      }
+
+      // 4. Sync Webamp internal Web Audio GainNode & source audio
+      this.syncWebampSound();
+    }
+
+    syncWebampSound() {
+      if (!this.webampInstance || !this.webampInstance.media) return;
+      const media = this.webampInstance.media;
+      if (!this.isSoundEnabled) {
+        if (media._gainNode) {
+          media._gainNode.gain.value = 0;
+        }
+        if (media._source && media._source._audio) {
+          media._source._audio.muted = true;
+        }
+      } else {
+        if (media._gainNode) {
+          const vol = media._savedVolume !== undefined
+            ? media._savedVolume
+            : (this.webampInstance.store ? this.webampInstance.store.getState().media.volume : 78);
+          media._gainNode.gain.value = (vol || 78) / 100;
+        }
+        if (media._source && media._source._audio) {
+          media._source._audio.muted = false;
+        }
+      }
     }
 
     setupSoundToggle() {
@@ -703,6 +764,35 @@
             playlist: { position: { x: posX, y: posY + 232 } }
           }
         });
+
+        // Intercept and sync Webamp media with desktop mute state
+        const media = this.webampInstance.media;
+        if (media) {
+          const origSetVolume = media.setVolume.bind(media);
+          media._savedVolume = (this.webampInstance.store && this.webampInstance.store.getState().media)
+            ? this.webampInstance.store.getState().media.volume
+            : 78;
+
+          media.setVolume = (val) => {
+            media._savedVolume = val;
+            if (!this.isSoundEnabled) {
+              if (media._gainNode) media._gainNode.gain.value = 0;
+              return;
+            }
+            return origSetVolume(val);
+          };
+
+          const origPlay = media.play.bind(media);
+          media.play = async () => {
+            if (!this.isSoundEnabled) {
+              if (media._gainNode) media._gainNode.gain.value = 0;
+              if (media._source && media._source._audio) media._source._audio.muted = true;
+            }
+            return origPlay();
+          };
+
+          this.syncWebampSound();
+        }
 
         // Handle close button inside Webamp
         this.webampInstance.onClose(() => {

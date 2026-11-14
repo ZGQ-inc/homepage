@@ -63,16 +63,25 @@
         this.agent = await Promise.race([loadOfficialPromise, timeoutPromise]);
         if (this.agent) {
 
-          // Mute clippy internal sound effects immediately BEFORE show() if desktop sound is muted
-          if (this.agent && this.agent._sound) {
-            const origPlay = this.agent._sound.play;
-            if (origPlay) {
-              this.agent._sound.play = function (...args) {
-                if (window.desktopOS && !window.desktopOS.isSoundEnabled) return Promise.resolve();
-                return origPlay.apply(this, args);
+          // Silence clippy internal animations & sound effects if desktop sound is muted
+          if (this.agent && this.agent._animator) {
+            const origPlaySound = this.agent._animator._playSound;
+            this.agent._animator._playSound = function (...args) {
+              if (window.desktopOS && !window.desktopOS.isSoundEnabled) return;
+              return origPlaySound.apply(this, args);
+            };
+
+            const origPreload = this.agent._animator.preloadSounds;
+            if (origPreload) {
+              const self = this;
+              this.agent._animator.preloadSounds = async function (...args) {
+                const res = await origPreload.apply(this, args);
+                self.syncSoundMute();
+                return res;
               };
             }
           }
+          this.syncSoundMute();
 
           this.agent.show();
           this.isAgentLoaded = true;
@@ -121,6 +130,23 @@
       setTimeout(() => {
         this.speak("Hi! 我是 Clippy 📎 欢迎来到 ZGQ Inc. 的复古视窗世界！", 8000);
       }, 1000);
+    }
+
+    syncSoundMute() {
+      const isMuted = !window.desktopOS || !window.desktopOS.isSoundEnabled;
+      if (this.agent && this.agent._animator && this.agent._animator._sounds) {
+        Object.values(this.agent._animator._sounds).forEach(audio => {
+          if (audio) {
+            audio.muted = isMuted;
+            if (isMuted) {
+              try {
+                audio.pause();
+                audio.currentTime = 0;
+              } catch (e) {}
+            }
+          }
+        });
+      }
     }
 
     bindAgentInteractions() {
