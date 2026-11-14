@@ -91,6 +91,28 @@
         if (userTriggered) {
           this.playSound('chord');
         }
+
+        // Resume AudioContexts on user gesture
+        try {
+          const AudioCtx = window._sharedAudioCtx || (window.getSharedAudioContext ? window.getSharedAudioContext() : null);
+          if (AudioCtx && AudioCtx.state === 'suspended') {
+            AudioCtx.resume().catch(() => {});
+          }
+        } catch (e) {}
+
+        // If radio is not playing and Webamp is not playing, start radio so the user immediately gets music
+        if (window.radioEngine) {
+          const webamp = this.webampInstance;
+          const isWebampPlaying = !!(webamp && webamp.store && webamp.store.getState().media && webamp.store.getState().media.status === 'PLAYING');
+          if (!window.radioEngine.isPlaying && !isWebampPlaying) {
+            window.radioEngine.play();
+          } else if (window.radioEngine.isPlaying) {
+            if (window.radioEngine.audio) {
+              window.radioEngine.audio.muted = false;
+              window.radioEngine.audio.volume = window.radioEngine.volume;
+            }
+          }
+        }
       } else {
         // When muted, pause any ongoing sounds immediately
         Object.values(this.sounds).forEach(s => {
@@ -787,6 +809,10 @@
             if (!this.isSoundEnabled) {
               if (media._gainNode) media._gainNode.gain.value = 0;
               if (media._source && media._source._audio) media._source._audio.muted = true;
+            }
+            // When Webamp plays, pause radio so two tracks don't play simultaneously
+            if (window.radioEngine && window.radioEngine.isPlaying) {
+              window.radioEngine.pause();
             }
             return origPlay();
           };

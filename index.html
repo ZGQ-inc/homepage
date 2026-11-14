@@ -1015,6 +1015,7 @@
       <div class="status-bar">
         <p class="status-bar-field" id="vis-status-preset" style="flex: 2;">预设: 就绪</p>
         <p class="status-bar-field" id="vis-status-timer" style="flex: 1;">轮播倒计时: 25s</p>
+        <p class="status-bar-field" id="vis-status-source" style="flex: 1.2;">音频源: 待机</p>
         <p class="status-bar-field">WebGL 2.0</p>
       </div>
     </div>
@@ -2100,6 +2101,15 @@
       window.onWin98BootFinished = () => {
         if (desktop.isSoundEnabled) {
           desktop.playSound('startup');
+          setTimeout(() => {
+            if (desktop.isSoundEnabled && window.radioEngine && !window.radioEngine.isPlaying) {
+              const webamp = desktop.webampInstance;
+              const isWebampPlaying = !!(webamp && webamp.store && webamp.store.getState().media && webamp.store.getState().media.status === 'PLAYING');
+              if (!isWebampPlaying) {
+                window.radioEngine.play();
+              }
+            }
+          }, 6200);
         } else {
           // 显示仿 Win98 原版黄色托盘气泡提示
           setTimeout(() => {

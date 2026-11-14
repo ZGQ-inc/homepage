@@ -161,28 +161,14 @@
         this.audioData = new Uint8Array(this.analyser.frequencyBinCount);
         this.timeData = new Uint8Array(this.analyser.fftSize);
 
-        // Attempt MediaElementSource connection
-        try {
-          this.sourceNode = this.audioContext.createMediaElementSource(this.audio);
-          this.gainNode = this.audioContext.createGain();
-          const isMuted = window.desktopOS ? !window.desktopOS.isSoundEnabled : true;
-          this.gainNode.gain.value = isMuted ? 0 : 1;
+        // Web Audio Analyser setup (used for frequency analysis)
+        this.hasAudioContext = true;
 
-          this.sourceNode.connect(this.analyser);
-          this.analyser.connect(this.gainNode);
-          this.gainNode.connect(this.audioContext.destination);
-          this.hasAudioContext = true;
-
-          // If Butterchurn is ready, connect to it
-          if (window.visualizerManager && window.visualizerManager.visualizer) {
-            try {
-              window.visualizerManager.visualizer.connectAudio(this.analyser);
-            } catch (e) {}
-          }
-        } catch (corsErr) {
-          console.log('Audio element CORS restricted, precision sync rhythm generator active:', corsErr);
-          this.hasAudioContext = true;
-        }
+        // Note: We deliberately do NOT call createMediaElementSource(this.audio).
+        // Calling createMediaElementSource steals output to Web Audio graph, which forces
+        // silence on cross-origin audio streams without Access-Control-Allow-Origin (all NRW streams).
+        // By leaving this.audio as a native HTML5 audio element, it plays directly to speakers
+        // with zero CORS restrictions and 100% reliable sound across all browsers.
 
         // Start beat & frequency pulse loop
         this.startFrequencyLoop();
@@ -217,7 +203,10 @@
             energy = Math.max(0, Math.pow(Math.max(0, beat), 3) * 0.7 + (Math.sin(t * 8) * 0.1));
           }
 
-          if (window.retroBackground) {
+          // Only drive retro background if Webamp is not currently playing
+          const webamp = window.desktopOS && window.desktopOS.webampInstance;
+          const isWebampPlaying = !!(webamp && webamp.store && webamp.store.getState().media && webamp.store.getState().media.status === 'PLAYING');
+          if (!isWebampPlaying && window.retroBackground) {
             window.retroBackground.setAudioEnergy(energy);
           }
         }
@@ -254,6 +243,15 @@
           this.isOnlineReady = true;
           console.log(`Loaded ${this.playlist.length} tracks from NRW Radio (Randomized).`);
           this.emit('playlistready', { count: this.playlist.length });
+
+          // Auto-start radio if global sound is already enabled and system has booted
+          if (window.desktopOS && window.desktopOS.isSoundEnabled && !this.isPlaying) {
+            const webamp = window.desktopOS.webampInstance;
+            const isWebampPlaying = !!(webamp && webamp.store && webamp.store.getState().media && webamp.store.getState().media.status === 'PLAYING');
+            if (!isWebampPlaying && window.win98Boot && window.win98Boot.isEnded) {
+              this.play();
+            }
+          }
           return;
         }
       } catch (err) {
@@ -263,6 +261,13 @@
       // Fallback
       this.playlist = this.shuffleArray([...LOCAL_FALLBACK_TRACKS]);
       this.emit('playlistready', { count: this.playlist.length });
+      if (window.desktopOS && window.desktopOS.isSoundEnabled && !this.isPlaying) {
+        const webamp = window.desktopOS.webampInstance;
+        const isWebampPlaying = !!(webamp && webamp.store && webamp.store.getState().media && webamp.store.getState().media.status === 'PLAYING');
+        if (!isWebampPlaying && window.win98Boot && window.win98Boot.isEnded) {
+          this.play();
+        }
+      }
     }
 
     shuffleArray(arr) {
@@ -288,7 +293,28 @@
 
       clearTimeout(this.errorTimer);
       this.isPlaying = true;
+
+      // Resume AudioContexts on user gesture
+      if (this.audioContext && this.audioContext.state === 'suspended') {
+        this.audioContext.resume().catch(() => {});
+      }
+      if (window.getSharedAudioContext) {
+        const ctx = window.getSharedAudioContext();
+        if (ctx && ctx.state === 'suspended') ctx.resume().catch(() => {});
+      }
+
+      // If Webamp is playing, pause Webamp so audio does not clash
+      if (window.desktopOS && window.desktopOS.webampInstance && window.desktopOS.webampInstance.store) {
+        const wStatus = window.desktopOS.webampInstance.store.getState().media.status;
+        if (wStatus === 'PLAYING' && window.desktopOS.webampInstance.media) {
+          window.desktopOS.webampInstance.media.pause();
+        }
+      }
+
       this.audio.src = track.urlsong;
+      this.audio.muted = window.desktopOS ? !window.desktopOS.isSoundEnabled : false;
+      this.audio.volume = this.volume;
+
       const playPromise = this.audio.play();
       if (playPromise !== undefined) {
         playPromise.catch(err => {
@@ -303,6 +329,29 @@
     play() {
       clearTimeout(this.errorTimer);
       this.isPlaying = true;
+
+      // Resume AudioContexts on user gesture
+      if (this.audioContext && this.audioContext.state === 'suspended') {
+        this.audioContext.resume().catch(() => {});
+      }
+      if (window.getSharedAudioContext) {
+        const ctx = window.getSharedAudioContext();
+        if (ctx && ctx.state === 'suspended') ctx.resume().catch(() => {});
+      }
+
+      // If Webamp is playing, pause Webamp so audio does not clash
+      if (window.desktopOS && window.desktopOS.webampInstance && window.desktopOS.webampInstance.store) {
+        const wStatus = window.desktopOS.webampInstance.store.getState().media.status;
+        if (wStatus === 'PLAYING' && window.desktopOS.webampInstance.media) {
+          window.desktopOS.webampInstance.media.pause();
+        }
+      }
+
+      if (this.audio) {
+        this.audio.muted = window.desktopOS ? !window.desktopOS.isSoundEnabled : false;
+        this.audio.volume = this.volume;
+      }
+
       if (!this.audio.src && this.playlist.length > 0) {
         this.playTrack(this.currentIndex);
       } else {
@@ -349,10 +398,8 @@
 
     setVolume(val) {
       this.volume = Math.max(0, Math.min(1, val));
-      this.audio.volume = this.volume;
-      if (this.gainNode) {
-        const isMuted = window.desktopOS ? !window.desktopOS.isSoundEnabled : true;
-        this.gainNode.gain.value = isMuted ? 0 : 1;
+      if (this.audio) {
+        this.audio.volume = this.volume;
       }
       this.emit('volumechanged', { volume: this.volume });
     }
