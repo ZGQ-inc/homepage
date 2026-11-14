@@ -13,7 +13,7 @@
   <b>ZGQ Inc. 的个人复古 Web 桌面主页 —— 融合 Windows 98 像素美学、80s 霓虹合成波 (Synthwave) 与现代边缘计算技术。</b>
 </p>
 
-[🌐 在线访问 (Live Demo)](https://zgq-inc.github.io/homepage/) · [💬 留言互动](https://zgq-inc.github.io/homepage/#guestbook) · [📖 个人博客](https://blog.zgqinc.gq/) · [📢 TG 频道](https://t.me/CopyRightZGQInc)
+[🌐 在线访问 (Live Demo)](https://zgqinc.gq/) · [📖 个人博客](https://blog.zgqinc.gq/) · [📢 TG 频道](https://t.me/CopyRightZGQInc)
 
 </div>
 
