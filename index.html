@@ -7,6 +7,12 @@
   <title>ZGQ Inc. 的个人主页</title>
   <meta name="description" content="ZGQ Inc. 个人主页 - 1:1 Windows 98 复古操作系统、NewRetroWave Radio 在线电台、Milkdrop 视觉器与网址导航站">
   <link rel="icon" href="./favicon.ico">
+  <link rel="manifest" href="./manifest.json">
+  <meta name="theme-color" content="#008080">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="ZGQ Inc.">
+  <link rel="apple-touch-icon" href="./assets/images/icons/icon-192.png">
   <link rel="stylesheet" href="./assets/css/98.css">
   <link rel="stylesheet" href="./assets/css/desktop-theme.css">
   <script src="./assets/js/win98-dialog.js"></script>
@@ -2563,6 +2569,19 @@
       }, 3500);
 
     })();
+  </script>
+
+  <!-- PWA Service Worker Registration -->
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js').then((registration) => {
+          console.log('[PWA] Service Worker registered successfully with scope:', registration.scope);
+        }).catch((err) => {
+          console.log('[PWA] Service Worker registration failed:', err);
+        });
+      });
+    }
   </script>
 
 </body>

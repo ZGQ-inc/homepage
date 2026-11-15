@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>网络连接不可用 - Windows 98</title>
+  <link rel="icon" href="./favicon.ico">
+  <link rel="stylesheet" href="./assets/css/98.css">
+  <link rel="stylesheet" href="./assets/css/desktop-theme.css">
+  <style>
+    body {
+      background-color: #008080;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      padding: 16px;
+      box-sizing: border-box;
+      font-family: "MS Sans Serif", "Microsoft Sans Serif", "SimSun", sans-serif;
+    }
+
+    .offline-dialog {
+      width: 440px;
+      max-width: calc(100vw - 32px);
+      box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.4);
+    }
+
+    .offline-body {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .offline-content {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+    }
+
+    .offline-icon {
+      width: 32px;
+      height: 32px;
+      image-rendering: pixelated;
+      flex-shrink: 0;
+    }
+
+    .offline-text h2 {
+      margin: 0 0 8px 0;
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .offline-text p {
+      margin: 0 0 6px 0;
+      font-size: 12px;
+      line-height: 1.5;
+      color: #222;
+    }
+
+    .offline-actions {
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    .offline-actions button {
+      min-width: 80px;
+      padding: 4px 14px;
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="window offline-dialog">
+    <div class="title-bar">
+      <div class="title-bar-text">Microsoft Internet Explorer - 脱机工作</div>
+      <div class="title-bar-controls">
+        <button aria-label="Close" onclick="window.location.href='./'"></button>
+      </div>
+    </div>
+    <div class="window-body offline-body">
+      <div class="offline-content">
+        <img src="./assets/icons/warning-32x32-8bpp.png" alt="脱机警告" class="offline-icon">
+        <div class="offline-text">
+          <h2>无法连接到 Internet</h2>
+          <p>您当前似乎处于脱机 (Offline) 状态，或者网络极不稳定。</p>
+          <p>请检查您的网线连接、无线路由器或移动数据设置后重试。部分已缓存的 Windows 98 桌面页面和核心功能仍然可以访问。</p>
+        </div>
+      </div>
+      <div class="offline-actions">
+        <button onclick="window.location.reload()">重试(&R)</button>
+        <button onclick="window.location.href='./'">返回桌面(&H)</button>
+      </div>
+    </div>
+  </div>
+
+</body>
+
+</html>
