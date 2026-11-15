@@ -2523,10 +2523,12 @@
         });
       });
 
-      window.onWin98BootFinished = () => {
-        if (desktop.isSoundEnabled) {
-          desktop.playSound('startup');
-        } else {
+      const handleBootFinished = () => {
+        if (window._bootSoundHandled) return;
+        window._bootSoundHandled = true;
+        if (desktop && desktop.isSoundEnabled) {
+          desktop.playStartupSound();
+        } else if (desktop) {
           setTimeout(() => {
             if (desktop.showSoundBalloon) {
               desktop.showSoundBalloon();
@@ -2534,17 +2536,21 @@
           }, 600);
         }
       };
+      window.onWin98BootFinished = handleBootFinished;
+      if (window.win98Boot && window.win98Boot.isEnded) {
+        handleBootFinished();
+      }
 
-      const pageLoadPromise = new Promise(resolve => {
-        if (document.readyState === 'complete') resolve();
-        else window.addEventListener('load', resolve);
+      const domReadyPromise = new Promise(resolve => {
+        if (document.readyState === 'complete' || document.readyState === 'interactive') resolve();
+        else document.addEventListener('DOMContentLoaded', resolve);
       });
 
       const fontReadyPromise = document.fonts ? document.fonts.ready.catch(() => { }) : Promise.resolve();
 
       const minDisplayPromise = new Promise(resolve => setTimeout(resolve, 1800));
 
-      Promise.all([pageLoadPromise, fontReadyPromise, minDisplayPromise]).then(() => {
+      Promise.all([domReadyPromise, fontReadyPromise, minDisplayPromise]).then(() => {
         if (window.win98Boot && !window.win98Boot.isEnded) {
           window.win98Boot.end();
         }
@@ -2554,7 +2560,7 @@
         if (window.win98Boot && !window.win98Boot.isEnded) {
           window.win98Boot.end();
         }
-      }, 5000);
+      }, 3500);
 
     })();
   </script>

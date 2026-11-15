@@ -1540,7 +1540,7 @@ body.crt-active .crt-overlay {
 
   /* 移动端支持真实的复古悬浮窗口：可任意拖拽、层叠排布、折叠与最大化 */
   .window[data-window-id] {
-    max-width: calc(100vw - 12px);
+    max-width: calc(100vw - 12px) !important;
     max-height: calc(100dvh - var(--taskbar-height) - 10px);
     box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.4);
   }

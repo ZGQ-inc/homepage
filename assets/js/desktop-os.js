@@ -16,8 +16,12 @@
     window._audioPlayIntercepted = true;
     const origAudioPlay = HTMLMediaElement.prototype.play;
     HTMLMediaElement.prototype.play = function (...args) {
-      if (window.desktopOS && !window.desktopOS.isSoundEnabled) {
-        this.muted = true;
+      if (window.desktopOS) {
+        if (!window.desktopOS.isSoundEnabled) {
+          this.muted = true;
+        } else if (this.muted && !this._userMutedExplicitly) {
+          this.muted = false;
+        }
       }
       return origAudioPlay.apply(this, args);
     };
@@ -34,14 +38,22 @@
 
       // Global Sound Setting (Default: false / muted)
       this.isSoundEnabled = localStorage.getItem('win98_sound_enabled') === 'true';
+      this._startupSoundPlayed = false;
+      this._startupQueued = false;
 
-      // Authentic Sound Audio Objects
+      // Authentic Sound Audio Objects with auto-preload
       this.sounds = {
-        startup: new Audio('./assets/audio/The Microsoft Sound.wav'),
+        startup: new Audio('./assets/audio/The%20Microsoft%20Sound.wav'),
         ding: new Audio('./assets/audio/DING.WAV'),
         chord: new Audio('./assets/audio/CHORD.WAV'),
         recycle: new Audio('./assets/audio/RECYCLE.WAV')
       };
+      Object.values(this.sounds).forEach(audio => {
+        try {
+          audio.preload = 'auto';
+          audio.load();
+        } catch (e) {}
+      });
 
       this.init();
     }
@@ -70,11 +82,58 @@
       console.log('Desktop OS initialized successfully.');
     }
 
+    playStartupSound() {
+      if (!this.isSoundEnabled) return;
+      if (this._startupSoundPlayed) return;
+
+      const s = this.sounds.startup;
+      if (!s) return;
+
+      s.muted = false;
+      s.currentTime = 0;
+      const playPromise = s.play();
+      if (playPromise !== undefined) {
+        playPromise.then(() => {
+          this._startupSoundPlayed = true;
+          console.log('Windows 98 Startup Sound playing successfully.');
+        }).catch((err) => {
+          console.log('Startup sound autoplay blocked by browser policy, queuing for first user gesture:', err.name);
+          this.queueStartupSoundOnInteraction();
+        });
+      }
+    }
+
+    queueStartupSoundOnInteraction() {
+      if (this._startupSoundPlayed || this._startupQueued) return;
+      this._startupQueued = true;
+
+      const triggerStartup = () => {
+        window.removeEventListener('click', triggerStartup, true);
+        window.removeEventListener('touchstart', triggerStartup, true);
+        window.removeEventListener('keydown', triggerStartup, true);
+        this._startupQueued = false;
+
+        if (!this._startupSoundPlayed && this.isSoundEnabled) {
+          this._startupSoundPlayed = true;
+          this.playStartupSound();
+        }
+      };
+
+      window.addEventListener('click', triggerStartup, { capture: true, once: true });
+      window.addEventListener('touchstart', triggerStartup, { capture: true, once: true });
+      window.addEventListener('keydown', triggerStartup, { capture: true, once: true });
+    }
+
     playSound(name) {
       if (!this.isSoundEnabled) return;
+      if (name === 'startup') {
+        this.playStartupSound();
+        return;
+      }
       try {
         const s = this.sounds[name];
         if (s) {
+          s.muted = false;
           s.currentTime = 0;
           s.play().catch(() => {});
         }
@@ -124,14 +183,21 @@
     syncAllAudio() {
       const isMuted = !this.isSoundEnabled;
 
-      // 1. Sync all DOM audio & video tags
+      // 1. Sync internal sound effects
+      if (this.sounds) {
+        Object.values(this.sounds).forEach(s => {
+          if (s) s.muted = isMuted;
+        });
+      }
+
+      // 2. Sync all DOM audio & video tags
       try {
         document.querySelectorAll('audio, video').forEach(media => {
           media.muted = isMuted;
         });
       } catch (e) {}
 
-      // 2. Sync NRW Radio Engine's detached audio instance
+      // 3. Sync NRW Radio Engine's detached audio instance
       if (window.radioEngine) {
         if (window.radioEngine.audio) {
           window.radioEngine.audio.muted = isMuted;
@@ -243,7 +309,8 @@
           title: el.querySelector('.title-bar-text span') ? el.querySelector('.title-bar-text span').textContent.trim() : id,
           isMinimized: el.classList.contains('minimized'),
           isMaximized: el.classList.contains('maximized'),
-          prevRect: null
+          prevRect: null,
+          isMobilePositioned: false
         };
 
         const titleBar = el.querySelector('.title-bar');
@@ -281,13 +348,16 @@
         el.addEventListener('mousedown', () => this.bringToFront(id));
         el.addEventListener('touchstart', () => this.bringToFront(id), { passive: true });
 
-        // Keep explicit inline positioning if present, otherwise stagger
-        if (!el.classList.contains('hidden') && !el.classList.contains('maximized')) {
-          if (window.innerWidth <= 768) {
-            el.style.left = '8px';
-            el.style.top = '10px';
-            el.style.width = 'calc(100vw - 16px)';
-          } else if (!el.style.left || !el.style.top) {
+        // Responsive initial positioning & off-screen correction
+        if (window.innerWidth <= 768) {
+          const curLeft = parseFloat(el.style.left) || 0;
+          if (curLeft >= window.innerWidth - 60 || !el.classList.contains('hidden')) {
+            el.style.left = '6px';
+            el.style.top = '8px';
+            el.style.width = 'calc(100vw - 12px)';
+          }
+        } else if (!el.classList.contains('hidden') && !el.classList.contains('maximized')) {
+          if (!el.style.left || !el.style.top) {
             const offsetX = 90 + (index % 4) * 35;
             const offsetY = 30 + (index % 4) * 30;
             el.style.left = `${offsetX}px`;
@@ -310,6 +380,10 @@
         const rect = winEl.getBoundingClientRect();
         initLeft = rect.left;
         initTop = rect.top;
+        const win = this.windows[winEl.dataset.windowId];
+        if (win && window.innerWidth <= 768) {
+          win.isMobilePositioned = true;
+        }
         this.bringToFront(winEl.dataset.windowId);
       };
 
@@ -532,12 +606,28 @@
       win.isMinimized = false;
       this.bringToFront(id);
 
-      // On mobile viewports
+      // On mobile viewports (<= 768px): ensure window is never opened outside screen
       if (window.innerWidth <= 768 && !win.isMaximized) {
-        if (!win.element.style.left || win.element.style.left === '2px') {
-          win.element.style.left = '8px';
-          win.element.style.top = '10px';
-          win.element.style.width = 'calc(100vw - 16px)';
+        const screenW = window.innerWidth;
+        const screenH = window.innerHeight;
+        const curLeft = parseFloat(win.element.style.left) || 0;
+        const curTop = parseFloat(win.element.style.top) || 0;
+
+        // If window has not been manually positioned on mobile, or is outside the screen bounds:
+        if (!win.isMobilePositioned || curLeft < 0 || curLeft >= screenW - 60 || curTop < 0 || curTop >= screenH - 60) {
+          const openVisibleWindows = Object.values(this.windows).filter(w => !w.element.classList.contains('hidden') && !w.isMinimized && w !== win).length;
+          const staggerY = (openVisibleWindows % 5) * 12;
+          win.element.style.left = '6px';
+          win.element.style.top = `${8 + staggerY}px`;
+          win.element.style.width = 'calc(100vw - 12px)';
+          win.isMobilePositioned = true;
+        } else {
+          // Keep user-dragged position clamped within mobile viewport
+          const maxLeft = Math.max(0, screenW - 60);
+          const maxTop = Math.max(0, screenH - 40);
+          win.element.style.left = `${Math.max(4, Math.min(maxLeft, curLeft))}px`;
+          win.element.style.top = `${Math.max(4, Math.min(maxTop, curTop))}px`;
+          win.element.style.width = 'calc(100vw - 12px)';
         }
       }
 
@@ -1281,6 +1371,25 @@
           document.body.classList.add('foldable-laptop-posture');
         } else {
           document.body.classList.remove('foldable-dual-book', 'foldable-laptop-posture');
+        }
+
+        // Clamp any overflowing windows on mobile screen resize or rotation
+        if (window.innerWidth <= 768) {
+          const screenW = window.innerWidth;
+          const screenH = window.innerHeight;
+          Object.values(this.windows).forEach(win => {
+            if (!win.element.classList.contains('hidden') && !win.isMaximized) {
+              const curLeft = parseFloat(win.element.style.left) || 0;
+              const curTop = parseFloat(win.element.style.top) || 0;
+              if (curLeft >= screenW - 60 || curLeft < 0) {
+                win.element.style.left = '6px';
+              }
+              if (curTop >= screenH - 40 || curTop < 0) {
+                win.element.style.top = '8px';
+              }
+              win.element.style.width = 'calc(100vw - 12px)';
+            }
+          });
         }
       };
 

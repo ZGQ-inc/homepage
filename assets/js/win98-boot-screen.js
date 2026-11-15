@@ -80,15 +80,23 @@
         this.ctx.drawImage(this.offscreenCanvas, 0, 0, this.srcWidth, this.srcHeight, 0, 0, this.width, this.height);
 
         // Bind interactive skip
+        const handleUserSkip = (e) => {
+          if (e) e.stopPropagation();
+          // Unlock audio context and trigger startup sound during direct user gesture
+          if (window.desktopOS && window.desktopOS.isSoundEnabled) {
+            window.desktopOS.playStartupSound();
+          }
+          this.end();
+        };
+
         if (this.skipBtn) {
-          this.skipBtn.addEventListener('click', (e) => {
-            e.stopPropagation();
-            this.end();
-          });
+          this.skipBtn.addEventListener('click', handleUserSkip);
+          this.skipBtn.addEventListener('touchstart', handleUserSkip, { passive: true });
         }
-        this.container.addEventListener('click', () => this.end());
+        this.container.addEventListener('click', handleUserSkip);
+        this.container.addEventListener('touchstart', handleUserSkip, { passive: true });
         window.addEventListener('keydown', (e) => {
-          if (!this.isEnded) this.end();
+          if (!this.isEnded) handleUserSkip(e);
         }, { once: true });
 
         // Start animation loop
@@ -151,14 +159,20 @@
         this.animId = null;
       }
 
+      const triggerFinish = () => {
+        if (typeof window.onWin98BootFinished === 'function') {
+          window.onWin98BootFinished();
+        }
+      };
+
       if (this.container) {
         this.container.classList.add('fade-out');
         setTimeout(() => {
           this.container.style.display = 'none';
-          if (window.onWin98BootFinished) {
-            window.onWin98BootFinished();
-          }
-        }, 500);
+          triggerFinish();
+        }, 400);
+      } else {
+        triggerFinish();
       }
     }
   }
