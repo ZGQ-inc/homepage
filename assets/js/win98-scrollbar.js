@@ -14,14 +14,14 @@
   }
 
   const SCROLLABLE_SELECTORS = [
-    '.window-body',
+    '#win-spotify .window-body',
     '.gh-tab-content',
-    '.gh-icon-box',
-    '.gh-badge-box',
     '#channel-blog-container',
     '#nav-bookmarks-container',
     '.tree-view',
     '#gb-messages-container',
+    '.credits-scroll-box',
+    '.recycle-table-wrapper',
     '.details-box',
     '#details-panel',
     'textarea',
@@ -34,6 +34,11 @@
     if (!el || el.nodeType !== 1 || el._win98Sb) return;
     const parent = el.parentElement;
     if (!parent) return;
+
+    // Skip windows or containers that manage scrolling internally or have hidden overflow
+    const cs = window.getComputedStyle(el);
+    if (cs.overflowY === 'hidden' || cs.display === 'none') return;
+    if (el.classList.contains('window-body') && !el.closest('#win-spotify')) return;
 
     el.classList.add('win98-scrollable-ff');
 
@@ -87,11 +92,25 @@
         return;
       }
 
-      const pRect = parent.getBoundingClientRect();
+      // Exact containing block origin probe (handles <fieldset>, <legend>, border, padding)
+      let probe = parent.querySelector(':scope > .win98-cb-probe');
+      if (!probe) {
+        probe = document.createElement('div');
+        probe.className = 'win98-cb-probe';
+        probe.style.cssText = 'position:absolute;top:0;left:0;width:0;height:0;visibility:hidden;pointer-events:none;padding:0;margin:0;border:none;';
+        parent.appendChild(probe);
+      }
+
+      const probeRect = probe.getBoundingClientRect();
       const elRect = el.getBoundingClientRect();
-      const top = Math.round(elRect.top - pRect.top + parent.scrollTop);
-      const left = Math.round(elRect.left - pRect.left + parent.scrollLeft + elRect.width - 16);
-      const height = Math.round(elRect.height);
+      const elCs = window.getComputedStyle(el);
+      const bt = parseFloat(elCs.borderTopWidth) || 0;
+      const br = parseFloat(elCs.borderRightWidth) || 0;
+      const bb = parseFloat(elCs.borderBottomWidth) || 0;
+
+      const top = Math.round(elRect.top - probeRect.top + bt);
+      const left = Math.round(elRect.right - probeRect.left - 16 - br);
+      const height = Math.round(elRect.height - bt - bb);
 
       sb.style.top = top + 'px';
       sb.style.left = left + 'px';
@@ -196,6 +215,14 @@
   function scan() {
     document.querySelectorAll(SCROLLABLE_SELECTORS.join(', ')).forEach(el => {
       attachWin98Scrollbar(el);
+    });
+    // Dynamic scan for any other custom scroll containers
+    document.querySelectorAll('div, ul, table, textarea, pre').forEach(el => {
+      if (el._win98Sb) return;
+      const cs = window.getComputedStyle(el);
+      if (cs.overflowY === 'auto' || cs.overflowY === 'scroll') {
+        attachWin98Scrollbar(el);
+      }
     });
   }
 
