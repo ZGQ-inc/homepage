@@ -1,4 +1,4 @@
-const CACHE_NAME = 'zgq-homepage-cache-v1';
+const CACHE_NAME = 'zgq-homepage-cache-v2';
 const OFFLINE_URL = './offline.html';
 
 const ASSETS_TO_CACHE = [
@@ -66,10 +66,13 @@ self.addEventListener('fetch', (event) => {
 
   const url = new URL(event.request.url);
 
-  // Bypass API calls, stream proxy, Cloudflare Turnstile, and live radio streams
+  // Bypass dynamic RSS feeds, blog feeds, API calls, stream proxy, Cloudflare Turnstile, and live radio streams
   if (
     url.pathname.startsWith('/api/') ||
     url.pathname.startsWith('/stream') ||
+    url.pathname.endsWith('feed.xml') ||
+    url.hostname.includes('blog.zgqinc.gq') ||
+    url.hostname.includes('allorigins.win') ||
     url.hostname.includes('challenges.cloudflare.com') ||
     url.hostname.includes('nrwmusic.stream')
   ) {
@@ -110,7 +113,7 @@ self.addEventListener('fetch', (event) => {
           if (
             networkResponse &&
             networkResponse.status === 200 &&
-            (event.request.url.startsWith(self.location.origin) || networkResponse.type === 'cors')
+            event.request.url.startsWith(self.location.origin)
           ) {
             const respClone = networkResponse.clone();
             caches.open(CACHE_NAME).then((cache) => cache.put(event.request, respClone));
